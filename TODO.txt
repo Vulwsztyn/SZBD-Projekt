@@ -1,0 +1,25 @@
+Wypełnić:
+- oceny
+- osoby
+- studenci
+- pracownicy
+- zajecia w planie
+
+Godziny zajec:
+- godziny nie mogą nachodzić
+- ECTS do przedmiotow
+
+insert into osoby(imie,nazwisko,pesel,haslo,typ) values('Artur','Mostowski','00000000000','artur','Student');
+
+
+insert into osoby(imie,nazwisko,pesel,haslo,typ) values('Artur','Mostowski','00000020000','artur','Teacher');
+
+insert into pracownicy(id,stopien) values((select id from osoby where id=2),'inż');
+
+insert into studenci(id,grupa_id) values((select id from osoby where id=1500),1);
+
+delete from studenci;
+
+delete from pracownicy;
+
+delete from osoby;

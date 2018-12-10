@@ -375,28 +375,6 @@ BEGIN
 END;
 /
 
-CREATE SEQUENCE seq_osoby START WITH 1 NOCACHE ORDER;
-
-CREATE OR REPLACE TRIGGER osoby_id_trg BEFORE
-    INSERT ON osoby
-    FOR EACH ROW
-    WHEN ( new.id IS NULL )
-BEGIN
-    :new.id := seq_osoby.nextval;
-END;
-/
-
-CREATE SEQUENCE seq_pracownicy START WITH 1 NOCACHE ORDER;
-
-CREATE OR REPLACE TRIGGER pracownicy_id_trg BEFORE
-    INSERT ON pracownicy
-    FOR EACH ROW
-    WHEN ( new.id IS NULL )
-BEGIN
-    :new.id := seq_pracownicy.nextval;
-END;
-/
-
 CREATE SEQUENCE seq_przedmioty START WITH 1 NOCACHE ORDER;
 
 CREATE OR REPLACE TRIGGER przedmioty_id_trg BEFORE
@@ -416,17 +394,6 @@ CREATE OR REPLACE TRIGGER semestr_id_trg BEFORE
     WHEN ( new.id IS NULL )
 BEGIN
     :new.id := seq_semestry.nextval;
-END;
-/
-
-CREATE SEQUENCE seq_studenci START WITH 1000 NOCACHE ORDER;
-
-CREATE OR REPLACE TRIGGER studenci_id_trg BEFORE
-    INSERT ON studenci
-    FOR EACH ROW
-    WHEN ( new.id IS NULL )
-BEGIN
-    :new.id := seq_studenci.nextval;
 END;
 /
 
@@ -452,8 +419,12 @@ SELECT seq_zespoly.nextval INTO :new.id
    FROM dual;
 END;
 
+-- ARTUR
+-- wydzialy
 insert into wydzialy(nazwa,skrot) values('Informatyki','WI');
 
+
+-- godziny
 insert into godziny_zajec(numer, godzina_rozpoczecia,godzina_zakonczenia) values(1, interval '0 08:00:00' day(0) to second, interval '0 09:30:00' day(0) to second);
 insert into godziny_zajec(numer, godzina_rozpoczecia,godzina_zakonczenia) values(2, interval '0 09:45:00' day(0) to second, interval '0 11:15:00' day(0) to second);
 insert into godziny_zajec(numer, godzina_rozpoczecia,godzina_zakonczenia) values(3, interval '0 11:45:00' day(0) to second, interval '0 13:15:00' day(0) to second);
@@ -463,13 +434,15 @@ insert into godziny_zajec(numer, godzina_rozpoczecia,godzina_zakonczenia) values
 insert into godziny_zajec(numer, godzina_rozpoczecia,godzina_zakonczenia) values(7, interval '0 18:30:00' day(0) to second, interval '0 20:00:00' day(0) to second);
 insert into godziny_zajec(numer, godzina_rozpoczecia,godzina_zakonczenia) values(8, interval '0 20:10:00' day(0) to second, interval '0 21:40:00' day(0) to second);
 
-
+-- zespoly
 insert into zespoly (NAZWA,wydzial_ID) values ('ADMINISTRACJA','WI');
 insert into zespoly (NAZWA,wydzial_ID) values ('SYSTEMY ROZPROSZONE','WI');
 insert into zespoly (NAZWA,wydzial_ID) values ('SYSTEMY EKSPERCKIE','WI');
 insert into zespoly (NAZWA,wydzial_ID) values ('ALGORYTMY','WI');
 insert into zespoly (NAZWA,wydzial_ID) values ('BADANIA OPERACYJNE','WI');
 
+
+-- kierunki
 CREATE SEQUENCE seq_kierunki START WITH 1 NOCACHE ORDER;
 CREATE OR REPLACE TRIGGER kierunki_id_trg BEFORE
     INSERT ON kierunki
@@ -481,6 +454,8 @@ END;
 /
 insert into kierunki(nazwa,wydzial_id) values('Informatyka','WI');
     
+
+-- semestry
 rename semestr to semestry;
 insert into semestry 
 (numer,rok,stopien,tryb,pora_roku,kierunek_ID)
@@ -511,7 +486,7 @@ insert into semestry
 values
 (7,4,1,'stacjonarne','zimowy',(select id from kierunki where nazwa = 'Informatyka' and wydzial_id='WI'));
 
-
+-- grupy
 insert into grupy_dziekanskie(symbol,semestr_id) values('I1', (select id from semestry where numer=1));
 insert into grupy_dziekanskie(symbol,semestr_id) values('I1', (select id from semestry where numer=2));
 insert into grupy_dziekanskie(symbol,semestr_id) values('I1', (select id from semestry where numer=3));
@@ -551,6 +526,85 @@ insert into grupy_dziekanskie(symbol,semestr_id) values('I6', (select id from se
 insert into grupy_dziekanskie(symbol,semestr_id) values('I6', (select id from semestry where numer=2));
 insert into grupy_dziekanskie(symbol,semestr_id) values('I6', (select id from semestry where numer=3));
 insert into grupy_dziekanskie(symbol,semestr_id) values('I6', (select id from semestry where numer=4));
+
+-- sale
+CREATE SEQUENCE seq_sale START WITH 1 NOCACHE ORDER;
+CREATE OR REPLACE TRIGGER sale_id_trg BEFORE
+    INSERT ON sale
+    FOR EACH ROW
+    WHEN ( new.id IS NULL )
+BEGIN
+    :new.id := seq_sale.nextval;
+END;
+/
+insert into sale(nazwa) values('2 CW');
+insert into sale(nazwa) values('8 CW');
+insert into sale(nazwa) values('L053 BT');
+insert into sale(nazwa) values('lab. 1.6.16');
+insert into sale(nazwa) values('lab. 1.6.18');
+insert into sale(nazwa) values('lab. 1.6.21');
+insert into sale(nazwa) values('lab. 1.6.22');
+insert into sale(nazwa) values('lab. 1.6.23');
+insert into sale(nazwa) values('lab. 43');
+insert into sale(nazwa) values('lab. 44');
+insert into sale(nazwa) values('lab. 45');
+insert into sale(nazwa) values('lab. 143');
+insert into sale(nazwa) values('lab. 2.7.14');
+insert into sale(nazwa) values('lab. 2.7.15');
+insert into sale(nazwa) values('lab. 2.7.16');
+insert into sale(nazwa) values('lab. P6');
+
+-- przedmioty
+ALTER TABLE przedmioty MODIFY (NAZWA VARCHAR2(50 CHAR));
+insert into przedmioty(nazwa,semestr_id) values('Sieci komputerowe 2',(select id from semestry where numer=5));
+insert into przedmioty(nazwa,semestr_id) values('Systemy zarządzania bazami danych',(select id from semestry where numer=5));
+insert into przedmioty(nazwa,semestr_id) values('Wspomaganie decyzji',(select id from semestry where numer=5));
+insert into przedmioty(nazwa,semestr_id) values('Inżynieria Oprogramowania',(select id from semestry where numer=5));
+insert into przedmioty(nazwa,semestr_id) values('Komunikacja człowiek-komputer',(select id from semestry where numer=5));
+insert into przedmioty(nazwa,semestr_id) values('Sztuczna Inteligencja',(select id from semestry where numer=5));
+insert into przedmioty(nazwa,semestr_id) values('Systemy wbudowane',(select id from semestry where numer=5));
+
+-- zajecia
+insert into zajecia(typ,przedmiot_id) values('l',(select id from przedmioty where nazwa='Sieci komputerowe 2'));
+insert into zajecia(typ,przedmiot_id) values('w',(select id from przedmioty where nazwa='Sieci komputerowe 2'));
+insert into zajecia(typ,przedmiot_id) values('l',(select id from przedmioty where nazwa='Systemy zarządzania bazami danych'));
+insert into zajecia(typ,przedmiot_id) values('w',(select id from przedmioty where nazwa='Systemy zarządzania bazami danych'));
+insert into zajecia(typ,przedmiot_id) values('l',(select id from przedmioty where nazwa='Wspomaganie decyzji'));
+insert into zajecia(typ,przedmiot_id) values('w',(select id from przedmioty where nazwa='Wspomaganie decyzji'));
+insert into zajecia(typ,przedmiot_id) values('l',(select id from przedmioty where nazwa='Inżynieria Oprogramowania'));
+insert into zajecia(typ,przedmiot_id) values('w',(select id from przedmioty where nazwa='Inżynieria Oprogramowania'));
+insert into zajecia(typ,przedmiot_id) values('l',(select id from przedmioty where nazwa='Komunikacja człowiek-komputer'));
+insert into zajecia(typ,przedmiot_id) values('w',(select id from przedmioty where nazwa='Komunikacja człowiek-komputer'));
+insert into zajecia(typ,przedmiot_id) values('l',(select id from przedmioty where nazwa='Sztuczna Inteligencja'));
+insert into zajecia(typ,przedmiot_id) values('w',(select id from przedmioty where nazwa='Sztuczna Inteligencja'));
+insert into zajecia(typ,przedmiot_id) values('l',(select id from przedmioty where nazwa='Systemy wbudowane'));
+insert into zajecia(typ,przedmiot_id) values('w',(select id from przedmioty where nazwa='Systemy wbudowane'));
+
+-- osoby
+CREATE SEQUENCE seq_pracownicy START WITH 1 NOCACHE ORDER;
+CREATE SEQUENCE seq_studenci START WITH 1500 NOCACHE ORDER;
+
+CREATE OR REPLACE TRIGGER osoby_id_trg BEFORE
+    INSERT ON osoby
+    FOR EACH ROW
+    WHEN ( new.id IS NULL )
+BEGIN
+  IF :new.typ = 'Student' THEN 
+      :new.id := seq_studenci.nextval;
+  END IF;
+  IF :new.typ = 'Teacher' THEN 
+      :new.id := seq_pracownicy.nextval;
+  END IF;
+END;
+/
+
+
+-- zajecia w planie
+ALTER TABLE zajecia_w_planie MODIFY (dzien_tygodnia NUMBER(38,0));
+
+
+
+
 
 -- Oracle SQL Developer Data Modeler Summary Report: 
 -- 
