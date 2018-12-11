@@ -418,12 +418,12 @@ BEGIN
 SELECT seq_zespoly.nextval INTO :new.id 
    FROM dual;
 END;
-
+/
 -- ARTUR
 -- wydzialy
 insert into wydzialy(nazwa,skrot) values('Informatyki','WI');
 
-
+/
 -- godziny
 insert into godziny_zajec(numer, godzina_rozpoczecia,godzina_zakonczenia) values(1, interval '0 08:00:00' day(0) to second, interval '0 09:30:00' day(0) to second);
 insert into godziny_zajec(numer, godzina_rozpoczecia,godzina_zakonczenia) values(2, interval '0 09:45:00' day(0) to second, interval '0 11:15:00' day(0) to second);
@@ -433,14 +433,14 @@ insert into godziny_zajec(numer, godzina_rozpoczecia,godzina_zakonczenia) values
 insert into godziny_zajec(numer, godzina_rozpoczecia,godzina_zakonczenia) values(6, interval '0 16:50:00' day(0) to second, interval '0 18:20:00' day(0) to second);
 insert into godziny_zajec(numer, godzina_rozpoczecia,godzina_zakonczenia) values(7, interval '0 18:30:00' day(0) to second, interval '0 20:00:00' day(0) to second);
 insert into godziny_zajec(numer, godzina_rozpoczecia,godzina_zakonczenia) values(8, interval '0 20:10:00' day(0) to second, interval '0 21:40:00' day(0) to second);
-
+/
 -- zespoly
 insert into zespoly (NAZWA,wydzial_ID) values ('ADMINISTRACJA','WI');
 insert into zespoly (NAZWA,wydzial_ID) values ('SYSTEMY ROZPROSZONE','WI');
 insert into zespoly (NAZWA,wydzial_ID) values ('SYSTEMY EKSPERCKIE','WI');
 insert into zespoly (NAZWA,wydzial_ID) values ('ALGORYTMY','WI');
 insert into zespoly (NAZWA,wydzial_ID) values ('BADANIA OPERACYJNE','WI');
-
+/
 
 -- kierunki
 CREATE SEQUENCE seq_kierunki START WITH 1 NOCACHE ORDER;
@@ -556,13 +556,15 @@ insert into sale(nazwa) values('lab. P6');
 
 -- przedmioty
 ALTER TABLE przedmioty MODIFY (NAZWA VARCHAR2(50 CHAR));
-insert into przedmioty(nazwa,semestr_id) values('Sieci komputerowe 2',(select id from semestry where numer=5));
-insert into przedmioty(nazwa,semestr_id) values('Systemy zarządzania bazami danych',(select id from semestry where numer=5));
-insert into przedmioty(nazwa,semestr_id) values('Wspomaganie decyzji',(select id from semestry where numer=5));
-insert into przedmioty(nazwa,semestr_id) values('Inżynieria Oprogramowania',(select id from semestry where numer=5));
-insert into przedmioty(nazwa,semestr_id) values('Komunikacja człowiek-komputer',(select id from semestry where numer=5));
-insert into przedmioty(nazwa,semestr_id) values('Sztuczna Inteligencja',(select id from semestry where numer=5));
-insert into przedmioty(nazwa,semestr_id) values('Systemy wbudowane',(select id from semestry where numer=5));
+ALTER TABLE przedmioty
+  ADD ects number(3,0) not null;
+  insert into przedmioty(nazwa,semestr_id,ects) values('Sieci komputerowe 2',(select id from semestry where numer=5),5);
+insert into przedmioty(nazwa,semestr_id,ects) values('Systemy zarządzania bazami danych',(select id from semestry where numer=5),5);
+insert into przedmioty(nazwa,semestr_id,ects) values('Wspomaganie decyzji',(select id from semestry where numer=5),5);
+insert into przedmioty(nazwa,semestr_id,ects) values('Inżynieria Oprogramowania',(select id from semestry where numer=5),3);
+insert into przedmioty(nazwa,semestr_id,ects) values('Komunikacja człowiek-komputer',(select id from semestry where numer=5),3);
+insert into przedmioty(nazwa,semestr_id,ects) values('Sztuczna Inteligencja',(select id from semestry where numer=5),4);
+insert into przedmioty(nazwa,semestr_id,ects) values('Systemy wbudowane',(select id from semestry where numer=5),5);
 
 -- zajecia
 insert into zajecia(typ,przedmiot_id) values('l',(select id from przedmioty where nazwa='Sieci komputerowe 2'));
@@ -598,6 +600,61 @@ BEGIN
 END;
 /
 
+-- pracownicy 5 sem
+insert into osoby(imie,nazwisko,pesel,haslo,typ) values('Bartosz','Zagrzeba','11111111111','Zagrzeba','Teacher');
+insert into pracownicy(id,stopien,zespol_id) values((select id from osoby where pesel='11111111111'),'dr inż.',(select id from zespoly where nazwa='SYSTEMY EKSPERCKIE'));
+insert into osoby(imie,nazwisko,pesel,haslo,typ) values('Roman','Słowiński','11111111112','Słowiński','Teacher');
+insert into pracownicy(id,stopien,zespol_id) values((select id from osoby where pesel='11111111112'),'prof. dr hab. inż.',(select id from zespoly where nazwa='SYSTEMY ROZPROSZONE'));
+insert into osoby(imie,nazwisko,pesel,haslo,typ) values('Piotr','Zielniewicz','11111111113','Zielniewicz','Teacher');
+insert into pracownicy(id,stopien,zespol_id) values((select id from osoby where pesel='11111111113'),'dr hab. inż.',(select id from zespoly where nazwa='BADANIA OPERACYJNE'));
+insert into osoby(imie,nazwisko,pesel,haslo,typ) values('Paweł','Boiński','11111111114','Boiński','Teacher');
+insert into pracownicy(id,stopien,zespol_id) values((select id from osoby where pesel='11111111114'),'dr inż.',(select id from zespoly where nazwa='ADMINISTRACJA'));
+insert into osoby(imie,nazwisko,pesel,haslo,typ) values('Michał','Tomczyk','11111111115','Tomczyk','Teacher');
+insert into pracownicy(id,stopien,zespol_id) values((select id from osoby where pesel='11111111115'),'dr inż.',(select id from zespoly where nazwa='SYSTEMY EKSPERCKIE'));
+insert into osoby(imie,nazwisko,pesel,haslo,typ) values('Jan','Kończak','11111111116','Kończak','Teacher');
+insert into pracownicy(id,stopien,zespol_id) values((select id from osoby where pesel='11111111116'),'dr inż.',(select id from zespoly where nazwa='SYSTEMY EKSPERCKIE'));
+insert into osoby(imie,nazwisko,pesel,haslo,typ) values('Marcin','Szeląg','11111111117','Szeląg','Teacher');
+insert into pracownicy(id,stopien,zespol_id) values((select id from osoby where pesel='11111111117'),'dr inż.',(select id from zespoly where nazwa='ALGORYTMY'));
+insert into osoby(imie,nazwisko,pesel,haslo,typ) values('Mirosław','Ochodek','11111111118','Ochodek','Teacher');
+insert into pracownicy(id,stopien,zespol_id) values((select id from osoby where pesel='11111111118'),'dr inż.',(select id from zespoly where nazwa='SYSTEMY EKSPERCKIE'));
+insert into osoby(imie,nazwisko,pesel,haslo,typ) values('Ariel','Antonowicz','11111111119','Antonowicz','Teacher');
+insert into pracownicy(id,stopien,zespol_id) values((select id from osoby where pesel='11111111119'),'dr inż.',(select id from zespoly where nazwa='SYSTEMY EKSPERCKIE'));
+insert into osoby(imie,nazwisko,pesel,haslo,typ) values('Michał','Maćkowiak','11111111120','Maćkowiak','Teacher');
+insert into pracownicy(id,stopien,zespol_id) values((select id from osoby where pesel='11111111120'),'dr inż.',(select id from zespoly where nazwa='ADMINISTRACJA'));
+insert into osoby(imie,nazwisko,pesel,haslo,typ) values('Agnieszka','Ławrynowicz','11111111121','Ławrynowicz','Teacher');
+insert into pracownicy(id,stopien,zespol_id) values((select id from osoby where pesel='11111111121'),'dr inż.',(select id from zespoly where nazwa='SYSTEMY ROZPROSZONE'));
+insert into osoby(imie,nazwisko,pesel,haslo,typ) values('Bartosz','Bębel','11111111122','Bębel','Teacher');
+insert into pracownicy(id,stopien,zespol_id) values((select id from osoby where pesel='11111111122'),'dr inż.',(select id from zespoly where nazwa='SYSTEMY ROZPROSZONE'));
+insert into osoby(imie,nazwisko,pesel,haslo,typ) values('Przemysław','Zakrzewski','11111111123','Zakrzewski','Teacher');
+insert into pracownicy(id,stopien,zespol_id) values((select id from osoby where pesel='11111111123'),'dr inż.',(select id from zespoly where nazwa='ADMINISTRACJA'));
+insert into osoby(imie,nazwisko,pesel,haslo,typ) values('Michał','Kalewski','11111111124','Kalewski','Teacher');
+insert into pracownicy(id,stopien,zespol_id) values((select id from osoby where pesel='11111111124'),'dr inż.',(select id from zespoly where nazwa='BADANIA OPERACYJNE'));
+insert into osoby(imie,nazwisko,pesel,haslo,typ) values('Marek','Wojciehowski','11111111125','Wojciehowski','Teacher');
+insert into pracownicy(id,stopien,zespol_id) values((select id from osoby where pesel='11111111125'),'dr inż.',(select id from zespoly where nazwa='SYSTEMY ROZPROSZONE'));
+insert into osoby(imie,nazwisko,pesel,haslo,typ) values('Wojciech','Complak','11111111126','Complak','Teacher');
+insert into pracownicy(id,stopien,zespol_id) values((select id from osoby where pesel='11111111126'),'dr inż.',(select id from zespoly where nazwa='BADANIA OPERACYJNE'));
+insert into osoby(imie,nazwisko,pesel,haslo,typ) values('Michał','Boroń','11111111127','Boroń','Teacher');
+insert into pracownicy(id,stopien,zespol_id) values((select id from osoby where pesel='11111111127'),'dr inż.',(select id from zespoly where nazwa='SYSTEMY ROZPROSZONE'));
+insert into osoby(imie,nazwisko,pesel,haslo,typ) values('Artur','Michalski','11111111128','Michalski','Teacher');
+insert into pracownicy(id,stopien,zespol_id) values((select id from osoby where pesel='11111111128'),'dr inż.',(select id from zespoly where nazwa='BADANIA OPERACYJNE'));
+insert into osoby(imie,nazwisko,pesel,haslo,typ) values('Michal','Sajkowski','11111111129','Sajkowski','Teacher');
+insert into pracownicy(id,stopien,zespol_id) values((select id from osoby where pesel='11111111129'),'dr inż.',(select id from zespoly where nazwa='BADANIA OPERACYJNE'));
+insert into osoby(imie,nazwisko,pesel,haslo,typ) values('Miłosz','Kadziński','11111111130','Kadziński','Teacher');
+insert into pracownicy(id,stopien,zespol_id) values((select id from osoby where pesel='11111111130'),'dr inż.',(select id from zespoly where nazwa='BADANIA OPERACYJNE'));
+insert into osoby(imie,nazwisko,pesel,haslo,typ) values('Irmina','Masłowska','11111111131','Masłowska','Teacher');
+insert into pracownicy(id,stopien,zespol_id) values((select id from osoby where pesel='11111111131'),'dr inż.',(select id from zespoly where nazwa='SYSTEMY EKSPERCKIE'));
+insert into osoby(imie,nazwisko,pesel,haslo,typ) values('Anna','Leśniewska','11111111132','Leśniewska','Teacher');
+insert into pracownicy(id,stopien,zespol_id) values((select id from osoby where pesel='11111111132'),'dr inż.',(select id from zespoly where nazwa='SYSTEMY EKSPERCKIE'));
+insert into osoby(imie,nazwisko,pesel,haslo,typ) values('Jerzy','Błaszczyński','11111111133','Błaszczyński','Teacher');
+insert into pracownicy(id,stopien,zespol_id) values((select id from osoby where pesel='11111111133'),'dr inż.',(select id from zespoly where nazwa='SYSTEMY EKSPERCKIE'));
+insert into osoby(imie,nazwisko,pesel,haslo,typ) values('Tadeusz','Morzy','11111111134','Morzy','Teacher');
+insert into pracownicy(id,stopien,zespol_id) values((select id from osoby where pesel='11111111134'),'prof. dr hab. inż.',(select id from zespoly where nazwa='SYSTEMY ROZPROSZONE'));
+insert into osoby(imie,nazwisko,pesel,haslo,typ) values('Tadeusz','Koszlajda','11111111135','Koszlajda','Teacher');
+insert into pracownicy(id,stopien,zespol_id) values((select id from osoby where pesel='11111111135'),'dr inż.',(select id from zespoly where nazwa='BADANIA OPERACYJNE'));
+insert into osoby(imie,nazwisko,pesel,haslo,typ) values('Paweł','Liskowski','11111111136','Liskowski','Teacher');
+insert into pracownicy(id,stopien,zespol_id) values((select id from osoby where pesel='11111111136'),'dr inż.',(select id from zespoly where nazwa='SYSTEMY EKSPERCKIE'));
+
+-- studenci
 
 -- zajecia w planie
 ALTER TABLE zajecia_w_planie MODIFY (dzien_tygodnia NUMBER(38,0));
