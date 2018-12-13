@@ -24,6 +24,11 @@ npm install --save body-parser multer
 
 npm install --save pug
 
+npm install --save oracledb
+
+npm install --save simple-oracledb
+
+
 ##uruchamianie:
 
 

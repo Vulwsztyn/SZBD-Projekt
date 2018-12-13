@@ -1,0 +1,15 @@
+html
+html
+    head
+        title Form Tester
+    body
+        form(action = "/dodaj/Wydzial", method = "POST")
+            div
+                label(for = "nazwa") Nazwa:
+                input(name = "nazwa" value = "")
+            br
+            div
+                label(for = "skrot") Skrot:
+                input(name = "skrot" value = "")
+            br
+            button(type = "submit") Dodaj wydział

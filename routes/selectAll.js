@@ -14,17 +14,13 @@ module.exports = function(app){
                     console.error(err.message);
                     return;
                 }
-                connection.execute(
-                    `SELECT *
-       FROM `+req.params.tableName,
+                connection.execute(`SELECT * FROM `+req.params.tableName,
                     function(err, result) {
                         if (err) {
                             console.error(err.message);
                             doRelease(connection);
                             return;
                         }
-                        // console.log(result.metaData); //
-                        console.log(result.rows);
                         res.render('selectAll', {
                             metaData: result.metaData,
                             rows: result.rows,

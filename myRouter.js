@@ -9,17 +9,8 @@ router.get('/', function(req, res){
 });
 
 require('./routes/selectAll')(router);
+require('./routes/dodaj')(router);
 
-router.post('/', function(req, res){
-    console.log(req.body);
-    res.send("recieved your request!");
-});
-
-
-
-// router.get('/selectAll/:tableName', function(req, res){
-//     res.render('form');
-// });
 
 router.get('/users/:userId/books/:bookId', function (req, res) {
     res.send(req.params)

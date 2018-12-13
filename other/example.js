@@ -15,10 +15,7 @@ oracledb.getConnection(
         }
         connection.execute(
             // The statement to execute
-            `SELECT *
-       FROM sale
-       WHERE id= :id`,
-
+            `SELECT * FROM sale WHERE id= :id`,
             // The "bind value" 180 for the bind variable ":id"
             [4],
 
