@@ -1,14 +1,33 @@
 var express = require('express');
 var router = express.Router();
 
-// respond with "hello world" when a GET request is made to the homepage
-router.get('/', function (req, res) {
-    res.send('hello world')
+//Routes
+var seceltAllRoute = require('./routes/selectAll');
+
+router.get('/', function(req, res){
+    res.render('form');
 });
+
+require('./routes/selectAll')(router);
+
+router.post('/', function(req, res){
+    console.log(req.body);
+    res.send("recieved your request!");
+});
+
+
+
+// router.get('/selectAll/:tableName', function(req, res){
+//     res.render('form');
+// });
 
 router.get('/users/:userId/books/:bookId', function (req, res) {
     res.send(req.params)
 });
 
-//export this router to use in our server.js
+//Other routes here
+router.get('*', function(req, res){
+    res.send('Sorry, this is an invalid URL.');
+});
+//export this router to use in our index.js
 module.exports = router;

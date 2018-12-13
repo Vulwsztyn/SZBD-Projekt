@@ -1,0 +1,15 @@
+html
+    head
+        title Simple template
+    body
+        if(metaData && rows)
+            table(border='2')
+                tr
+                    each d in metaData
+                        th=d.name
+                each row in rows
+                    tr
+                        each d in row
+                            td=d
+        else
+            p Nie ma tabeli

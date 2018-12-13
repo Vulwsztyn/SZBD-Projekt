@@ -1,5 +1,5 @@
 var oracledb = require('oracledb');
-var dbConfig = require('./dbconfig.js');
+var dbConfig = require('./config/db.js');
 
 // Get a non-pooled connection
 oracledb.getConnection(
