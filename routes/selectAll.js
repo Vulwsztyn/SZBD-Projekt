@@ -24,7 +24,7 @@ module.exports = function(app){
                             return;
                         }
                         // console.log(result.metaData); //
-                        // console.log(result.rows);
+                        console.log(result.rows);
                         res.render('selectAll', {
                             metaData: result.metaData,
                             rows: result.rows,
