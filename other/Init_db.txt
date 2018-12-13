@@ -433,6 +433,85 @@ insert into godziny_zajec(numer, godzina_rozpoczecia,godzina_zakonczenia) values
 insert into godziny_zajec(numer, godzina_rozpoczecia,godzina_zakonczenia) values(6, interval '0 16:50:00' day(0) to second, interval '0 18:20:00' day(0) to second);
 insert into godziny_zajec(numer, godzina_rozpoczecia,godzina_zakonczenia) values(7, interval '0 18:30:00' day(0) to second, interval '0 20:00:00' day(0) to second);
 insert into godziny_zajec(numer, godzina_rozpoczecia,godzina_zakonczenia) values(8, interval '0 20:10:00' day(0) to second, interval '0 21:40:00' day(0) to second);
+ALTER TABLE godziny_zajec SET UNUSED (godzina_rozpoczecia, godzina_zakonczenia);
+ALTER TABLE godziny_zajec DROP UNUSED COLUMNS;
+
+ALTER TABLE godziny_zajec
+  ADD godz_roz number(2,0);
+
+ALTER TABLE godziny_zajec
+  ADD min_roz number(2,0);
+
+ALTER TABLE godziny_zajec
+  ADD godz_zak number(2,0);
+
+ALTER TABLE godziny_zajec
+  ADD min_zak number(2,0);
+
+  update godziny_zajec
+  set
+  godz_roz=8,
+  min_roz=0,
+  godz_zak=9,
+  min_zak=30
+  where
+  numer=1;
+  update godziny_zajec
+  set
+  godz_roz=9,
+  min_roz=45,
+  godz_zak=11,
+  min_zak=15
+  where
+  numer=2;
+  update godziny_zajec
+  set
+  godz_roz=11,
+  min_roz=45,
+  godz_zak=13,
+  min_zak=15
+  where
+  numer=3;
+  update godziny_zajec
+  set
+  godz_roz=13,
+  min_roz=30,
+  godz_zak=15,
+  min_zak=0
+  where
+  numer=4;
+  update godziny_zajec
+  set
+  godz_roz=15,
+  min_roz=10,
+  godz_zak=16,
+  min_zak=40
+  where
+  numer=5;
+  update godziny_zajec
+  set
+  godz_roz=16,
+  min_roz=50,
+  godz_zak=18,
+  min_zak=20
+  where
+  numer=6;
+  update godziny_zajec
+  set
+  godz_roz=18,
+  min_roz=30,
+  godz_zak=20,
+  min_zak=0
+  where
+  numer=7;
+  update godziny_zajec
+  set
+  godz_roz=20,
+  min_roz=10,
+  godz_zak=21,
+  min_zak=40
+  where
+  numer=8;
 /
 -- zespoly
 insert into zespoly (NAZWA,wydzial_ID) values ('ADMINISTRACJA','WI');
@@ -659,6 +738,20 @@ insert into pracownicy(id,stopien,zespol_id) values((select id from osoby where 
 -- zajecia w planie
 ALTER TABLE zajecia_w_planie MODIFY (dzien_tygodnia NUMBER(38,0));
 
+insert into zajecia_w_planie(dzien_tygodnia,grupa_id,zajecia_id,godzina_id,pracownik_id,strona_grupy,sala) values(1,(select id from grupy_dziekanskie where symbol='I1' and semestr_id=(select id from semestry where NUMER=5)),(select id from zajecia where typ='w' and przedmiot_id=(select id from przedmioty where nazwa='Wspomaganie decyzji')),2,(select id from osoby where nazwisko='Słowiński'),'lewa',(select id from sale where nazwa='8 CW'));
+insert into zajecia_w_planie(dzien_tygodnia,grupa_id,zajecia_id,godzina_id,pracownik_id,strona_grupy,sala) values(1,(select id from grupy_dziekanskie where symbol='I1' and semestr_id=(select id from semestry where NUMER=5)),(select id from zajecia where typ='w' and przedmiot_id=(select id from przedmioty where nazwa='Komunikacja człowiek-komputer')),3,(select id from osoby where nazwisko='Zielniewicz'),'lewa',(select id from sale where nazwa='L053 BT'));
+insert into zajecia_w_planie(dzien_tygodnia,grupa_id,zajecia_id,godzina_id,pracownik_id,strona_grupy,sala) values(2,(select id from grupy_dziekanskie where symbol='I1' and semestr_id=(select id from semestry where NUMER=5)),(select id from zajecia where typ='l' and przedmiot_id=(select id from przedmioty where nazwa='Komunikacja człowiek-komputer')),1,(select id from osoby where nazwisko='Tomczyk'),'lewa',(select id from sale where nazwa='lab. 45'));
+insert into zajecia_w_planie(dzien_tygodnia,grupa_id,zajecia_id,godzina_id,pracownik_id,strona_grupy,sala) values(2,(select id from grupy_dziekanskie where symbol='I1' and semestr_id=(select id from semestry where NUMER=5)),(select id from zajecia where typ='l' and przedmiot_id=(select id from przedmioty where nazwa='Systemy wbudowane')),2,(select id from osoby where nazwisko='Antonowicz'),'lewa',(select id from sale where nazwa='lab. 2.7.14'));
+insert into zajecia_w_planie(dzien_tygodnia,grupa_id,zajecia_id,godzina_id,pracownik_id,strona_grupy,sala) values(2,(select id from grupy_dziekanskie where symbol='I1' and semestr_id=(select id from semestry where NUMER=5)),(select id from zajecia where typ='l' and przedmiot_id=(select id from przedmioty where nazwa='Sztuczna Inteligencja')),4,(select id from osoby where nazwisko='Ławrynowicz'),'lewa',(select id from sale where nazwa='lab. 43'));
+insert into zajecia_w_planie(dzien_tygodnia,grupa_id,zajecia_id,godzina_id,pracownik_id,strona_grupy,sala) values(2,(select id from grupy_dziekanskie where symbol='I1' and semestr_id=(select id from semestry where NUMER=5)),(select id from zajecia where typ='l' and przedmiot_id=(select id from przedmioty where nazwa='Inżynieria Oprogramowania')),5,(select id from osoby where nazwisko='Maćkowiak'),'lewa',(select id from sale where nazwa='lab. 43'));
+insert into zajecia_w_planie(dzien_tygodnia,grupa_id,zajecia_id,godzina_id,pracownik_id,strona_grupy,sala) values(3,(select id from grupy_dziekanskie where symbol='I1' and semestr_id=(select id from semestry where NUMER=5)),(select id from zajecia where typ='l' and przedmiot_id=(select id from przedmioty where nazwa='Sieci komputerowe 2')),2,(select id from osoby where nazwisko='Boroń'),'lewa',(select id from sale where nazwa='lab. 1.6.18'));
+insert into zajecia_w_planie(dzien_tygodnia,grupa_id,zajecia_id,godzina_id,pracownik_id,strona_grupy,sala) values(3,(select id from grupy_dziekanskie where symbol='I1' and semestr_id=(select id from semestry where NUMER=5)),(select id from zajecia where typ='w' and przedmiot_id=(select id from przedmioty where nazwa='Sztuczna Inteligencja')),3,(select id from osoby where nazwisko='Michalski'),'lewa',(select id from sale where nazwa='L053 BT'));
+insert into zajecia_w_planie(dzien_tygodnia,grupa_id,zajecia_id,godzina_id,pracownik_id,strona_grupy,sala) values(3,(select id from grupy_dziekanskie where symbol='I1' and semestr_id=(select id from semestry where NUMER=5)),(select id from zajecia where typ='w' and przedmiot_id=(select id from przedmioty where nazwa='Inżynieria Oprogramowania')),4,(select id from osoby where nazwisko='Ochodek'),'lewa',(select id from sale where nazwa='2 CW'));
+insert into zajecia_w_planie(dzien_tygodnia,grupa_id,zajecia_id,godzina_id,pracownik_id,strona_grupy,sala) values(3,(select id from grupy_dziekanskie where symbol='I1' and semestr_id=(select id from semestry where NUMER=5)),(select id from zajecia where typ='w' and przedmiot_id=(select id from przedmioty where nazwa='Sieci komputerowe 2')),5,(select id from osoby where nazwisko='Sajkowski'),'lewa',(select id from sale where nazwa='8 CW'));
+insert into zajecia_w_planie(dzien_tygodnia,grupa_id,zajecia_id,godzina_id,pracownik_id,strona_grupy,sala) values(4,(select id from grupy_dziekanskie where symbol='I1' and semestr_id=(select id from semestry where NUMER=5)),(select id from zajecia where typ='l' and przedmiot_id=(select id from przedmioty where nazwa='Wspomaganie decyzji')),1,(select id from osoby where nazwisko='Masłowska'),'lewa',(select id from sale where nazwa='lab. 43'));
+insert into zajecia_w_planie(dzien_tygodnia,grupa_id,zajecia_id,godzina_id,pracownik_id,strona_grupy,sala) values(4,(select id from grupy_dziekanskie where symbol='I1' and semestr_id=(select id from semestry where NUMER=5)),(select id from zajecia where typ='l' and przedmiot_id=(select id from przedmioty where nazwa='Systemy zarządzania bazami danych')),2,(select id from osoby where nazwisko='Leśniewska'),'lewa',(select id from sale where nazwa='lab. 1.6.22'));
+insert into zajecia_w_planie(dzien_tygodnia,grupa_id,zajecia_id,godzina_id,pracownik_id,strona_grupy,sala) values(4,(select id from grupy_dziekanskie where symbol='I1' and semestr_id=(select id from semestry where NUMER=5)),(select id from zajecia where typ='w' and przedmiot_id=(select id from przedmioty where nazwa='Systemy zarządzania bazami danych')),3,(select id from osoby where nazwisko='Morzy'),'lewa',(select id from sale where nazwa='8 CW'));
+insert into zajecia_w_planie(dzien_tygodnia,grupa_id,zajecia_id,godzina_id,pracownik_id,strona_grupy,sala) values(4,(select id from grupy_dziekanskie where symbol='I1' and semestr_id=(select id from semestry where NUMER=5)),(select id from zajecia where typ='w' and przedmiot_id=(select id from przedmioty where nazwa='Systemy wbudowane')),5,(select id from osoby where nazwisko='Zakrzewski'),'lewa',(select id from sale where nazwa='8 CW'));
 
 
 
