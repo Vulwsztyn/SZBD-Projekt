@@ -33,6 +33,6 @@ module.exports = function(app){
         }, function onActionDone(error, result) {
             connection.release();
         });
-        res.render('dodaj/wydzial');
+        res.redirect('/');
     });
 };

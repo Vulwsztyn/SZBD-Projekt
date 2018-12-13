@@ -28,6 +28,7 @@ npm install --save oracledb
 
 npm install --save simple-oracledb
 
+npm install --save async
 
 ##uruchamianie:
 

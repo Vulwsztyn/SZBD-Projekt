@@ -1,0 +1,17 @@
+html
+html
+    head
+        title Dodawanie Kierunku
+    body
+        form(action = "/dodaj/Kierunek", method = "POST")
+            div
+                label(for = "nazwa") Nazwa:
+                input(name = "nazwa" value = "")
+            br
+            div
+                label(for = "wydzial") Wydział:
+                    select(name="wydzial")
+                        each row in wydzialy
+                            option(value=row.SKROT) #{row.NAZWA}
+            br
+            button(type = "submit") Dodaj Kierunek
