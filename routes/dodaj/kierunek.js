@@ -5,31 +5,42 @@ var async = require('async');
 
 SimpleOracleDB.extend(oracledb);
 
-async function getWydzialy(){
-     oracledb.run({
-        user: dbConfig.user,
-        password: dbConfig.password,
-        connectString: dbConfig.connectString
-    }, function onConnection(connection, callback) {
-        connection.query('SELECT * from wydzialy', [], function onResults(error, results)
-        {
-            if (error) {
+function getWydzialy() {
+    return new Promise(async function(resolve, reject) {
+        let conn;
+        try {
+            conn = await oracledb.getConnection({
+                user          : dbConfig.user,
+                password      : dbConfig.password,
+                connectString : dbConfig.connectString
+            });
 
-            } else {
-                wydzialy=results;
-                // console.log(wydzialy);
+            let result = await conn.execute(
+                'SELECT nazwa,skrot from wydzialy'
+            );
+            resolve(result);
+
+        } catch (err) { // catches errors in getConnection and the query
+            reject(err);
+        } finally {
+            if (conn) {   // the conn assignment worked, must release
+                try {
+                    await conn.release();
+                } catch (e) {
+                    console.error(e);
+                }
             }
-            connection.release();
-        })});
-    return wydzialy;
+        }
+    });
 }
+
 module.exports = function(app){
     app.get('/dodaj/Kierunek', async function (req, res) {
         let wydzialy = await getWydzialy();
+        console.log(wydzialy);
         res.render('dodaj/kierunek', {wydzialy: wydzialy});
     });
     app.post('/dodaj/Kierunek', async function (req, res) {
-        console.log(req.body);
         oracledb.run({
             user: dbConfig.user,
             password: dbConfig.password,
@@ -45,7 +56,7 @@ module.exports = function(app){
                     console.error(error.message);
                 }
                 else{
-                    console.log(output);
+                    // console.log(output);
                 }
             });
 

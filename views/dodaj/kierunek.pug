@@ -11,7 +11,7 @@ html
             div
                 label(for = "wydzial") Wydział:
                     select(name="wydzial")
-                        each row in wydzialy
-                            option(value=row.SKROT) #{row.NAZWA}
+                        each row in wydzialy.rows
+                            option(value=row[1]) #{row[0]}
             br
             button(type = "submit") Dodaj Kierunek
