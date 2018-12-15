@@ -2,12 +2,12 @@ html
     head
         title Simple template
     body
-        if(metaData && rows)
+        if(result && result.metaData && result.rows)
             table(border='2')
                 tr
-                    each d in metaData
+                    each d in result.metaData
                         th=d.name
-                each row in rows
+                each row in result.rows
                     tr
                         each d in row
                             td=d
