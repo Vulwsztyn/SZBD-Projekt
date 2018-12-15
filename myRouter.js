@@ -5,7 +5,7 @@ var router = express.Router();
 var seceltAllRoute = require('./routes/selectAll');
 
 router.get('/', function(req, res){
-    res.render('frontpage');
+    res.render('index');
 });
 
 require('./routes/selectAll')(router);
