@@ -14,4 +14,36 @@ html
                         each row in wydzialy.rows
                             option(value=row[1]) #{row[0]}
             br
+            div
+                div
+                    p Stacjonarne:
+                        input#s(type='checkbox' name='stacjonarne' onclick='showOptions("s","stacjonarne")')
+                    div#stacjonarne(hidden)
+                        p I stopień:
+                            input#s1(type='checkbox' name='s1' onclick='showOptions("s1","s1i")')
+                        p#s1i(hidden) Liczba semestrów:
+                            input#s1l(name = "s1l" value = "" type="number" min="1" max="10")
+                        p II stopień:
+                            input#s2(type='checkbox' name='s2' onclick='showOptions("s2","s2i")')
+                        p#s2i(hidden) Liczba semestrów:
+                            input#s2l(name = "s2l" value = "" type="number" min="1" max="10")
+                div
+                    p Niestacjonarne:
+                        input#n(type='checkbox' name='niestacjonarne' onclick='showOptions("n","niestacjonarne")')
+                    div#niestacjonarne(hidden)
+                        p I stopień:
+                            input#n1(type='checkbox' name='n1' onclick='showOptions("n1","n1i")')
+                        p#n1i(hidden) Liczba semestrów:
+                            input#n1l(name = "n1l" value = "" type="number" min="1" max="10")
+                        p II stopień:
+                            input#n2(type='checkbox' name='n2' onclick='showOptions("n2","n2i")')
+                        p#n2i(hidden) Liczba semestrów:
+                            input#n2l(name = "n2l" value = "" type="number" min="1" max="10")
+
             button(type = "submit") Dodaj Kierunek
+script.
+    function showOptions(a,b) {
+        var box =document.getElementById(a);
+        var par =document.getElementById(b);
+        par.hidden=!box.checked;
+    }

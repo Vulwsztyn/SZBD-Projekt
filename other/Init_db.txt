@@ -564,6 +564,7 @@ insert into semestry
 (numer,rok, stopien,tryb,pora_roku,kierunek_ID)
 values
 (7,4,1,'stacjonarne','zimowy',(select id from kierunki where nazwa = 'Informatyka' and wydzial_id='WI'));
+update semestry set pora_roku='letni' where numer in (2,4,6);
 
 -- grupy
 insert into grupy_dziekanskie(symbol,semestr_id) values('I1', (select id from semestry where numer=1));
