@@ -1,15 +1,6 @@
 var oracledb = require('oracledb');
 var dbConfig = require('../config/db.js');
 
-function doRelease(connection) {
-    connection.close(
-        function(err) {
-            if (err) {
-                console.error(err.message);
-            }
-        });
-}
-
 module.exports = {
     selectAllFromTable: function (tableName){
 

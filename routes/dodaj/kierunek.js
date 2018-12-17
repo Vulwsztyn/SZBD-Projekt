@@ -2,7 +2,8 @@ var oracledb = require('oracledb');
 var dbConfig = require('../../config/db.js');
 var async = require('async');
 
-var selectAllfun = require ('../../connections/selectAllfun');
+var selectAllfun = require ('../../connections/select');
+var insertFunctions = require ('../../connections/insert');
 function addToList(lista,start,liczba,tryb,stopien,nazwa,wydzial){
     start=parseInt(start);
     let pora_roku='';
@@ -23,70 +24,56 @@ module.exports = function(app){
     });
 
     app.post('/dodaj/Kierunek', async function (req, res) {
-        // oracledb.run({
-        //     user: dbConfig.user,
-        //     password: dbConfig.password,
-        //     connectString: dbConfig.connectString
-        // }, function onConnection(connection, callback) {
-        //     connection.insert('insert into kierunki(nazwa,wydzial_id) values(:a,:b)', {
-        //         a: req.body.nazwa,
-        //         b: req.body.wydzial
-        //     }, {
-        //         autoCommit: true,
-        //     }, function onResults(error, output) {
-        //         if(error){
-        //             console.error(error.message);
-        //         }
-        //         else{
-        //             // console.log(output);
-        //         }
-        //     });
-        //
-        // }, function onActionDone(error, result) {
-        //     connection.release();
-        // });
-        //(numer,rok, stopien,tryb,pora_roku,kierunek_ID)
         if(req.body.nazwa){
-            console.log(req.body);
-            let tryb='stacjonarne';
-            let lista=[]
+
+            let tryb='';
+            let binds=[];
+            //wypełnianie tabelki binds wraz ze sprawdzaniem całego inputu
             if(req.body.stacjonarne){
                 let tryb='stacjonarne';
                 if(req.body.s1 && req.body.s1l && req.body.s1r){
-                    lista=addToList(lista,req.body.s1r,req.body.s1l,tryb,1,req.body.nazwa,req.body.wydzial);
+                    binds=addToList(binds,req.body.s1r,req.body.s1l,tryb,1,req.body.nazwa,req.body.wydzial);
                 }
                 if(req.body.s2 && req.body.s2l && req.body.s2r){
-                    lista=addToList(lista,req.body.s2r,req.body.s2l,tryb,2,req.body.nazwa,req.body.wydzial);
+                    binds=addToList(binds,req.body.s2r,req.body.s2l,tryb,2,req.body.nazwa,req.body.wydzial);
                 }
             }
             if(req.body.niestacjonarne){
                 tryb='niestacjonarne';
                 if(req.body.n1 && req.body.n1l && req.body.n1r){
-                    lista=addToList(lista,req.body.n1r,req.body.n1l,tryb,1,req.body.nazwa,req.body.wydzial);
+                    binds=addToList(binds,req.body.n1r,req.body.n1l,tryb,1,req.body.nazwa,req.body.wydzial);
                 }
                 if(req.body.n2 && req.body.n2l && req.body.n2r){
-                    lista=addToList(lista,req.body.n2r,req.body.n2l,tryb,2,req.body.nazwa,req.body.wydzial);
+                    binds=addToList(binds,req.body.n2r,req.body.n2l,tryb,2,req.body.nazwa,req.body.wydzial);
                 }
             }
-            console.log(lista);
-        }
-        else{
+            //Koniec tego raka
+            //Funkcjom z connection trza podać 3 parametry string z poleceniem, zminne do włożenia i opcje
+            const sql = "INSERT INTO semestry(numer,rok,stopien,tryb,pora_roku,kierunek_id) VALUES (:1, :2, :3,:4,:5,(select id from kierunki where nazwa=:6 and wydzial_id=:7))";
+            const options = {
+                autoCommit: true,   // autocommit if there are no batch errors
+                batchErrors: true,  // identify invalid records; start a transaction for valid ones
+                bindDefs: [         // describes the data in 'binds'
+                    {type: oracledb.NUMBER},
+                    {type: oracledb.NUMBER},
+                    {type: oracledb.NUMBER},
+                    {type: oracledb.STRING, maxSize: 38}, // size of the largest string, or as close as possible (???? - Artur)
+                    {type: oracledb.STRING, maxSize: 38},
+                    {type: oracledb.STRING, maxSize: 38},
+                    {type: oracledb.STRING, maxSize: 7}
+                ]
+            };
+            const sqlKierunek='insert into kierunki(nazwa,wydzial_id) values(:a,:b)';
+            const bindsKierunek={
+                a: req.body.nazwa,
+                b: req.body.wydzial
+            };
+            optionsKierunek={autoCommit: true,};
+            await insertFunctions.insertOne(sqlKierunek, bindsKierunek,optionsKierunek);
+            await insertFunctions.insertMany(sql,binds,options);
 
-        }
-        // console.log(req.body);
-        // console.log(req.body.stacjonarne);
-        // console.log(req.body.niestacjonarne);
-        // console.log(req.body.stacjonarne==='on');
-        // console.log(req.body.niestacjonarne===undefined);
-        // console.log(!req.body.niestacjonarne);
-        // if(!req.body.niestacjonarne){
-        //     console.log('a');
-        // }
-        // else{
-        //     console.log('b');
-        // }
         res.redirect('/');
-    });
+    }});
 
 };
 
