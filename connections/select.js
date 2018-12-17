@@ -51,7 +51,7 @@ module.exports = {
             }
         });
     },
-    selectSemToAddGroup: function (tableName){
+    selectAllNoBinds: function (sql){
         return new Promise(async function(resolve, reject) {
             let conn;
             try {
@@ -62,11 +62,7 @@ module.exports = {
                 });
 
                 let result = await conn.execute(
-                    `SELECT w.nazwa as wydzial,k.nazwa as kierunek,s.tryb,s.stopien,s.numer,g.grupy,s.id
-                    FROM semestry s
-                    inner join kierunki k on s.kierunek_id=k.id
-                    inner join wydzialy w on k.wydzial_id=w.skrot 
-                    left join GrupyCat g on g.semestr_id=s.id order by  w.nazwa,k.nazwa,s.tryb,s.stopien,s.numer`,
+                    sql,
                 );
                 resolve(result);
 

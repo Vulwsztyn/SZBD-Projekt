@@ -762,6 +762,10 @@ create or replace view GrupyCat as
 SELECT semestr_id, listagg(symbol,', ') within group (order by symbol) as grupy
 FROM  grupy_dziekanskie g group by semestr_id;
 
+create or replace view PrzedmiotyCat as
+SELECT semestr_id, listagg(nazwa,', ') within group (order by nazwa) as przedmioty
+FROM  przedmioty g group by semestr_id;
+
 -- Oracle SQL Developer Data Modeler Summary Report: 
 -- 
 -- CREATE TABLE                            14

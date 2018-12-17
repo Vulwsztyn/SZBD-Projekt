@@ -1,0 +1,39 @@
+html
+    head
+        title Simple template
+    body
+        table(border='2')
+            tr
+                th=result.metaData[0].name
+                th=result.metaData[1].name
+                th=result.metaData[2].name
+                th=result.metaData[3].name
+                th=result.metaData[4].name
+                th=result.metaData[5].name
+                th="Nazwa"
+                th="ECTS"
+                th="Wykład"
+                th="Ćw."
+                th="Lab."
+            each row in result.rows
+                tr
+                    td=row[1]
+                    td=row[1]
+                    td=row[2]
+                    td=row[3]
+                    td=row[4]
+                    td=row[5]
+                    form(action = "/dodaj/przedmioty", method = "POST")
+                        td
+                            input(name="semestr" value=row[6] hidden)
+                            input(name="przedmiot" value = "" placeholder="Nazwa przemiotu")
+                        td
+                            input(name="ECTS" value = "" type="number" placeholder="Liczba ECTS")
+                        td
+                            input(type='checkbox' name='w')
+                        td
+                            input(type='checkbox' name='c')
+                        td
+                            input(type='checkbox' name='l')
+                        td
+                          button Dodaj przedmiot

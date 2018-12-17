@@ -1,11 +1,14 @@
-var oracledb = require('oracledb');
-var dbConfig = require('../../config/db.js');
-
 var insertFunctions = require ('../../connections/insert');
 var selectFun = require ('../../connections/select');
 module.exports = function(app){
     app.get('/dodaj/grupy', async function (req, res) {
-        const result = await selectFun.selectSemToAddGroup();
+
+        const result = await selectFun.selectAllNoBinds(`SELECT w.nazwa as wydzial,k.nazwa as kierunek,s.tryb,s.stopien,s.numer,g.grupy,s.id
+                    FROM semestry s
+                    inner join kierunki k on s.kierunek_id=k.id
+                    inner join wydzialy w on k.wydzial_id=w.skrot 
+                    left join GrupyCat g on g.semestr_id=s.id order by  w.nazwa,k.nazwa,s.tryb,s.stopien,s.numer`);
+
         res.render('dodaj/grupy', {result:result});
     });
     app.post('/dodaj/grupy', async function (req, res) {

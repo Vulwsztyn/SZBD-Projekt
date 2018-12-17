@@ -4,3 +4,4 @@ Godziny zajec:
 - godziny nie mogą nachodzić
 - ECTS do przedmiotow
 - SQL Injection w SelectAll
+- unikalna nazwa przedmiotu na semestr

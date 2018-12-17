@@ -24,7 +24,6 @@ module.exports = function(app){
 
     app.post('/dodaj/Kierunek', async function (req, res) {
         if(req.body.nazwa){
-
             let tryb='';
             let binds=[];
             //wypełnianie tabelki binds wraz ze sprawdzaniem całego inputu
