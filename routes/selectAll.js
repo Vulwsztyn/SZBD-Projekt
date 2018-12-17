@@ -1,5 +1,3 @@
-var oracledb = require('oracledb');
-var dbConfig = require('../config/db.js');
 var selectAllfun = require ('../connections/select');
 module.exports = function(app){
     app.get('/SelectAll/:tableName', async function (req, res) {

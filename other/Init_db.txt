@@ -606,6 +606,8 @@ insert into grupy_dziekanskie(symbol,semestr_id) values('I6', (select id from se
 insert into grupy_dziekanskie(symbol,semestr_id) values('I6', (select id from semestry where numer=2));
 insert into grupy_dziekanskie(symbol,semestr_id) values('I6', (select id from semestry where numer=3));
 insert into grupy_dziekanskie(symbol,semestr_id) values('I6', (select id from semestry where numer=4));
+create SYNONYM grupy for grupy_dziekanskie;
+
 
 -- sale
 CREATE SEQUENCE seq_sale START WITH 1 NOCACHE ORDER;
@@ -755,7 +757,10 @@ insert into zajecia_w_planie(dzien_tygodnia,grupa_id,zajecia_id,godzina_id,praco
 insert into zajecia_w_planie(dzien_tygodnia,grupa_id,zajecia_id,godzina_id,pracownik_id,strona_grupy,sala) values(4,(select id from grupy_dziekanskie where symbol='I1' and semestr_id=(select id from semestry where NUMER=5)),(select id from zajecia where typ='w' and przedmiot_id=(select id from przedmioty where nazwa='Systemy wbudowane')),5,(select id from osoby where nazwisko='Zakrzewski'),'lewa',(select id from sale where nazwa='8 CW'));
 
 
-
+-- perspektywy
+create or replace view GrupyCat as
+SELECT semestr_id, listagg(symbol,', ') within group (order by symbol) as grupy
+FROM  grupy_dziekanskie g group by semestr_id;
 
 -- Oracle SQL Developer Data Modeler Summary Report: 
 -- 

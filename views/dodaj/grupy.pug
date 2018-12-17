@@ -1,0 +1,21 @@
+html
+    head
+        title Simple template
+    body
+        table(border='2')
+            tr
+                each d in result.metaData
+                    th=d.name
+            each row in result.rows
+                tr
+                    td=row[1]
+                    td=row[1]
+                    td=row[2]
+                    td=row[3]
+                    td=row[4]
+                    td=row[5]
+                    td
+                        form(action = "/dodaj/grupy", method = "POST")
+                            input(name="semestr" value=row[6] hidden)
+                            input(name="grupa" value = "")
+                            button Dodaj grupę

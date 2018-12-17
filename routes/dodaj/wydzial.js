@@ -1,5 +1,4 @@
-var oracledb = require('oracledb');
-var dbConfig = require('../../config/db.js');
+
 
 var insertFunctions = require ('../../connections/insert');
 

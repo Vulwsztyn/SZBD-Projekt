@@ -1,8 +1,7 @@
 var oracledb = require('oracledb');
-var dbConfig = require('../../config/db.js');
 var async = require('async');
 
-var selectAllfun = require ('../../connections/select');
+var selectFun = require ('../../connections/select');
 var insertFunctions = require ('../../connections/insert');
 function addToList(lista,start,liczba,tryb,stopien,nazwa,wydzial){
     start=parseInt(start);
@@ -19,7 +18,7 @@ function addToList(lista,start,liczba,tryb,stopien,nazwa,wydzial){
 module.exports = function(app){
 
     app.get('/dodaj/Kierunek', async function (req, res) {
-        const wydzialy = await selectAllfun.selectAllFromTable("wydzialy");
+        const wydzialy = await selectFun.selectAllFromTable("wydzialy");
         res.render('dodaj/kierunek', {wydzialy: wydzialy});
     });
 

@@ -18,6 +18,10 @@ Oczywiście stówrz najpierw takiego użytkownika i nadaj mu prawa.
 
 npm install --save express
 
+npm install --save express-session
+
+npm install --save formidable
+
 npm install -g nodemon
 
 npm install --save body-parser multer
