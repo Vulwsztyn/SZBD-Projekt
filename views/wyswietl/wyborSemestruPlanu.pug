@@ -1,0 +1,19 @@
+html
+    head
+        title Simple template
+    body
+        table(border='2')
+            tr
+                each d in result.metaData
+                    th=d.name
+            each row in result.rows
+                tr
+                    td=row[1]
+                    td=row[1]
+                    td=row[2]
+                    td=row[3]
+                    td=row[4]
+                    td
+                        form(action = "/wyswietl/plan", method = "POST")
+                            input(name="semestr" value=row[5] hidden)
+                            button Wyswietl

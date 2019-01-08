@@ -766,6 +766,20 @@ create or replace view PrzedmiotyCat as
 SELECT semestr_id, listagg(nazwa,', ') within group (order by nazwa) as przedmioty
 FROM  przedmioty g group by semestr_id;
 
+create or replace view Plan_Zajec as
+WITH
+rzecz(dzien,godz,sym,strona,id,sem)
+AS (select dzien,godz,g.symbol as sym,strona,g.id,g.semestr_id as sem from (select rownum dzien from dual connect by level <= 7),(select rownum godz  from dual connect by level <=(select count(*) from godziny_zajec)),grupy_dziekanskie g,(select 'lewa' as strona from dual union select 'prawa' from dual))
+select dzien,godz,sym,strona,sem,o.imie,o.nazwisko,p.stopien,prz.nazwa as przedmiot,zaj.typ,s.nazwa as sala from rzecz a
+left join zajecia_w_planie z on (a.dzien=z.dzien_tygodnia and a.godz=z.godzina_id and a.id=z.grupa_id and a.strona=z.strona_grupy)
+left join pracownicy p on p.id=z.pracownik_id
+left join osoby o on o.id=z.pracownik_id
+left join zajecia zaj on zaj.id=z.zajecia_id
+left join przedmioty prz on zaj.przedmiot_id=prz.id
+left join sale s on z.sala=s.id
+order by dzien,godz,sym
+;
+
 -- Oracle SQL Developer Data Modeler Summary Report: 
 -- 
 -- CREATE TABLE                            14

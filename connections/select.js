@@ -79,4 +79,34 @@ module.exports = {
             }
         });
 
-}};
+},
+    select: function (sql,binds,opt){
+        return new Promise(async function(resolve, reject) {
+            let conn;
+            try {
+                conn = await oracledb.getConnection({
+                    user          : dbConfig.user,
+                    password      : dbConfig.password,
+                    connectString : dbConfig.connectString
+                });
+
+                let result = await conn.execute(
+                    sql,binds,opt
+                );
+                resolve(result);
+
+            } catch (err) { // catches errors in getConnection and the query
+                reject(err);
+            } finally {
+                if (conn) {   // the conn assignment worked, must release
+                    try {
+                        await conn.release();
+                    } catch (e) {
+                        console.error(e);
+                    }
+                }
+            }
+        });
+
+    }
+};

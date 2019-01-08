@@ -10,6 +10,7 @@ router.get('/', function(req, res){
 
 require('./routes/selectAll')(router);
 require('./routes/dodaj')(router);
+require('./routes/wyswietl')(router);
 
 
 router.get('/users/:userId/books/:bookId', function (req, res) {
