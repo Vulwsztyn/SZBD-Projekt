@@ -43,6 +43,27 @@ def sale():
     for i in lista:
         print("insert into sale(nazwa) values(\'{0}\');".format(i))
 
+def oceny():
+
+    p = [
+        "Sieci komputerowe 2",
+        "Systemy zarządzania bazami danych",
+        "Wspomaganie decyzji",
+        "Inżynieria Oprogramowania",
+        "Komunikacja człowiek-komputer",
+        "Sztuczna Inteligencja",
+        "Systemy wbudowane",
+    ]
+    t=["l",'w']
+    prac=range(27)
+    stu=[1500,1501]
+    for s in stu:
+        for pp in p:
+            for tt in t:
+                o=random.choice(["2.0","3.0","3.5","4.0","4.5","5.0"])
+                print("insert into oceny(wartosc,zajecia_id,student_id,pracownik_id) values({},(select id from zajecia where typ=\'{}\' and przedmiot_id=(select id from przedmioty where nazwa=\'{}\')),\'{}\',\'{}\');".format(o,tt,pp,s,random.choice(prac)))
+
+
 
 def przedmioty():
     lista = [

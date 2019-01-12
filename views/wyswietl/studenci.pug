@@ -1,0 +1,22 @@
+html
+    head
+        title Simple template
+    body
+        if(result && result.metaData && result.rows)
+            table(border='2')
+                tr
+                    each d in result.metaData
+                        th=d.name
+                each row in result.rows
+                    tr
+                        each d in row
+                            td=d
+                        td
+                            form(action = "/wyswietl/student", method = "GET")
+                                input(name="sid" value=row[0] hidden)
+                                button Wyswietl informacje
+
+
+
+        else
+            p Nie ma tabeli

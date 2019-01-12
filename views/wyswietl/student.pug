@@ -1,0 +1,24 @@
+html
+    head
+        title Simple template
+    body
+        if(result && result.metaData && result.rows)
+            - const dane=result.rows[0]
+            p Informancje o studencie
+            p Id: #{dane[0]}
+            p Imie: #{dane[1]}
+            p Nazwisko: #{dane[2]}
+            p PESEL: #{dane[3]}
+            p Wydział: #{dane[4]}
+            p Kierunek: #{dane[5]}
+            p Semestr: #{dane[8]}
+            p Grupa dziekanska: #{dane[6]}
+            p Strona grupy: #{dane[7]}
+            each row in semestry.rows
+                form(action = "/wyswietl/oceny", method = "GET")
+                    input(name="sid" value=dane[0] hidden)
+                    input(name="sem" value=row[0] hidden)
+                    button Wyświetl oceny z semestru #{row[1]}
+
+        else
+            p Nie ma tabeli

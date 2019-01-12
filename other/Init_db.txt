@@ -740,6 +740,13 @@ insert into pracownicy(id,stopien,zespol_id) values((select id from osoby where 
 
 -- studenci
 
+insert into osoby(imie,nazwisko,pesel,haslo,typ) values('Artur','Mostowski','97030901234','Mostowski','Student');
+insert into studenci(id,strona_grupy,grupa_id) values((select id from osoby where pesel='97030901234'),'lewa',(select id from grupy_dziekanskie where semestr_id=5 and symbol='I1'));
+insert into osoby(imie,nazwisko,pesel,haslo,typ) values('Łukasz','Grygier','97032101234','Grygier','Student');
+insert into studenci(id,strona_grupy,grupa_id) values((select id from osoby where pesel='97032101234'),'lewa',(select id from grupy_dziekanskie where semestr_id=5 and symbol='I1'));
+
+
+
 -- zajecia w planie
 ALTER TABLE zajecia_w_planie MODIFY (dzien_tygodnia NUMBER(38,0));
 
@@ -759,8 +766,39 @@ insert into zajecia_w_planie(dzien_tygodnia,grupa_id,zajecia_id,godzina_id,praco
 insert into zajecia_w_planie(dzien_tygodnia,grupa_id,zajecia_id,godzina_id,pracownik_id,strona_grupy,sala) values(4,(select id from grupy_dziekanskie where symbol='I1' and semestr_id=(select id from semestry where NUMER=5)),(select id from zajecia where typ='w' and przedmiot_id=(select id from przedmioty where nazwa='Systemy wbudowane')),5,(select id from osoby where nazwisko='Zakrzewski'),'lewa',(select id from sale where nazwa='8 CW'));
 
 ALTER TABLE zajecia_w_planie
-DROP CONSTRAINT JEDNE_ZAJ_NA_SALE_UN; 
-
+DROP CONSTRAINT JEDNE_ZAJ_NA_SALE_UN;
+-- oceny
+ALTER TABLE oceny
+  MODIFY wartosc number(2,1);
+  /
+insert into oceny(wartosc,zajecia_id,student_id,pracownik_id) values(3.5,(select id from zajecia where typ='l' and przedmiot_id=(select id from przedmioty where nazwa='Sieci komputerowe 2')),'1500','16');
+insert into oceny(wartosc,zajecia_id,student_id,pracownik_id) values(4.5,(select id from zajecia where typ='w' and przedmiot_id=(select id from przedmioty where nazwa='Sieci komputerowe 2')),'1500','4');
+insert into oceny(wartosc,zajecia_id,student_id,pracownik_id) values(2.0,(select id from zajecia where typ='l' and przedmiot_id=(select id from przedmioty where nazwa='Systemy zarządzania bazami danych')),'1500','3');
+insert into oceny(wartosc,zajecia_id,student_id,pracownik_id) values(3.0,(select id from zajecia where typ='w' and przedmiot_id=(select id from przedmioty where nazwa='Systemy zarządzania bazami danych')),'1500','3');
+insert into oceny(wartosc,zajecia_id,student_id,pracownik_id) values(3.5,(select id from zajecia where typ='l' and przedmiot_id=(select id from przedmioty where nazwa='Wspomaganie decyzji')),'1500','2');
+insert into oceny(wartosc,zajecia_id,student_id,pracownik_id) values(3.5,(select id from zajecia where typ='w' and przedmiot_id=(select id from przedmioty where nazwa='Wspomaganie decyzji')),'1500','7');
+insert into oceny(wartosc,zajecia_id,student_id,pracownik_id) values(3.0,(select id from zajecia where typ='l' and przedmiot_id=(select id from przedmioty where nazwa='Inżynieria Oprogramowania')),'1500','13');
+insert into oceny(wartosc,zajecia_id,student_id,pracownik_id) values(3.0,(select id from zajecia where typ='w' and przedmiot_id=(select id from przedmioty where nazwa='Inżynieria Oprogramowania')),'1500','18');
+insert into oceny(wartosc,zajecia_id,student_id,pracownik_id) values(3.5,(select id from zajecia where typ='l' and przedmiot_id=(select id from przedmioty where nazwa='Komunikacja człowiek-komputer')),'1500','4');
+insert into oceny(wartosc,zajecia_id,student_id,pracownik_id) values(5.0,(select id from zajecia where typ='w' and przedmiot_id=(select id from przedmioty where nazwa='Komunikacja człowiek-komputer')),'1500','13');
+insert into oceny(wartosc,zajecia_id,student_id,pracownik_id) values(4.5,(select id from zajecia where typ='l' and przedmiot_id=(select id from przedmioty where nazwa='Sztuczna Inteligencja')),'1500','24');
+insert into oceny(wartosc,zajecia_id,student_id,pracownik_id) values(2.0,(select id from zajecia where typ='w' and przedmiot_id=(select id from przedmioty where nazwa='Sztuczna Inteligencja')),'1500','8');
+insert into oceny(wartosc,zajecia_id,student_id,pracownik_id) values(4.0,(select id from zajecia where typ='l' and przedmiot_id=(select id from przedmioty where nazwa='Systemy wbudowane')),'1500','1');
+insert into oceny(wartosc,zajecia_id,student_id,pracownik_id) values(4.5,(select id from zajecia where typ='w' and przedmiot_id=(select id from przedmioty where nazwa='Systemy wbudowane')),'1500','0');
+insert into oceny(wartosc,zajecia_id,student_id,pracownik_id) values(5.0,(select id from zajecia where typ='l' and przedmiot_id=(select id from przedmioty where nazwa='Sieci komputerowe 2')),'1501','24');
+insert into oceny(wartosc,zajecia_id,student_id,pracownik_id) values(4.5,(select id from zajecia where typ='w' and przedmiot_id=(select id from przedmioty where nazwa='Sieci komputerowe 2')),'1501','4');
+insert into oceny(wartosc,zajecia_id,student_id,pracownik_id) values(4.5,(select id from zajecia where typ='l' and przedmiot_id=(select id from przedmioty where nazwa='Systemy zarządzania bazami danych')),'1501','25');
+insert into oceny(wartosc,zajecia_id,student_id,pracownik_id) values(3.5,(select id from zajecia where typ='w' and przedmiot_id=(select id from przedmioty where nazwa='Systemy zarządzania bazami danych')),'1501','15');
+insert into oceny(wartosc,zajecia_id,student_id,pracownik_id) values(5.0,(select id from zajecia where typ='l' and przedmiot_id=(select id from przedmioty where nazwa='Wspomaganie decyzji')),'1501','19');
+insert into oceny(wartosc,zajecia_id,student_id,pracownik_id) values(3.0,(select id from zajecia where typ='w' and przedmiot_id=(select id from przedmioty where nazwa='Wspomaganie decyzji')),'1501','9');
+insert into oceny(wartosc,zajecia_id,student_id,pracownik_id) values(4.5,(select id from zajecia where typ='l' and przedmiot_id=(select id from przedmioty where nazwa='Inżynieria Oprogramowania')),'1501','13');
+insert into oceny(wartosc,zajecia_id,student_id,pracownik_id) values(3.0,(select id from zajecia where typ='w' and przedmiot_id=(select id from przedmioty where nazwa='Inżynieria Oprogramowania')),'1501','16');
+insert into oceny(wartosc,zajecia_id,student_id,pracownik_id) values(3.0,(select id from zajecia where typ='l' and przedmiot_id=(select id from przedmioty where nazwa='Komunikacja człowiek-komputer')),'1501','22');
+insert into oceny(wartosc,zajecia_id,student_id,pracownik_id) values(5.0,(select id from zajecia where typ='w' and przedmiot_id=(select id from przedmioty where nazwa='Komunikacja człowiek-komputer')),'1501','8');
+insert into oceny(wartosc,zajecia_id,student_id,pracownik_id) values(3.0,(select id from zajecia where typ='l' and przedmiot_id=(select id from przedmioty where nazwa='Sztuczna Inteligencja')),'1501','18');
+insert into oceny(wartosc,zajecia_id,student_id,pracownik_id) values(3.5,(select id from zajecia where typ='w' and przedmiot_id=(select id from przedmioty where nazwa='Sztuczna Inteligencja')),'1501','8');
+insert into oceny(wartosc,zajecia_id,student_id,pracownik_id) values(2.0,(select id from zajecia where typ='l' and przedmiot_id=(select id from przedmioty where nazwa='Systemy wbudowane')),'1501','13');
+insert into oceny(wartosc,zajecia_id,student_id,pracownik_id) values(4.5,(select id from zajecia where typ='w' and przedmiot_id=(select id from przedmioty where nazwa='Systemy wbudowane')),'1501','24');
 -- perspektywy
 create or replace view GrupyCat as
 SELECT semestr_id, listagg(symbol,', ') within group (order by symbol) as grupy
@@ -783,7 +821,36 @@ left join przedmioty prz on zaj.przedmiot_id=prz.id
 left join sale s on z.sala=s.id
 order by dzien,godz,sym,strona
 ;
+/
+CREATE OR REPLACE Function Srednia
+   ( sid in VARCHAR2,
+    sem in number
+    )
+   RETURN number
+IS
+   suma number(6,1);
+    sumaECTS number(6,1);
+   cursor c1 is
+    SELECT p.nazwa,p.ects,o.wartosc,op.imie,op.nazwisko,pr.stopien,(select count(*) from zajecia where przedmiot_id=p.id)
+    from oceny o
+    inner join zajecia z on z.id=o.zajecia_id
+    inner join przedmioty p on p.id=z.przedmiot_id
+    inner join osoby op on op.id =o.pracownik_id
+    inner join pracownicy
+    pr on pr.id=op.id where zajecia_id in (select id from zajecia where przedmiot_id in (select id from przedmioty where semestr_id=sem)) and student_id=sid order by p.nazwa,z.typ;
 
+BEGIN
+   suma := 0;
+   sumaECTS := 0;
+   FOR row in c1
+   LOOP
+        suma := suma + row.wartosc*row.ECTS;
+        sumaECTS := sumaECTS+ row.ECTS;
+   END LOOP;
+   RETURN suma/sumaECTS;
+
+END;
+/
 -- Oracle SQL Developer Data Modeler Summary Report: 
 -- 
 -- CREATE TABLE                            14
