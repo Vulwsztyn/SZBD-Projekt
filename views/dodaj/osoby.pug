@@ -1,0 +1,23 @@
+html
+html
+    head
+        title Dodawanie Osób
+    body
+        form(action = "/dodaj/Osoby", method = "POST")
+            div
+                label(for = "imie") Imie:
+                input(name = "imie" value = "")
+            br
+            div
+                label(for = "nazwisko") Nazwisko:
+                input(name = "nazwisko" value = "")
+            br
+            div
+                label(for = "pesel") PESEL:
+                input(name = "pesel" value = "")
+            br
+            div
+                label(for = "typ") Typ:
+                input(name = "typ" value = "")
+            br
+            button(type = "submit") Dodaj wydział
