@@ -74,6 +74,8 @@ CREATE TABLE przedmioty (
 
 ALTER TABLE przedmioty ADD CONSTRAINT przedmioty_pk PRIMARY KEY ( id );
 
+ALTER TABLE przedmioty ADD CONSTRAINT nazwa_w_sem_un UNIQUE ( nazwa,semestr_id );
+
 CREATE TABLE sale (
     id      INTEGER NOT NULL,
     nazwa   VARCHAR2(20 CHAR) NOT NULL
@@ -756,6 +758,8 @@ insert into zajecia_w_planie(dzien_tygodnia,grupa_id,zajecia_id,godzina_id,praco
 insert into zajecia_w_planie(dzien_tygodnia,grupa_id,zajecia_id,godzina_id,pracownik_id,strona_grupy,sala) values(4,(select id from grupy_dziekanskie where symbol='I1' and semestr_id=(select id from semestry where NUMER=5)),(select id from zajecia where typ='w' and przedmiot_id=(select id from przedmioty where nazwa='Systemy zarządzania bazami danych')),3,(select id from osoby where nazwisko='Morzy'),'lewa',(select id from sale where nazwa='8 CW'));
 insert into zajecia_w_planie(dzien_tygodnia,grupa_id,zajecia_id,godzina_id,pracownik_id,strona_grupy,sala) values(4,(select id from grupy_dziekanskie where symbol='I1' and semestr_id=(select id from semestry where NUMER=5)),(select id from zajecia where typ='w' and przedmiot_id=(select id from przedmioty where nazwa='Systemy wbudowane')),5,(select id from osoby where nazwisko='Zakrzewski'),'lewa',(select id from sale where nazwa='8 CW'));
 
+ALTER TABLE zajecia_w_planie
+DROP CONSTRAINT JEDNE_ZAJ_NA_SALE_UN; 
 
 -- perspektywy
 create or replace view GrupyCat as
@@ -777,7 +781,7 @@ left join osoby o on o.id=z.pracownik_id
 left join zajecia zaj on zaj.id=z.zajecia_id
 left join przedmioty prz on zaj.przedmiot_id=prz.id
 left join sale s on z.sala=s.id
-order by dzien,godz,sym
+order by dzien,godz,sym,strona
 ;
 
 -- Oracle SQL Developer Data Modeler Summary Report: 

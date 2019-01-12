@@ -1,15 +1,113 @@
 html
     head
         title Simple template
+        style(type="text/css").
+            td,th {
+                width: 200px;
+                height: 50px;
+            }
+        script.
+            function funkcja(a) {
+                var x = document.getElementById(a);
+                var y = document.getElementById(a+1);
+                x.hidden=true;
+                y.hidden=false;
+                 }
     body
-        if(result && result.metaData && result.rows)
-            table(border='2')
+
+        table(border='2')
+            - var dzien = 0;
+            - var dniTygodnia=['Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota','Niedziela']
+            - var liczbaKolumn=liczbaGrup*2+1
+            - var liczbaPomocnicza=0
+            while dzien < 7
                 tr
-                    each d in result.metaData
-                        th=d.name
-                each row in result.rows
+                    th(colspan=liczbaKolumn)=dniTygodnia[dzien]
+                tr
+                    td=""
+                    each row in grupy.rows
+                        td(colspan=2)=row[1]
+                - var godz = 0;
+
+                while godz<liczbaGodzin
+                    - var i=0;
                     tr
-                        each d in row
-                            td=d
-        else
-            p Nie ma tabeli
+                        - var dodatkoweZero=""
+                        - var dodatkoweZero2=""
+                        if godziny.rows[godz][2]<10
+                            - dodatkoweZero="0"
+                        if godziny.rows[godz][4] < 10
+                            - dodatkoweZero2="0"
+                        - godzina=""+godziny.rows[godz][1]+"."+dodatkoweZero+godziny.rows[godz][2]+"-"+godziny.rows[godz][3]+"."+dodatkoweZero2+godziny.rows[godz][4]
+                        td=godzina
+                        while i<liczbaKolumn-1
+                            if result.rows[dzien*liczbaGodzin*liczbaGrup*2+godz*2*liczbaGrup+i][5]
+                                - wiersz=result.rows[dzien*liczbaGodzin*liczbaGrup*2+godz*2*liczbaGrup+i]
+                                - prow=wiersz[5][0]+". "+wiersz[6]
+                                - st=wiersz[7]
+                                - naz=wiersz[8]
+                                - typ=wiersz[9]
+                                    if (typ==="w")
+                                        - typ="Wykład"
+                                    if (typ === "c")
+                                        - typ="Ćw."
+                                    if (typ === "l")
+                                        - typ="Lab."
+                                - sala=wiersz[10]
+                                - tekst=prow
+                                td
+                                    div
+                                        p=st+" "+prow
+                                        p=naz
+                                        p=typ
+                                        p=sala
+
+                            else
+                                td
+                                    button(id=liczbaPomocnicza onclick="funkcja("+liczbaPomocnicza+")") Dodaj Zajęcia
+                                        - liczbaPomocnicza++
+                                    form(id=liczbaPomocnicza action = "/dodaj/plan", method = "POST" hidden)
+                                        select(name="sem" hidden)
+                                            - var n=sem
+                                            option(value=n) #{n}
+                                        select(name="grupa" hidden)
+                                            - var n=grupy.rows[Math.floor(i/2)][0]
+                                            option(value=n) #{n}
+                                        select(name="strona" hidden)
+                                            - n="lewa"
+                                            if i%2===1
+                                                -n="prawa"
+                                            option(value=n) #{n}
+                                        select(name="dzien" hidden)
+                                            - n=dzien+1
+                                            option(value=n) #{n}
+                                        select(name="godzina" hidden)
+                                            - n=godz+1
+                                            option(value=n) #{n}
+                                        p Prowadzący:
+                                        select(name="prowadzacy")
+                                            each row in prowadzacy.rows
+                                                - n = row[3]+" "+row[2]+" "+row[1]+" ("+row[4]+")";
+                                                option(value=row[0]) #{n}
+                                        p Przedmiot:
+                                        select(name="przedmiot")
+                                            each row in przedmioty.rows
+                                                - n = row[1];
+                                                option(value=row[0]) #{n}
+                                        p Typ zajęć:
+                                        select(name="typ")
+                                            option(value="l") Laboratoria
+                                            option(value="c") Ćwiczenia
+                                            option(value="w") Wykład
+                                        p Sala:
+                                        select(name="sala")
+                                            each row in sale.rows
+                                                - n = row[1];
+                                                option(value=row[0]) #{n}
+                                        br
+                                        button(type = "submit") Dodaj Zajecia
+                                    - liczbaPomocnicza++
+
+                            - i++
+                    - godz++
+                - dzien++
