@@ -2,11 +2,12 @@ html
     head
         title Informacje o kierunku
     body
-        a(href='/wydzial?wydzial='+kierunek[4]) Wróć
+        a(href='/wydzial?wydzial='+kierunek[4]) Pokaż informacje o wydziale
         h3 Informacje o kierunku
         p Nazwa: #{kierunek[1]}
         p='Wydział: '
             a(href='/wydzial?wydzial='+kierunek[4]) #{kierunek[3]}
+        h4 Semestry na kierunku:
         table(border='2' id='semestry')
             tr
                 th Tryb
@@ -22,6 +23,8 @@ html
                     td=row[2]
                     td=row[5]
                     td=row[1]
+                    td
+                        a(href='/semestr?semestr='+row[0]) Informacje o semestrze #{row[1]}
 script.
     var table=document.getElementById("semestry")
     for (var i = 0, row; row = table.rows[i]; i++) {

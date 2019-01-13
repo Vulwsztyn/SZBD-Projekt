@@ -9,6 +9,11 @@ html
                 y.hidden = false;
             }
     body
+        h3 Informacje o ocenach studenta o numerze albumu #{sid} w semestrze #{sem}
+        p
+            a(href='/student?student='+sid) Informacje o studencie
+        p
+            a(href='/semestr?semestr='+sem) Informacje o semestrze
         if(result && result.metaData && result.rows)
             table(border='2')
                 tr
