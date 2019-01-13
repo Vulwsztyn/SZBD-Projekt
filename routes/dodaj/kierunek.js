@@ -70,7 +70,7 @@ module.exports = function(app){
             await insertFunctions.insertOne(sqlKierunek, bindsKierunek,optionsKierunek);
             await insertFunctions.insertMany(sql,binds,options);
 
-        res.redirect('/');
+        res.redirect('/wydzial?wydzial='+req.body.wydzial);
     }});
 
 };

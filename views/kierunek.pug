@@ -1,0 +1,39 @@
+html
+    head
+        title Informacje o kierunku
+    body
+        a(href='/wydzial?wydzial='+kierunek[4]) Wróć
+        h3 Informacje o kierunku
+        p Nazwa: #{kierunek[1]}
+        p='Wydział: '
+            a(href='/wydzial?wydzial='+kierunek[4]) #{kierunek[3]}
+        table(border='2' id='semestry')
+            tr
+                th Tryb
+                th Stopień
+                th Rok
+                th Pora roku
+                th Numer
+                th Informacje o semestrze
+            each row in semestry.rows
+                tr
+                    td=row[4]
+                    td=row[3]
+                    td=row[2]
+                    td=row[5]
+                    td=row[1]
+script.
+    var table=document.getElementById("semestry")
+    for (var i = 0, row; row = table.rows[i]; i++) {
+        var usunieto=true
+        var k=1
+            var row2 = table.rows[i + k]
+            for (var j = row.cells.length, col; col = row.cells[j]; j--) {
+                if (ro){
+
+                }
+            }
+            k++
+        }
+
+    }

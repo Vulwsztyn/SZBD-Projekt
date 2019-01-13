@@ -1,51 +1,26 @@
 html
-html
     head
-        title Frontpage
+        title ePrOtO
     body
-        div
-            p Wyświetl tabele:
-            a(href='./selectAll/godziny_zajec') Godziny zajęć
-            br
-            a(href='./selectAll/grupy_dziekanskie') Grupy dziekanskie
-            br
-            a(href='./selectAll/kierunki') Kierunki
-            br
-            a(href='./selectAll/Oceny') Oceny
-            br
-            a(href='./selectAll/Osoby') Osoby
-            br
-            a(href='./selectAll/Pracownicy') Pracownicy
-            br
-            a(href='./selectAll/Przedmioty') Przedmioty
-            br
-            a(href='./selectAll/Sale') Sale
-            br
-            a(href='./selectAll/Semestry') Semestry
-            br
-            a(href='./selectAll/Studenci') Studenci
-            br
-            a(href='./selectAll/Wydzialy') Wydzialy
-            br
-            a(href='./selectAll/Zajecia') Zajęcia
-            br
-            a(href='./selectAll/zajecia_w_planie') Zajęcia w planie
-            br
-            a(href='./selectAll/Zespoly') Zespoły
-        div
-            p Wyświetl:
-            a(href='./wyswietl/plan') Plan
-            br
-            a(href='./wyswietl/oceny') Oceny
-            br
-            a(href='./wyswietl/studenci') Studentów
-        div
-            p Dodaj:
-            a(href='./dodaj/Wydzial') Wydział
-            br
-            a(href='./dodaj/Kierunek') Kierunek (z semestrami)
-            br
-            a(href='./dodaj/Grupy') Grupy dzikanskie
-            br
-            a(href='./dodaj/Przedmioty') Przedmioty
-
+        if(result && result.metaData && result.rows)
+            h2 ePrOtO
+            table(border='2')
+                tr
+                    th Wydziały
+                each row in result.rows
+                    tr
+                        td
+                            a(href='/wydzial?wydzial='+row[1]) #{row[0]}
+            form(action = "/dodaj/Wydzial", method = "POST")
+                p Dodaj wydział:
+                div
+                    label(for = "nazwa") Nazwa:
+                    input(name = "nazwa" value = "")
+                br
+                div
+                    label(for = "skrot") Skrot:
+                    input(name = "skrot" value = "")
+                br
+                button(type = "submit") Dodaj wydział
+        else
+            p Nie ma tabeli

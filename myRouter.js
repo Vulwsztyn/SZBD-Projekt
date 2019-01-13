@@ -2,11 +2,9 @@ var express = require('express');
 var router = express.Router();
 
 //Routes
-var seceltAllRoute = require('./routes/selectAll');
-
-router.get('/', function(req, res){
-    res.render('index');
-});
+require('./routes/index')(router);
+require('./routes/wydzial')(router);
+require('./routes/kierunek')(router);
 
 require('./routes/selectAll')(router);
 require('./routes/dodaj')(router);
