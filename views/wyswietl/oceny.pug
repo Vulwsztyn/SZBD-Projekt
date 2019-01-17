@@ -1,0 +1,86 @@
+html
+    head
+        title Simple template
+        script.
+            function funkcja(a) {
+                var x = document.getElementById(a);
+                var y = document.getElementById(a + 1);
+                x.hidden = true;
+                y.hidden = false;
+            }
+    body
+        h3 Informacje o ocenach studenta o numerze albumu #{sid} w semestrze #{sem}
+        p
+            a(href='/student?student='+sid) Informacje o studencie
+        p
+            a(href='/semestr?semestr='+sem) Informacje o semestrze
+        if(result && result.metaData && result.rows)
+            table(border='2')
+                tr
+                    th Przedmiot
+                    th ECTS
+                    th Typ zajęć
+                    th Wspiujący
+                    th Ocena
+                    th Dodaj/Edytuj
+                - const liczbaWierszy=result.rows.length
+                - var i=0
+                - var p=0
+                - var liczbaPomocnicza=0
+                while i<liczbaWierszy
+                    - row=result.rows[i]
+                    tr
+                        if (p===0)
+                            td(rowspan=row[7])=row[0]
+                            td(rowspan=row[7])=row[1]
+                        - p++
+                        if (p>=row[7])
+                            - p=0
+                        if row[2]==='l'
+                            td Laboratoria
+                        if row[2] === 'w'
+                            td Wykład
+                        if row[2] === 'c'
+                            td Ćwiczenia
+                        if (row[6])
+                            td=row[6]+" "+row[4]+" "+row[5]
+                        else
+                            td=""
+                        td=row[3]
+                        td
+                            button(id=liczbaPomocnicza onclick="funkcja(" + liczbaPomocnicza + ")") Dodaj/Edytuj
+                                - liczbaPomocnicza++
+                            form(id=liczbaPomocnicza action = "/dodaj/plan", method = "POST" hidden)
+                                //zajecia
+                                select(name="sid" hidden)
+                                    - var n=sid
+                                    option(value=n) #{n}
+                                select(name="zaj" hidden)
+                                    - var n=row[8]
+                                    option(value=n) #{n}
+                                select(name="dodaj" hidden)
+                                    - var n="d"
+                                    if (row[6])
+                                        - n="e"
+                                    option(value=n) #{n}
+                                p Wpisujący:
+                                select(name="prowadzacy")
+                                    each row in prowadzacy.rows
+                                        - n = row[3]+" "+row[2]+" "+row[1]+" ("+row[4]+")";
+                                        option(value=row[0]) #{n}
+                                p Ocena:
+                                select(name="typ")
+                                    option(value="2.0") 2.0
+                                    option(value="3.0") 3.0
+                                    option(value="3.5") 3.5
+                                    option(value="4.0") 4.0
+                                    option(value="4.5") 4.5
+                                    option(value="5.0") 5.0
+
+                                br
+                                button(type = "submit") Dodaj/Edytuj
+                    //            TODO działanie tego forma
+                    - i++
+        else
+            p Nie ma tabeli
+        p Średnia: #{srednia}

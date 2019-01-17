@@ -21,7 +21,7 @@ module.exports = {
                 //To, że jest let result = await ...,  a w następnej lini resolve jest istotne
                 resolve(result);
             } catch (err) { // catches errors in getConnection and the query
-                reject(err);
+                console.log(err);
             } finally {
                 if (conn) {   // the conn assignment worked, must release
                     try {
@@ -48,7 +48,7 @@ module.exports = {
                 resolve(result);
             }
             catch (err) { // catches errors in getConnection and the query
-                reject(err);
+                console.log(err);
             } finally {
                 if (conn) {   // the conn assignment worked, must release
                     try {
@@ -60,6 +60,4 @@ module.exports = {
             }
         });
     }
-
-
 };

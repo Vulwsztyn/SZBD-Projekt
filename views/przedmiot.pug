@@ -1,0 +1,23 @@
+html
+    head
+        title Informacje o przedmiocie
+    body
+        a(href='/semestr?semestr='+przedmiot[2]) Pokaż informacje o semestrze
+        h3 Informacje o przedmiocie
+        p Nazwa: #{przedmiot[1]}
+        p ECTS: #{przedmiot[3]}
+        p Ćwiczenia: #{zajecia[0]}
+        p Laboratiria: #{zajecia[1]}
+        p Wykład: #{zajecia[2]}
+        h4 Informacje o semestrze przedmiotu
+        p='Wydział: '
+            a(href='/wydzial?wydzial='+przedmiot[13]) #{przedmiot[14]}
+        p Kierunek:
+            a(href='/kierunek?kierunek='+przedmiot[10]) #{przedmiot[12]}
+        p Tryb: #{przedmiot[8]}
+        p Stopień: #{przedmiot[7]}
+        p Rok: #{przedmiot[6]}
+        p Pora roku: #{przedmiot[9]}
+        p Numer semestru: #{przedmiot[5]}
+        p
+            a(href='/wyswietl/plan?semestr='+przedmiot[0]) Plan zajęć na semestrze
