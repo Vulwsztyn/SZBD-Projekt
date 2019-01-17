@@ -13,12 +13,22 @@ module.exports = function(app){
         pesel = req.body.pesel;
         haslo=req.body.nazwisko;
         typ=req.body.typ;
-        const sql = 'insert into osoby(imie,nazwisko,pesel,haslo,typ) values(:a,:b,:c,:b,:d)';
+        mod1=req.body.mod1;
+        mod2=req.body.mod2;
+        if(typ=='Student') {
+            const sql = 'insert into osoby(imie,nazwisko,pesel,haslo,typ) values(:a,:b,:c,:b,:d));' +
+                'insert into studenci(id) values((select id from osoby where pesel=:c),:e,:f);';
+        }else{
+            const sql = 'insert into osoby(imie,nazwisko,pesel,haslo,typ) values(:a,:b,:c,:b,:d);' +
+                'insert into pracownicy(id) values((select id from osoby where pesel=:c),:e,:f);';
+        }
         const binds = {
             a: imie,
             b: nazwisko,
             c: pesel,
-            d: typ
+            d: typ,
+            e: mod1,
+            f: mod2
         };
         const opt = {
             autoCommit: true,

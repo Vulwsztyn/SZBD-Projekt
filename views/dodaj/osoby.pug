@@ -18,6 +18,20 @@ html
             br
             div
                 label(for = "typ") Typ:
-                input(name = "typ" value = "")
+                    select(name="Typ", onchange="switchOptions(this)")
+                        each type in ['Student','Teacher']
+                            option(value=type) #{type}
             br
-            button(type = "submit") Dodaj wydział
+            div
+                div
+                    label(for = "mod1")#mod1 Strona grupy:
+                    input(name = "mod1" value = "")
+                br
+                div
+                    label(for = "mod2")#mod2 Grupa ID:
+                    input(name = "mod2" value = "")
+            br
+            button(type = "submit") Dodaj Osobe
+
+            script
+                include osobySwitcher.js
