@@ -10,11 +10,10 @@ require('./routes/przedmiot')(router);
 require('./routes/grupa')(router);
 require('./routes/pracownicy')(router);
 require('./routes/student')(router);
-
+require('./routes/wyszukiwarka')(router);
 require('./routes/selectAll')(router);
 require('./routes/dodaj')(router);
 require('./routes/wyswietl')(router);
-
 
 router.get('/users/:userId/books/:bookId', function (req, res) {
     res.send(req.params)

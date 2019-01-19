@@ -2,26 +2,29 @@ html
     head
         title Informacje o grupie
     body
-        a(href='/semestr?semestr='+grupa[2]) Pokaż informacje o semestrze
-        h3 Informacje o grupie #{grupa[1]}
-        p Symbol: #{grupa[1]}
-        h4 Informacje o semestrze grupy
-        p='Wydział: '
-            a(href='/wydzial?wydzial='+grupa[14]) #{grupa[13]}
-        p Kierunek:
-            a(href='/kierunek?kierunek='+grupa[9]) #{grupa[11]}
-        p Tryb: #{grupa[7]}
-        p Stopień: #{grupa[6]}
-        p Rok: #{grupa[5]}
-        p Pora roku: #{grupa[8]}
-        p Numer semestru: #{grupa[4]}
-        p
-            a(href='/wyswietl/plan?semestr='+grupa[0]) Plan zajęć na semestrze
-        h4 Studenci w grupie:
-        table(border='2' id='semestry')
-            tr
-                th Numer Albumu
-            each row in studenci.rows
+        style
+            include ./style.css
+        div#root
+            a(href='/semestr?semestr='+grupa[2]) Pokaż informacje o semestrze
+            h3 Informacje o grupie #{grupa[1]}
+            p Symbol: #{grupa[1]}
+            h4 Informacje o semestrze grupy
+            p='Wydział: '
+                a(href='/wydzial?wydzial='+grupa[14]) #{grupa[13]}
+            p Kierunek:
+                a(href='/kierunek?kierunek='+grupa[9]) #{grupa[11]}
+            p Tryb: #{grupa[7]}
+            p Stopień: #{grupa[6]}
+            p Rok: #{grupa[5]}
+            p Pora roku: #{grupa[8]}
+            p Numer semestru: #{grupa[4]}
+            p
+                a(href='/wyswietl/plan?semestr='+grupa[0]) Plan zajęć na semestrze
+            h4 Studenci w grupie:
+            table(border='2' id='semestry')
                 tr
-                    td
-                        a(href='/student?student='+row[0]) #{row[0]}
+                    th Numer Albumu
+                each row in studenci.rows
+                    tr
+                        td
+                            a(href='/student?student='+row[0]) #{row[0]}

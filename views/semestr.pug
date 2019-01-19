@@ -2,36 +2,39 @@ html
     head
         title Informacje o semestrze
     body
-        a(href='/kierunek?kierunek='+semestr[6]) Pokaż informacje o kierunku
-        h3 Informacje o semestrze #{semestr[1]}
-        p='Wydział: '
-        a(href='/wydzial?wydzial='+semestr[11]) #{semestr[10]}
-        p Kierunek:
-            a(href='/kierunek?kierunek='+semestr[6]) #{semestr[8]}
-        p Tryb: #{semestr[4]}
-        p Stopień: #{semestr[3]}
-        p Rok: #{semestr[2]}
-        p Pora roku: #{semestr[5]}
-        p Numer: #{semestr[1]}
-        p
-            a(href='/wyswietl/plan?semestr='+semestr[0]) Plan zajęć na semestrze
-        h4 Grupy dziekanskie na semestrze:
-        table(border='2' id='semestry')
-            tr
-                th Grupa
-                th Informacje o grupie
-            each row in grupy.rows
+        style
+            include ./style.css
+        div#root
+            a(href='/kierunek?kierunek='+semestr[6]) Pokaż informacje o kierunku
+            h3 Informacje o semestrze #{semestr[1]}
+            p='Wydział: '
+            a(href='/wydzial?wydzial='+semestr[11]) #{semestr[10]}
+            p Kierunek:
+                a(href='/kierunek?kierunek='+semestr[6]) #{semestr[8]}
+            p Tryb: #{semestr[4]}
+            p Stopień: #{semestr[3]}
+            p Rok: #{semestr[2]}
+            p Pora roku: #{semestr[5]}
+            p Numer: #{semestr[1]}
+            p
+                a(href='/wyswietl/plan?semestr='+semestr[0]) Plan zajęć na semestrze
+            h4 Grupy dziekanskie na semestrze:
+            table(border='2' id='semestry')
                 tr
-                    td=row[1]
-                    td
-                        a(href='/grupa?grupa='+row[0]) Informacje o grupie #{row[1]}
-        h4 Przedmioty na semestrze:
-            table(border='2')
-                tr
-                    th Nazwa
-                    th ECTS
-                each row in przemioty.rows
+                    th Grupa
+                    th Informacje o grupie
+                each row in grupy.rows
                     tr
+                        td=row[1]
                         td
-                            a(href='/przedmiot?przedmiot='+row[0]) #{row[1]}
-                        td=row[3]
+                            a(href='/grupa?grupa='+row[0]) Informacje o grupie #{row[1]}
+            h4 Przedmioty na semestrze:
+                table(border='2')
+                    tr
+                        th Nazwa
+                        th ECTS
+                    each row in przemioty.rows
+                        tr
+                            td
+                                a(href='/przedmiot?przedmiot='+row[0]) #{row[1]}
+                            td=row[3]

@@ -2,30 +2,33 @@ html
     head
         title Informacje o studencie
     body
-        a(href='/semestr?semestr='+student[11]) Pokaż informacje o semestrze
-        h3 Informacje o semestrze #{student[1]}
-        p Numer albumu: #{student[0]}
-        p Imię: #{student[4]}
-        p Nazwisko: #{student[5]}
-        h4 Informacje o grupie dziekanskiej:
-        p Symbol #{student[10]}
-        p='Wydział: '
-        a(href='/wydzial?wydzial='+student[21]) #{student[22]}
-        p Kierunek:
-            a(href='/kierunek?kierunek='+student[18]) #{student[20]}
-        p Tryb: #{student[16]}
-        p Stopień: #{student[15]}
-        p Rok: #{student[14]}
-        p Pora roku: #{student[17]}
-        p Numer: #{student[13]}
+        style
+            include ./style.css
+        div#root
+            a(href='/semestr?semestr='+student[11]) Pokaż informacje o semestrze
+            h3 Informacje o semestrze #{student[1]}
+            p Numer albumu: #{student[0]}
+            p Imię: #{student[4]}
+            p Nazwisko: #{student[5]}
+            h4 Informacje o grupie dziekanskiej:
+            p Symbol #{student[10]}
+            p='Wydział: '
+            a(href='/wydzial?wydzial='+student[21]) #{student[22]}
+            p Kierunek:
+                a(href='/kierunek?kierunek='+student[18]) #{student[20]}
+            p Tryb: #{student[16]}
+            p Stopień: #{student[15]}
+            p Rok: #{student[14]}
+            p Pora roku: #{student[17]}
+            p Numer: #{student[13]}
 
-        p
-            a(href='/wyswietl/plan?semestr='+student[11]) Plan zajęć na semestrze
-        h4 Oceny:
-        table(border='2' id='semestry')
-            tr
-            each row in semestry.rows
+            p
+                a(href='/wyswietl/plan?semestr='+student[11]) Plan zajęć na semestrze
+            h4 Oceny:
+            table(border='2' id='semestry')
                 tr
-                    td
-                        a(href='/wyswietl/oceny?semestr='+row[0]+"&student="+student[0]) Pokaż oceny z semestru #{row[1]}
+                each row in semestry.rows
+                    tr
+                        td
+                            a(href='/wyswietl/oceny?semestr='+row[0]+"&student="+student[0]) Pokaż oceny z semestru #{row[1]}
 

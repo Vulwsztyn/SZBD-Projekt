@@ -1,26 +1,32 @@
 html
+
     head
         title ePrOtO
     body
-        if(result && result.metaData && result.rows)
-            h2 ePrOtO
-            table(border='2')
-                tr
-                    th Wydziały
-                each row in result.rows
-                    tr
-                        td
-                            a(href='/wydzial?wydzial='+row[1]) #{row[0]}
-            form(action = "/dodaj/Wydzial", method = "POST")
-                p Dodaj wydział:
+        style
+            include ./style.css
+        div#root
+            if(result && result.metaData && result.rows)
+                h2 ePrOtO
                 div
-                    label(for = "nazwa") Nazwa:
-                    input(name = "nazwa" value = "")
-                br
-                div
-                    label(for = "skrot") Skrot:
-                    input(name = "skrot" value = "")
-                br
-                button(type = "submit") Dodaj wydział
-        else
-            p Nie ma tabeli
+                    a(href='/wyszukiwarka?wyszukaj=0') wyszukiwarka
+                    table(border='2')
+                        tr
+                            th Wydziały
+                        each row in result.rows
+                            tr
+                                td
+                                    a(href='/wydzial?wydzial=' + row[1]) #{row[0]}
+                form(action = "/dodaj/Wydzial", method = "POST")
+                    p Dodaj wydział:
+                    div
+                        label(for = "nazwa") Nazwa:
+                        input(name = "nazwa" value = "")
+                    br
+                    div
+                        label(for = "skrot") Skrot:
+                        input(name = "skrot" value = "")
+                    br
+                    button(type = "submit") Dodaj wydział
+            else
+                p Nie ma tabeli

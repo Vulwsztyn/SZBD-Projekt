@@ -2,68 +2,71 @@ html
     head
         title Infromacje o wydziale
     body
+        style
+            include ./style.css
+        div#root
 
-        a(href='/') Ekran startowy
-        h3 Infromacje o wydziale
-        p Nazwa: #{wydzial[0]}
-        p Skrót: #{wydzial[1]}
-        h4 Kierunki na wydziale:
-        table(border='2')
-            each row in kierunki.rows
-                tr
-                    td
-                        a(href='/kierunek?kierunek=' + row[0]) #{row[1]}
+            a(href='/') Ekran startowy
+            h3 Infromacje o wydziale
+            p Nazwa: #{wydzial[0]}
+            p Skrót: #{wydzial[1]}
+            h4 Kierunki na wydziale:
+            table(border='2')
+                each row in kierunki.rows
+                    tr
+                        td
+                            a(href='/kierunek?kierunek=' + row[0]) #{row[1]}
 
-        h4 Dodaj kierunek do wydziału:
-        form(action = "/dodaj/Kierunek", method = "POST")
+            h4 Dodaj kierunek do wydziału:
+            form(action = "/dodaj/Kierunek", method = "POST")
 
-            div
-                label(for = "nazwa") Nazwa:
-                input(name = "nazwa" value = "")
-            br
-            div
-                    select(name="wydzial" hidden)
-                            option(value=wydzial[1]) #{wydzial[1]}
-            br
-            div
                 div
-                    p Stacjonarne:
-                        input#s(type='checkbox' name='stacjonarne' onclick='showOptions("s","stacjonarne")' checked)
-                    div#stacjonarne(hidden)
-                        p I stopień:
-                            input#s1(type='checkbox' name='s1' onclick='showOptions("s1","s1i")' checked)
-                        div#s1i
-                            p Liczba semestrów:
-                                input#s1l(name = "s1l" value = "7" type="number" min="1" max="10")
-                            p Semestr rozpocznający:
-                                input#s1r(name = "s1r" value = "1" type="number" min="1" max="10")
-                        p II stopień:
-                            input#s2(type='checkbox' name='s2' onclick='showOptions("s2","s2i")' checked)
-                        div#s2i
-                            p Liczba semestrów:
-                                input#s2l(name = "s2l" value = "3" type="number" min="1" max="10")
-                            p Semestr rozpocznający:
-                                input#s2r(name = "s2r" value = "8" type="number" min="1" max="10")
+                    label(for = "nazwa") Nazwa:
+                    input(name = "nazwa" value = "")
+                br
                 div
-                    p Niestacjonarne:
-                        input#n(type='checkbox' name='niestacjonarne' onclick='showOptions("n","niestacjonarne")')
-                    div#niestacjonarne(hidden)
-                        p I stopień:
-                            input#n1(type='checkbox' name='n1' onclick='showOptions("n1","n1i")')
-                        div#n1i
-                            p Liczba semestrów:
-                                input#n1l(name = "n1l" value = "7" type="number" min="1" max="10")
-                            p Semestr rozpocznający:
-                                input#n1r(name = "n1r" value = "1" type="number" min="1" max="10")
-                        p II stopień:
-                            input#n2(type='checkbox' name='n2' onclick='showOptions("n2","n2i")')
-                        div#n2i
-                            p Liczba semestrów:
-                                input#n2l(name = "n2l" value = "3" type="number" min="1" max="10")
-                            p Semestr rozpocznający:
-                                input#n2r(name = "n2r" value = "8" type="number" min="1" max="10")
+                        select(name="wydzial" hidden)
+                                option(value=wydzial[1]) #{wydzial[1]}
+                br
+                div
+                    div
+                        p Stacjonarne:
+                            input#s(type='checkbox' name='stacjonarne' onclick='showOptions("s","stacjonarne")' checked)
+                        div#stacjonarne(hidden)
+                            p I stopień:
+                                input#s1(type='checkbox' name='s1' onclick='showOptions("s1","s1i")' checked)
+                            div#s1i
+                                p Liczba semestrów:
+                                    input#s1l(name = "s1l" value = "7" type="number" min="1" max="10")
+                                p Semestr rozpocznający:
+                                    input#s1r(name = "s1r" value = "1" type="number" min="1" max="10")
+                            p II stopień:
+                                input#s2(type='checkbox' name='s2' onclick='showOptions("s2","s2i")' checked)
+                            div#s2i
+                                p Liczba semestrów:
+                                    input#s2l(name = "s2l" value = "3" type="number" min="1" max="10")
+                                p Semestr rozpocznający:
+                                    input#s2r(name = "s2r" value = "8" type="number" min="1" max="10")
+                    div
+                        p Niestacjonarne:
+                            input#n(type='checkbox' name='niestacjonarne' onclick='showOptions("n","niestacjonarne")')
+                        div#niestacjonarne(hidden)
+                            p I stopień:
+                                input#n1(type='checkbox' name='n1' onclick='showOptions("n1","n1i")')
+                            div#n1i
+                                p Liczba semestrów:
+                                    input#n1l(name = "n1l" value = "7" type="number" min="1" max="10")
+                                p Semestr rozpocznający:
+                                    input#n1r(name = "n1r" value = "1" type="number" min="1" max="10")
+                            p II stopień:
+                                input#n2(type='checkbox' name='n2' onclick='showOptions("n2","n2i")')
+                            div#n2i
+                                p Liczba semestrów:
+                                    input#n2l(name = "n2l" value = "3" type="number" min="1" max="10")
+                                p Semestr rozpocznający:
+                                    input#n2r(name = "n2r" value = "8" type="number" min="1" max="10")
 
-            button(type = "submit") Dodaj Kierunek
+                button(type = "submit") Dodaj Kierunek
         script.
             function showOptions(a, b) {
                 var box = document.getElementById(a);

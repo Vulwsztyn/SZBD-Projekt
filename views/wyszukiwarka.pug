@@ -1,0 +1,92 @@
+html
+    head
+        title Wyszukiwarka
+    body
+        style
+            include ./style.css
+        div#root
+            script
+                include wyszukiwarkaSwitcher.js
+            a(href='/') Ekran startowy
+            form(action = "/wyszukiwarka", method = "GET")
+                div
+                    select(name="which", onchange="switchOptions(this)")
+                        option(value="osoby") osoby
+                        option(value="wydzialy") wydzialy
+                        option(value="kierunki") kierunki
+                        option(value="przedmioty") przedmioty
+                    select(name="param")#osoby
+                        option(value="id") numer albumu
+                        option(value="imie") imie
+                        option(value="nazwisko") nazwisko
+                        option(value="pesel") PESEL
+                    select(name="nope" hidden)#wydzialy
+                        option(value="nazwa") nazwa
+                        option(value="skrot") skrót
+                    select(name="nope" hidden)#kierunki
+                        option(value="nazwa") nazwa
+                        option(value="wydzial_id") skrót wydziału
+                    select(name="nope" hidden)#przedmioty
+                        option(value="nazwa") nazwa
+                        option(value="ects") ects
+                    input(name = "wyszukaj" value = "1" hidden)
+                    input(name = "input" value = "")
+                br
+                button(type = "submit") Szukaj
+            if(osoby && osoby.metaData && osoby.rows)
+                h4 Osoby:
+                    table(border='2')
+                        tr
+                            th Numer Albumu
+                            th Imie
+                            th Nazwisko
+                            th PESEL
+                            th Rola
+                        each row in osoby.rows
+                            tr
+                                td
+                                    p #{row[0]}
+                                td
+                                    p #{row[1]}
+                                td
+                                    p #{row[2]}
+                                td
+                                    p #{row[3]}
+                                td
+                                    p #{row[5]}
+            if(wydzialy && wydzialy.metaData && wydzialy.rows)
+                h4 Wydzialy:
+                    table(border='2')
+                        tr
+                            th Nazwa
+                            th Skrót
+                        each row in wydzialy.rows
+                            tr
+                                td
+                                    p #{row[0]}
+                                td
+                                    p #{row[1]}
+            if(kierunki && kierunki.metaData && kierunki.rows)
+                h4 Kierunki:
+                    table(border='2')
+                        tr
+                            th Nazwa
+                            th Wydzial
+                        each row in kierunki.rows
+                            tr
+                                td
+                                    p #{row[1]}
+                                td
+                                    p #{row[2]}
+            if(przedmioty && przedmioty.metaData && przedmioty.rows)
+                h4 Przedmioty:
+                    table(border='2')
+                        tr
+                            th Nazwa
+                            th ECTS
+                        each row in przedmioty.rows
+                            tr
+                                td
+                                    p #{row[1]}
+                                td
+                                    p #{row[3]}

@@ -2,14 +2,17 @@ html
     head
         title Simple template
     body
-        if(result && result.metaData && result.rows)
-            table(border='2')
-                tr
-                    each d in result.metaData
-                        th=d.name
-                each row in result.rows
+        style
+            include ./style.css
+        div#root
+            if(result && result.metaData && result.rows)
+                table(border='2')
                     tr
-                        each d in row
-                            td=d
-        else
-            p Nie ma tabeli
+                        each d in result.metaData
+                            th=d.name
+                    each row in result.rows
+                        tr
+                            each d in row
+                                td=d
+            else
+                p Nie ma tabeli
