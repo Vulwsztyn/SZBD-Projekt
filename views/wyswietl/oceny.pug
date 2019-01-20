@@ -23,6 +23,7 @@ html
                     th Wspiujący
                     th Ocena
                     th Dodaj/Edytuj
+                    th Usuń
                 - const liczbaWierszy=result.rows.length
                 - var i=0
                 - var p=0
@@ -82,6 +83,23 @@ html
 
                                 br
                                 button(type = "submit") Dodaj/Edytuj
+                        td
+                            -let h5=!false
+                            if (row[6])
+                                -h5=!true
+                            form(id=liczbaPomocnicza action = "/usun/ocena", method = "POST" hidden=h5)
+                                //zajecia
+                                select(name="sid" hidden)
+                                    - var n=sid
+                                    option(value=n) #{n}
+                                select(name="sem" hidden)
+                                    - var n=sem
+                                    option(value=n) #{n}
+                                select(name="zaj" hidden)
+                                    - var n=row[8]
+                                    option(value=n) #{n}
+                                button(type = "submit") Usuń ocenę
+
                     - i++
         else
             p Nie ma tabeli

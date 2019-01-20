@@ -61,7 +61,25 @@ html
                                         p=naz
                                         p=typ
                                         p=sala
-
+                                        form(id=liczbaPomocnicza action = "/usun/plan", method = "POST")
+                                            select(name="sem" hidden)
+                                                - var n=sem
+                                                option(value=n) #{n}
+                                            select(name="grupa" hidden)
+                                                - var n=grupy.rows[Math.floor(i/2)][0]
+                                                option(value=n) #{n}
+                                            select(name="strona" hidden)
+                                                - n="lewa"
+                                                if i % 2 === 1
+                                                    -n="prawa"
+                                                option(value=n) #{n}
+                                            select(name="dzien" hidden)
+                                                - n=dzien+1
+                                                option(value=n) #{n}
+                                            select(name="godzina" hidden)
+                                                - n=godz+1
+                                                option(value=n) #{n}
+                                            button(type = "submit") Usuń zajęcia
                             else
                                 td
                                     button(id=liczbaPomocnicza onclick="funkcja("+liczbaPomocnicza+")") Dodaj Zajęcia

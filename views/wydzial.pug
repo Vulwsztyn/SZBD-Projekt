@@ -100,6 +100,24 @@ html
                             //    input#n2r(name = "n2r" value = "8" type="number" min="1" max="10")
 
             button(type = "submit") Dodaj Kierunek
+        h4 Zespoly na wydziale:
+            table(border='2')
+                each row in zespoly.rows
+                    tr
+                        td
+                            a(href='/zespol?zespol=' + row[0]) #{row[1]}
+        button(onclick="document.getElementById('dodajGrupe').hidden=!document.getElementById('dodajGrupe').hidden") Pokaż/ukryj formularz dodawania zespołu
+        - let h4=true
+        if (blad && blad === "nz")
+            - h4=!true
+        form(action = "/dodaj/zespol", method = "POST" id="dodajGrupe" hidden=h4)
+            div
+                label Nazwa:
+                input(name = "z" value = nz required)
+                input(name = "w" value = wydzial[0] hidden)
+                if (blad && blad === "nz")
+                    p(color="red") Istnieje już zespół o takiej nazwie na tym wydziale
+            button(type = "submit") Dodaj zespół
         br
         p
         br

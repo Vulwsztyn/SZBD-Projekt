@@ -14,15 +14,15 @@ module.exports = function(app){
         var przedmiot = req.body.przedmiot;
         var typ = req.body.typ;
         var sala = req.body.sala;
-        console.log(dzien);
-        console.log(grupa);
-        console.log(przedmiot);
-        console.log(typ);
-        console.log(godzina);
-        console.log(prowadzacy);
-        console.log(strona);
-        console.log(sala);
-        console.log(sem);
+        // console.log(dzien);
+        // console.log(grupa);
+        // console.log(przedmiot);
+        // console.log(typ);
+        // console.log(godzina);
+        // console.log(prowadzacy);
+        // console.log(strona);
+        // console.log(sala);
+        // console.log(sem);
         const sql = 'insert into zajecia_w_planie(dzien_tygodnia,grupa_id,zajecia_id,godzina_id,pracownik_id,strona_grupy,sala) ' +
             'values(:dzien,:grupa,(select id from zajecia where przedmiot_id=:przedmiot and typ=:typ),:godzina,:prowadzacy,:strona,:sala)';
         const binds = {

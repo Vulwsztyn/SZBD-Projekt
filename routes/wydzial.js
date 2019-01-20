@@ -7,6 +7,7 @@ module.exports = function(app){
         let sw=(req.query.sw) ? req.query.sw : "";
         let nw = (req.query.nw) ? req.query.nw : "";
         let nk = (req.query.nk) ? req.query.nk : "";
+        let nz = (req.query.nz) ? req.query.nz : "";
 
         const sql = 'select * from kierunki where wydzial_id=:w';
         const binds = {
@@ -15,13 +16,16 @@ module.exports = function(app){
         const kierunki = await selectFun.select(sql,binds,{});
         const sql2 = 'select * from wydzialy where id=:w';
         const wydzial = await selectFun.select(sql2,binds,{});
+        const sql3 = 'select * from zespoly where wydzial_id=:w';
+        const zespoly = await selectFun.select(sql3,binds,{});
         res.render('wydzial',{
             kierunki:kierunki,
             wydzial:wydzial.rows[0],
             blad:blad,
             nw:nw,
             sw:sw,
-            nk:nk
+            nk:nk,
+            zespoly:zespoly
         });
     });
 };
