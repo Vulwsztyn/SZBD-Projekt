@@ -2,39 +2,42 @@ html
     head
         title Simple template
     body
-        a(href='/') Ekran startowy
-        br
-        - let liczbaGodzin=godziny.rows.length
-        - let godz=0
-        table(border='2')
-            tr
-                th Numer
-                th Czas trwania
-                th Edytuj godzinę rozpoczecia
-                th Edytuj godzinę zakończenia
-            while godz<liczbaGodzin
+        style
+            include ./style.css
+        div#root
+            a(href='/') Ekran startowy
+            br
+            - let liczbaGodzin=godziny.rows.length
+            - let godz=0
+            table(border='2')
                 tr
-                    - var dodatkoweZero=""
-                    - var dodatkoweZero2=""
-                    if godziny.rows[godz][2] < 10
-                        - dodatkoweZero="0"
-                    if godziny.rows[godz][4] < 10
-                        - dodatkoweZero2="0"
-                    - godzina=""+godziny.rows[godz][1]+"."+dodatkoweZero+godziny.rows[godz][2]+"-"+godziny.rows[godz][3]+"."+dodatkoweZero2+godziny.rows[godz][4]
-                    td=godz+1
-                    td=godzina
-                    td
-                        form(action = "/zmien/godziny/rozpoczecia", method = "POST" id="dodajGrupe")
-                            div
-                                input(name = "h" type="number" min=0 max=23  value=godziny.rows[godz][1] width="100px" required)
-                                input(name = "m" type="number" min=0 max=59 value=godziny.rows[godz][2] width="100px" required)
-                                input(name="n" value=godz+1 hidden)
-                            button(type = "submit") Zmień godzinę rozpoczęcia
-                    td
-                        form(action = "/zmien/godziny/zakonczenia", method = "POST")
-                            div
-                                input(name = "h" type="number" min=0 max=23 value=godziny.rows[godz][3] width="100px" required)
-                                input(name = "m" type="number" min=0 max=59 value=godziny.rows[godz][4] width="100px" required)
-                                input(name="n" value=godz+1 hidden)
-                            button(type = "submit") Zmień godzinę zakończenia
-                --godz++
+                    th Numer
+                    th Czas trwania
+                    th Edytuj godzinę rozpoczecia
+                    th Edytuj godzinę zakończenia
+                while godz<liczbaGodzin
+                    tr
+                        - var dodatkoweZero=""
+                        - var dodatkoweZero2=""
+                        if godziny.rows[godz][2] < 10
+                            - dodatkoweZero="0"
+                        if godziny.rows[godz][4] < 10
+                            - dodatkoweZero2="0"
+                        - godzina=""+godziny.rows[godz][1]+"."+dodatkoweZero+godziny.rows[godz][2]+"-"+godziny.rows[godz][3]+"."+dodatkoweZero2+godziny.rows[godz][4]
+                        td=godz+1
+                        td=godzina
+                        td
+                            form(action = "/zmien/godziny/rozpoczecia", method = "POST" id="dodajGrupe")
+                                div
+                                    input(name = "h" type="number" min=0 max=23  value=godziny.rows[godz][1] width="100px" required)
+                                    input(name = "m" type="number" min=0 max=59 value=godziny.rows[godz][2] width="100px" required)
+                                    input(name="n" value=godz+1 hidden)
+                                button(type = "submit") Zmień godzinę rozpoczęcia
+                        td
+                            form(action = "/zmien/godziny/zakonczenia", method = "POST")
+                                div
+                                    input(name = "h" type="number" min=0 max=23 value=godziny.rows[godz][3] width="100px" required)
+                                    input(name = "m" type="number" min=0 max=59 value=godziny.rows[godz][4] width="100px" required)
+                                    input(name="n" value=godz+1 hidden)
+                                button(type = "submit") Zmień godzinę zakończenia
+                    --godz++

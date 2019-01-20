@@ -2,68 +2,71 @@ html
     head
         title Informacje o kierunku
     body
-        a(href='/') Ekran startowy
-        br
-        a(href='/wydzial?wydzial='+kierunek[3]) Pokaż informacje o wydziale
-        h3 Informacje o kierunku
-        p Nazwa: #{kierunek[1]}
-        button(onclick="document.getElementById('zn').hidden=!document.getElementById('zn').hidden") Pokaż/ukryj formularz zmiany nazwy
-        - let h=true
-        - let potencjalnaNazwa=kierunek[1]
-        if (blad && blad === "nk")
-            - h=false
-            - potencjalnaNazwa=nk
-        form(action = "/zmien/Kierunek", method = "POST" id="zn" hidden=h)
-                div
-                    p Nowa nazwa:
-                    input(name = "nazwa" value = potencjalnaNazwa required)
-                    if (blad && blad === "nk")
-                        p(color="red") Istnieje już kierunek o takiej nazwie na tym wydziale
-                    input(name = "k" value = kierunek[0] hidden)
-                br
-                button(type = "submit") Zmień nazwe
-        p='Wydział: '
-            a(href='/wydzial?wydzial='+kierunek[2]) #{kierunek[4]}
-        button(onclick="document.getElementById('zw').hidden=!document.getElementById('zw').hidden") Pokaż/ukryj formularz zmiany wydziału
-        - let h2=true
-        if (blad && blad === "wk")
-            - h2=false
-        form(action = "/zmien/Kierunek", method = "POST" id="zw" hidden=h2)
-                div
-                    p Nowy wydział:
-                    select(name = "wydzial")
-                        each row in wydzialy
-                            option(value=row[0]) #{row[1]}
-                    if (blad && blad === "wk")
-                        p(color="red") Istnieje już kierunek o takiej samej nazwie na wybranym wydziale
-                    input(name = "k" value = kierunek[0] hidden)
-                br
-                button(type = "submit") Zmień wydział
-        h4 Semestry na kierunku:
-        table(border='2' id='semestry')
-            tr
-                th Tryb
-                th Stopień
-                th Rok
-                th Pora roku
-                th Numer
-                th Informacje o semestrze
-            each row in semestry.rows
+        style
+            include ./style.css
+        div#root
+            a(href='/') Ekran startowy
+            br
+            a(href='/wydzial?wydzial='+kierunek[3]) Pokaż informacje o wydziale
+            h3 Informacje o kierunku
+            p Nazwa: #{kierunek[1]}
+            button(onclick="document.getElementById('zn').hidden=!document.getElementById('zn').hidden") Pokaż/ukryj formularz zmiany nazwy
+            - let h=true
+            - let potencjalnaNazwa=kierunek[1]
+            if (blad && blad === "nk")
+                - h=false
+                - potencjalnaNazwa=nk
+            form(action = "/zmien/Kierunek", method = "POST" id="zn" hidden=h)
+                    div
+                        p Nowa nazwa:
+                        input(name = "nazwa" value = potencjalnaNazwa required)
+                        if (blad && blad === "nk")
+                            p(color="red") Istnieje już kierunek o takiej nazwie na tym wydziale
+                        input(name = "k" value = kierunek[0] hidden)
+                    br
+                    button(type = "submit") Zmień nazwe
+            p='Wydział: '
+                a(href='/wydzial?wydzial='+kierunek[2]) #{kierunek[4]}
+            button(onclick="document.getElementById('zw').hidden=!document.getElementById('zw').hidden") Pokaż/ukryj formularz zmiany wydziału
+            - let h2=true
+            if (blad && blad === "wk")
+                - h2=false
+            form(action = "/zmien/Kierunek", method = "POST" id="zw" hidden=h2)
+                    div
+                        p Nowy wydział:
+                        select(name = "wydzial")
+                            each row in wydzialy
+                                option(value=row[0]) #{row[1]}
+                        if (blad && blad === "wk")
+                            p(color="red") Istnieje już kierunek o takiej samej nazwie na wybranym wydziale
+                        input(name = "k" value = kierunek[0] hidden)
+                    br
+                    button(type = "submit") Zmień wydział
+            h4 Semestry na kierunku:
+            table(border='2' id='semestry')
                 tr
-                    td=row[4]
-                    td=row[3]
-                    td=row[2]
-                    td=row[5]
-                    td=row[1]
-                    td
-                        a(href='/semestr?semestr='+row[0]) Informacje o semestrze #{row[1]}
-        br
-        p
-        br
-        form(action = "/usun/kierunek", method = "POST" onsubmit="return confirm('Na pewno chcesz usunąć ten kierunek?');")
-            input(name = "kierunek" value = kierunek[0] hidden)
-            input(name = "wydzial" value = kierunek[3] hidden)
-            button(type = "submit" color="red") Usuń Kierunek
+                    th Tryb
+                    th Stopień
+                    th Rok
+                    th Pora roku
+                    th Numer
+                    th Informacje o semestrze
+                each row in semestry.rows
+                    tr
+                        td=row[4]
+                        td=row[3]
+                        td=row[2]
+                        td=row[5]
+                        td=row[1]
+                        td
+                            a(href='/semestr?semestr='+row[0]) Informacje o semestrze #{row[1]}
+            br
+            p
+            br
+            form(action = "/usun/kierunek", method = "POST" onsubmit="return confirm('Na pewno chcesz usunąć ten kierunek?');")
+                input(name = "kierunek" value = kierunek[0] hidden)
+                input(name = "wydzial" value = kierunek[3] hidden)
+                button(type = "submit" color="red") Usuń Kierunek
 script.
     var table=document.getElementById("semestry")
     for (var i = 0, row; row = table.rows[i]; i++) {
@@ -76,6 +79,6 @@ script.
                 }
             }
             k++
-        }
+
 
     }

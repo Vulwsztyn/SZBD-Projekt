@@ -3,29 +3,35 @@ html
     head
         title ePrOtO
     body
-        if(result && result.metaData && result.rows)
-            h2 ePrOtO
-            table(border='2')
-                tr
-                    th Wydziały
-                each row in result.rows
-                    tr
-                        td
-                            a(href='/wydzial?wydzial='+row[0]) #{row[1]}
-            form(action = "/dodaj/Wydzial", method = "POST")
-                p Dodaj wydział:
-                div
-                    label(for = "nazwa") Nazwa:
-                    input(name = "nazwa" value = nazwa required)
-                    if (blad && blad==="nazwa")
-                        p(color="red") Istnieje już wydział o takiej nazwie
+        style
+            include ./style.css
+        div#root
+            if(result && result.metaData && result.rows)
+                h2 ePrOtO
 
-                br
                 div
-                    label(for = "skrot") Skrot:
-                    input(name = "skrot" value = skrot required)
-                    if (blad && blad === "skrot")
-                        p(color="red") Istnieje już wydział o takim skrócie
-                br
-                button(type = "submit") Dodaj wydział
-            a(href='/godziny') Wyświetl godziny zajęć
+                    a(href='/wyszukiwarka?wyszukaj=0') wyszukiwarka
+                table(border='2')
+                    tr
+                        th Wydziały
+                    each row in result.rows
+                        tr
+                            td
+                                a(href='/wydzial?wydzial='+row[0]) #{row[1]}
+                form(action = "/dodaj/Wydzial", method = "POST")
+                    p Dodaj wydział:
+                    div
+                        label(for = "nazwa") Nazwa:
+                        input(name = "nazwa" value = nazwa required)
+                        if (blad && blad==="nazwa")
+                            p(color="red") Istnieje już wydział o takiej nazwie
+
+                    br
+                    div
+                        label(for = "skrot") Skrot:
+                        input(name = "skrot" value = skrot required)
+                        if (blad && blad === "skrot")
+                            p(color="red") Istnieje już wydział o takim skrócie
+                    br
+                    button(type = "submit") Dodaj wydział
+                a(href='/godziny') Wyświetl godziny zajęć

@@ -2,54 +2,47 @@ html
     head
         title Informacje o semestrze
     body
-        a(href='/') Ekran startowy
-        br
-        a(href='/kierunek?kierunek='+semestr[6]) Pokaż informacje o kierunku
-        h3 Informacje o semestrze #{semestr[1]}
-        p='Wydział: '
-        a(href='/wydzial?wydzial='+semestr[9]) #{semestr[11]}
-        p Kierunek:
-            a(href='/kierunek?kierunek='+semestr[6]) #{semestr[8]}
-        p Tryb: #{semestr[4]}
-        p Stopień: #{semestr[3]}
-        p Rok: #{semestr[2]}
-        p Pora roku: #{semestr[5]}
-        p Numer: #{semestr[1]}
-        p
-            a(href='/wyswietl/plan?semestr='+semestr[0]) Plan zajęć na semestrze
-        h4 Grupy dziekanskie na semestrze:
-        table(border='2' id='semestry')
-            tr
-                th Grupa
-                th Informacje o grupie
-            each row in grupy.rows
+        style
+            include ./style.css
+        div#root
+            a(href='/') Ekran startowy
+            br
+            a(href='/kierunek?kierunek='+semestr[6]) Pokaż informacje o kierunku
+            h3 Informacje o semestrze #{semestr[1]}
+            p='Wydział: '
+            a(href='/wydzial?wydzial='+semestr[9]) #{semestr[11]}
+            p Kierunek:
+                a(href='/kierunek?kierunek='+semestr[6]) #{semestr[8]}
+            p Tryb: #{semestr[4]}
+            p Stopień: #{semestr[3]}
+            p Rok: #{semestr[2]}
+            p Pora roku: #{semestr[5]}
+            p Numer: #{semestr[1]}
+            p
+                a(href='/wyswietl/plan?semestr='+semestr[0]) Plan zajęć na semestrze
+            h4 Grupy dziekanskie na semestrze:
+            table(border='2' id='semestry')
                 tr
-                    td=row[1]
-                    td
-                        a(href='/grupa?grupa='+row[0]) Informacje o grupie #{row[1]}
-        button(onclick="document.getElementById('dodajGrupe').hidden=!document.getElementById('dodajGrupe').hidden") Pokaż/ukryj formularz dodawania grupy
-        - let h=true
-        if (blad && blad === "ng")
-            - h=!true
-        form(action = "/dodaj/grupy", method = "POST" id="dodajGrupe" hidden=h)
-                div
-                    label Symbol:
-                    input(name = "sym" value = ng required)
-                    input(name = "sem" value = semestr[0] hidden)
-                    if (blad && blad === "ng")
-                        p(color="red") Istnieje już grupa o takim symbolu na tym semestrze
-                button(type = "submit") Dodaj grupę
-
-        h4 Przedmioty na semestrze:
-            table(border='2')
-                tr
-                    th Nazwa
-                    th ECTS
-                each row in przemioty.rows
+                    th Grupa
+                    th Informacje o grupie
+                each row in grupy.rows
                     tr
                         td=row[1]
                         td
                             a(href='/grupa?grupa='+row[0]) Informacje o grupie #{row[1]}
+            button(onclick="document.getElementById('dodajGrupe').hidden=!document.getElementById('dodajGrupe').hidden") Pokaż/ukryj formularz dodawania grupy
+            - let h=true
+            if (blad && blad === "ng")
+                - h=!true
+            form(action = "/dodaj/grupy", method = "POST" id="dodajGrupe" hidden=h)
+                    div
+                        label Symbol:
+                        input(name = "sym" value = ng required)
+                        input(name = "sem" value = semestr[0] hidden)
+                        if (blad && blad === "ng")
+                            p(color="red") Istnieje już grupa o takim symbolu na tym semestrze
+                    button(type = "submit") Dodaj grupę
+
             h4 Przedmioty na semestrze:
                 table(border='2')
                     tr
@@ -57,40 +50,50 @@ html
                         th ECTS
                     each row in przemioty.rows
                         tr
+                            td=row[1]
                             td
-                                a(href='/przedmiot?przedmiot='+row[0]) #{row[1]}
-                            td=row[3]
+                                a(href='/grupa?grupa='+row[0]) Informacje o grupie #{row[1]}
+                h4 Przedmioty na semestrze:
+                    table(border='2')
+                        tr
+                            th Nazwa
+                            th ECTS
+                        each row in przemioty.rows
+                            tr
+                                td
+                                    a(href='/przedmiot?przedmiot='+row[0]) #{row[1]}
+                                td=row[3]
 
-        button(onclick="document.getElementById('dodajPrzedmiot').hidden=!document.getElementById('dodajPrzedmiot').hidden") Pokaż/ukryj formularz dodawania przedmiotu
-        - let h2=true
-        if (blad && blad === "np")
-            - h2=!true
-        form(action = "/dodaj/przedmioty", method = "POST" id="dodajPrzedmiot" hidden=h2)
-            div
-                label Nazwa:
-                br
-                input(name = "przedmiot" value = np required)
-                if (blad && blad === "np")
-                    p(color="red") Istnieje już przemiot o takiej nazwie na tym semestrze
-                br
-                label ECTS:
-                input(name = "ECTS" type="number" value = np min="1" max="100" required)
-                table
-                    tr
-                        td
-                            label Wykład:
-                        td
-                            input(type='checkbox' name='w')
-                    tr
-                        td
-                            label Ćwiczenia:
-                        td
-                            input(type='checkbox' name='c')
-                    tr
-                        td
-                            label Laboratoria:
-                        td
-                            input(type='checkbox' name='l')
-                input(name = "semestr" value = semestr[0] hidden)
+            button(onclick="document.getElementById('dodajPrzedmiot').hidden=!document.getElementById('dodajPrzedmiot').hidden") Pokaż/ukryj formularz dodawania przedmiotu
+            - let h2=true
+            if (blad && blad === "np")
+                - h2=!true
+            form(action = "/dodaj/przedmioty", method = "POST" id="dodajPrzedmiot" hidden=h2)
+                div
+                    label Nazwa:
+                    br
+                    input(name = "przedmiot" value = np required)
+                    if (blad && blad === "np")
+                        p(color="red") Istnieje już przemiot o takiej nazwie na tym semestrze
+                    br
+                    label ECTS:
+                    input(name = "ECTS" type="number" value = np min="1" max="100" required)
+                    table
+                        tr
+                            td
+                                label Wykład:
+                            td
+                                input(type='checkbox' name='w')
+                        tr
+                            td
+                                label Ćwiczenia:
+                            td
+                                input(type='checkbox' name='c')
+                        tr
+                            td
+                                label Laboratoria:
+                            td
+                                input(type='checkbox' name='l')
+                    input(name = "semestr" value = semestr[0] hidden)
 
-            button(type = "submit") Dodaj przedmiot
+                button(type = "submit") Dodaj przedmiot

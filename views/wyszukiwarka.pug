@@ -25,7 +25,6 @@ html
                         option(value="skrot") skrót
                     select(name="nope" hidden)#kierunki
                         option(value="nazwa") nazwa
-                        option(value="wydzial_id") skrót wydziału
                     select(name="nope" hidden)#przedmioty
                         option(value="nazwa") nazwa
                         option(value="ects") ects
@@ -63,21 +62,18 @@ html
                         each row in wydzialy.rows
                             tr
                                 td
-                                    p #{row[0]}
-                                td
                                     p #{row[1]}
+                                td
+                                    p #{row[2]}
             if(kierunki && kierunki.metaData && kierunki.rows)
                 h4 Kierunki:
                     table(border='2')
                         tr
                             th Nazwa
-                            th Wydzial
                         each row in kierunki.rows
                             tr
                                 td
                                     p #{row[1]}
-                                td
-                                    p #{row[2]}
             if(przedmioty && przedmioty.metaData && przedmioty.rows)
                 h4 Przedmioty:
                     table(border='2')

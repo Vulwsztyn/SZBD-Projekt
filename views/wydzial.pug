@@ -6,127 +6,127 @@ html
             include ./style.css
         div#root
 
-        a(href='/') Ekran startowy
-        h3 Infromacje o wydziale
-        p Nazwa: #{wydzial[1]}
-        button(onclick="document.getElementById('zn').hidden=!document.getElementById('zn').hidden") Pokaż/ukryj formularz zmiany nazwy
-        - let potencjalnaNazwa=wydzial[1]
-        - let h=true
-        if (nw)
-            - potencjalnaNazwa=nw
-            - h=false
-        form(action = "/zmien/Wydzial", method = "POST" id="zn" hidden=h)
-            div
-                p Nowa nazwa:
-                input(name = "nazwa" value = potencjalnaNazwa required)
-                if (blad && blad==="nw")
-                    p(color="red") Istnieje już wydział o takiej nazwie
-                input(name = "w" value = wydzial[0] hidden)
-            br
-            button(type = "submit") Zmień nazwe
-        p Skrót: #{wydzial[2]}
-        button(onclick="document.getElementById('zs').hidden=!document.getElementById('zs').hidden") Pokaż/ukryj formularz zmiany skrótu
-        - let potencjalnySkrot=wydzial[2]
-        - let h2=true
-        if (sw)
-            - potencjalnySkrot=sw
-            - h2=false
-        form(action = "/zmien/Wydzial", method = "POST" id="zs" hidden=h2)
-            div
-                p Nowy skrot:
-                input(name = "skrot" value = potencjalnySkrot required)
-                if (blad && blad === "sw")
-                    p(color="red") Istnieje już wydział o takim skrocie
-                input(name = "w" value = wydzial[0] hidden)
-            br
-            button(type = "submit") Zmień skrot
-        h4 Kierunki na wydziale:
-        table(border='2')
-            each row in kierunki.rows
-                tr
-                    td
-                        a(href='/kierunek?kierunek=' + row[0]) #{row[1]}
-
-        h4 Dodaj kierunek do wydziału:
-        button(onclick="document.getElementById('dodajKierunek').hidden=!document.getElementById('dodajKierunek').hidden") Pokaż/ukryj formularz dodawania kierunku
-        - let h3=true
-        if (nk)
-            - h3=false
-        form(action = "/dodaj/Kierunek", method = "POST" id="dodajKierunek" hidden=h3)
-
-            div
-                label Nazwa:
-                input(name = "nazwa" value = nk)
-                if (blad && blad === "nk")
-                    p(color="red") Istnieje już kierunek o takiej nazwie na tym wydziale
-
-            div(hidden)
-                    select(name="wydzial")
-                            option(value=wydzial[0]) #{wydzial[0]}
-
-            div
+            a(href='/') Ekran startowy
+            h3 Infromacje o wydziale
+            p Nazwa: #{wydzial[1]}
+            button(onclick="document.getElementById('zn').hidden=!document.getElementById('zn').hidden") Pokaż/ukryj formularz zmiany nazwy
+            - let potencjalnaNazwa=wydzial[1]
+            - let h=true
+            if (nw)
+                - potencjalnaNazwa=nw
+                - h=false
+            form(action = "/zmien/Wydzial", method = "POST" id="zn" hidden=h)
                 div
-                    p Stacjonarne:
-                        input#s(type='checkbox' name='stacjonarne' onclick='showOptions("s","stacjonarne")' checked)
-                    div#stacjonarne(hidden)
-                        p I stopień:
-                            input#s1(type='checkbox' name='s1' onclick='showOptions("s1","s1i")' checked)
-                        div#s1i
-                            p Liczba semestrów:
-                                input#s1l(name = "s1l" value = "7" type="number" min="1" max="10")
-                            //p Semestr rozpocznający:
-                            //    input#s1r(name = "s1r" value = "1" type="number" min="1" max="10")
-                        p II stopień:
-                            input#s2(type='checkbox' name='s2' onclick='showOptions("s2","s2i")' checked)
-                        div#s2i
-                            p Liczba semestrów:
-                                input#s2l(name = "s2l" value = "3" type="number" min="1" max="10")
-                            //p Semestr rozpocznający:
-                            //    input#s2r(name = "s2r" value = "8" type="number" min="1" max="10")
+                    p Nowa nazwa:
+                    input(name = "nazwa" value = potencjalnaNazwa required)
+                    if (blad && blad==="nw")
+                        p(color="red") Istnieje już wydział o takiej nazwie
+                    input(name = "w" value = wydzial[0] hidden)
+                br
+                button(type = "submit") Zmień nazwe
+            p Skrót: #{wydzial[2]}
+            button(onclick="document.getElementById('zs').hidden=!document.getElementById('zs').hidden") Pokaż/ukryj formularz zmiany skrótu
+            - let potencjalnySkrot=wydzial[2]
+            - let h2=true
+            if (sw)
+                - potencjalnySkrot=sw
+                - h2=false
+            form(action = "/zmien/Wydzial", method = "POST" id="zs" hidden=h2)
                 div
-                    p Niestacjonarne:
-                        input#n(type='checkbox' name='niestacjonarne' onclick='showOptions("n","niestacjonarne")')
-                    div#niestacjonarne(hidden)
-                        p I stopień:
-                            input#n1(type='checkbox' name='n1' onclick='showOptions("n1","n1i")')
-                        div#n1i
-                            p Liczba semestrów:
-                                input#n1l(name = "n1l" value = "7" type="number" min="1" max="10")
-                            //p Semestr rozpocznający:
-                            //    input#n1r(name = "n1r" value = "1" type="number" min="1" max="10")
-                        p II stopień:
-                            input#n2(type='checkbox' name='n2' onclick='showOptions("n2","n2i")')
-                        div#n2i
-                            p Liczba semestrów:
-                                input#n2l(name = "n2l" value = "3" type="number" min="1" max="10")
-                            //p Semestr rozpocznający:
-                            //    input#n2r(name = "n2r" value = "8" type="number" min="1" max="10")
-
-            button(type = "submit") Dodaj Kierunek
-        h4 Zespoly na wydziale:
+                    p Nowy skrot:
+                    input(name = "skrot" value = potencjalnySkrot required)
+                    if (blad && blad === "sw")
+                        p(color="red") Istnieje już wydział o takim skrocie
+                    input(name = "w" value = wydzial[0] hidden)
+                br
+                button(type = "submit") Zmień skrot
+            h4 Kierunki na wydziale:
             table(border='2')
-                each row in zespoly.rows
+                each row in kierunki.rows
                     tr
                         td
-                            a(href='/zespol?zespol=' + row[0]) #{row[1]}
-        button(onclick="document.getElementById('dodajGrupe').hidden=!document.getElementById('dodajGrupe').hidden") Pokaż/ukryj formularz dodawania zespołu
-        - let h4=true
-        if (blad && blad === "nz")
-            - h4=!true
-        form(action = "/dodaj/zespol", method = "POST" id="dodajGrupe" hidden=h4)
-            div
-                label Nazwa:
-                input(name = "z" value = nz required)
-                input(name = "w" value = wydzial[0] hidden)
-                if (blad && blad === "nz")
-                    p(color="red") Istnieje już zespół o takiej nazwie na tym wydziale
-            button(type = "submit") Dodaj zespół
-        br
-        p
-        br
-        form(action = "/usun/wydzial", method = "POST" onsubmit="return confirm('Na pewno chcesz usunąć ten wydział?');")
-            input(name = "wydzial" value = wydzial[0] hidden)
-            button(type = "submit" color="red") Usuń wydział
+                            a(href='/kierunek?kierunek=' + row[0]) #{row[1]}
+
+            h4 Dodaj kierunek do wydziału:
+            button(onclick="document.getElementById('dodajKierunek').hidden=!document.getElementById('dodajKierunek').hidden") Pokaż/ukryj formularz dodawania kierunku
+            - let h3=true
+            if (nk)
+                - h3=false
+            form(action = "/dodaj/Kierunek", method = "POST" id="dodajKierunek" hidden=h3)
+
+                div
+                    label Nazwa:
+                    input(name = "nazwa" value = nk)
+                    if (blad && blad === "nk")
+                        p(color="red") Istnieje już kierunek o takiej nazwie na tym wydziale
+
+                div(hidden)
+                        select(name="wydzial")
+                                option(value=wydzial[0]) #{wydzial[0]}
+
+                div
+                    div
+                        p Stacjonarne:
+                            input#s(type='checkbox' name='stacjonarne' onclick='showOptions("s","stacjonarne")' checked)
+                        div#stacjonarne(hidden)
+                            p I stopień:
+                                input#s1(type='checkbox' name='s1' onclick='showOptions("s1","s1i")' checked)
+                            div#s1i
+                                p Liczba semestrów:
+                                    input#s1l(name = "s1l" value = "7" type="number" min="1" max="10")
+                                //p Semestr rozpocznający:
+                                //    input#s1r(name = "s1r" value = "1" type="number" min="1" max="10")
+                            p II stopień:
+                                input#s2(type='checkbox' name='s2' onclick='showOptions("s2","s2i")' checked)
+                            div#s2i
+                                p Liczba semestrów:
+                                    input#s2l(name = "s2l" value = "3" type="number" min="1" max="10")
+                                //p Semestr rozpocznający:
+                                //    input#s2r(name = "s2r" value = "8" type="number" min="1" max="10")
+                    div
+                        p Niestacjonarne:
+                            input#n(type='checkbox' name='niestacjonarne' onclick='showOptions("n","niestacjonarne")')
+                        div#niestacjonarne(hidden)
+                            p I stopień:
+                                input#n1(type='checkbox' name='n1' onclick='showOptions("n1","n1i")')
+                            div#n1i
+                                p Liczba semestrów:
+                                    input#n1l(name = "n1l" value = "7" type="number" min="1" max="10")
+                                //p Semestr rozpocznający:
+                                //    input#n1r(name = "n1r" value = "1" type="number" min="1" max="10")
+                            p II stopień:
+                                input#n2(type='checkbox' name='n2' onclick='showOptions("n2","n2i")')
+                            div#n2i
+                                p Liczba semestrów:
+                                    input#n2l(name = "n2l" value = "3" type="number" min="1" max="10")
+                                //p Semestr rozpocznający:
+                                //    input#n2r(name = "n2r" value = "8" type="number" min="1" max="10")
+
+                button(type = "submit") Dodaj Kierunek
+            h4 Zespoly na wydziale:
+                table(border='2')
+                    each row in zespoly.rows
+                        tr
+                            td
+                                a(href='/zespol?zespol=' + row[0]) #{row[1]}
+            button(onclick="document.getElementById('dodajGrupe').hidden=!document.getElementById('dodajGrupe').hidden") Pokaż/ukryj formularz dodawania zespołu
+            - let h4=true
+            if (blad && blad === "nz")
+                - h4=!true
+            form(action = "/dodaj/zespol", method = "POST" id="dodajGrupe" hidden=h4)
+                div
+                    label Nazwa:
+                    input(name = "z" value = nz required)
+                    input(name = "w" value = wydzial[0] hidden)
+                    if (blad && blad === "nz")
+                        p(color="red") Istnieje już zespół o takiej nazwie na tym wydziale
+                button(type = "submit") Dodaj zespół
+            br
+            p
+            br
+            form(action = "/usun/wydzial", method = "POST" onsubmit="return confirm('Na pewno chcesz usunąć ten wydział?');")
+                input(name = "wydzial" value = wydzial[0] hidden)
+                button(type = "submit" color="red") Usuń wydział
         script.
             function showOptions(a, b) {
                 var box = document.getElementById(a);
