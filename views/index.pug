@@ -10,16 +10,21 @@ html
                 each row in result.rows
                     tr
                         td
-                            a(href='/wydzial?wydzial='+row[1]) #{row[0]}
+                            a(href='/wydzial?wydzial='+row[0]) #{row[1]}
             form(action = "/dodaj/Wydzial", method = "POST")
                 p Dodaj wydział:
                 div
                     label(for = "nazwa") Nazwa:
-                    input(name = "nazwa" value = "")
+                    input(name = "nazwa" value = nazwa required)
+                    if (blad && blad==="nazwa")
+                        p(color="red") Istnieje już wydział o takiej nazwie
+
                 br
                 div
                     label(for = "skrot") Skrot:
-                    input(name = "skrot" value = "")
+                    input(name = "skrot" value = skrot required)
+                    if (blad && blad === "skrot")
+                        p(color="red") Istnieje już wydział o takim skrócie
                 br
                 button(type = "submit") Dodaj wydział
         else

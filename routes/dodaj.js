@@ -5,4 +5,5 @@ module.exports = function(app){
     require('./dodaj/przedmioty')(app);
     require('./dodaj/plan')(app);
     require('./dodaj/oceny')(app);
+    require('./dodaj/student')(app);
 };

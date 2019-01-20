@@ -2,11 +2,41 @@ html
     head
         title Informacje o kierunku
     body
-        a(href='/wydzial?wydzial='+kierunek[4]) Pokaż informacje o wydziale
+        a(href='/wydzial?wydzial='+kierunek[3]) Pokaż informacje o wydziale
         h3 Informacje o kierunku
         p Nazwa: #{kierunek[1]}
+        button(onclick="document.getElementById('zn').hidden=!document.getElementById('zn').hidden") Pokaż/ukryj formularz zmiany nazwy
+        - let h=true
+        - let potencjalnaNazwa=kierunek[1]
+        if (blad && blad === "nk")
+            - h=false
+            - potencjalnaNazwa=nk
+        form(action = "/zmien/Kierunek", method = "POST" id="zn" hidden=h)
+                div
+                    p Nowa nazwa:
+                    input(name = "nazwa" value = potencjalnaNazwa required)
+                    if (blad && blad === "nk")
+                        p(color="red") Istnieje już kierunek o takiej nazwie na tym wydziale
+                    input(name = "k" value = kierunek[0] hidden)
+                br
+                button(type = "submit") Zmień nazwe
         p='Wydział: '
-            a(href='/wydzial?wydzial='+kierunek[4]) #{kierunek[3]}
+            a(href='/wydzial?wydzial='+kierunek[2]) #{kierunek[4]}
+        button(onclick="document.getElementById('zw').hidden=!document.getElementById('zw').hidden") Pokaż/ukryj formularz zmiany wydziału
+        - let h2=true
+        if (blad && blad === "wk")
+            - h2=false
+        form(action = "/zmien/Kierunek", method = "POST" id="zw" hidden=h2)
+                div
+                    p Nowy wydział:
+                    select(name = "wydzial")
+                        each row in wydzialy
+                            option(value=row[0]) #{row[1]}
+                    if (blad && blad === "wk")
+                        p(color="red") Istnieje już kierunek o takiej samej nazwie na wybranym wydziale
+                    input(name = "k" value = kierunek[0] hidden)
+                br
+                button(type = "submit") Zmień wydział
         h4 Semestry na kierunku:
         table(border='2' id='semestry')
             tr

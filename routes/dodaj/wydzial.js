@@ -7,8 +7,8 @@ module.exports = function(app){
         res.render('dodaj/wydzial');
     });
     app.post('/dodaj/Wydzial', async function (req, res) {
-        nazwa = req.body.nazwa;
-        skrot = req.body.skrot;
+        let nazwa = req.body.nazwa;
+        let skrot = req.body.skrot;
         const sql = 'insert into wydzialy(nazwa,skrot) values(:a,:b)';
         const binds = {
             a: nazwa,
@@ -17,7 +17,20 @@ module.exports = function(app){
         const opt = {
             autoCommit: true,
         };
-        await insertFunctions.insertOne(sql, binds, opt);
-        res.redirect('/');
+        async function test() {
+            await insertFunctions.insertOne(sql, binds, opt);
+        }
+        let blad="";
+        await test().catch((err) => {
+            console.log(err.message);
+            if (err.message.includes('WYDZIALY_NAZWA_UN')){
+                blad='?blad=nazwa';
+            }
+            if (err.message.includes('WYDZIALY_SKROT_UN')){
+                blad='?blad=skrot';
+            }
+            blad+="&nazwa="+nazwa+'&skrot='+skrot;
+        });
+        res.redirect('/'+blad);
     });
 };

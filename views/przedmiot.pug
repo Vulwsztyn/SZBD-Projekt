@@ -5,13 +5,36 @@ html
         a(href='/semestr?semestr='+przedmiot[2]) Pokaż informacje o semestrze
         h3 Informacje o przedmiocie
         p Nazwa: #{przedmiot[1]}
+        button(onclick="document.getElementById('zn').hidden=!document.getElementById('zn').hidden") Pokaż/ukryj formularz zmiany nazwy
+        - let h=true
+        - let potencjalnaNazwa=przedmiot[1]
+        if (blad && blad === "np")
+            - h=!true
+            - potencjalnaNazwa=np
+        form(action = "/zmien/przedmiot", method = "POST" id="zn" hidden=h)
+            div
+                p Nowa nazwa:
+                input(name = "nazwa" value = potencjalnaNazwa required)
+                if (blad && blad === "np")
+                    p(color="red") Istnieje już przemiot o takiej nazwie na tym semestrze
+                input(name = "p" value = przedmiot[0] hidden)
+            br
+            button(type = "submit") Zmień nazwe
         p ECTS: #{przedmiot[3]}
+        button(onclick="document.getElementById('ze').hidden=!document.getElementById('ze').hidden") Pokaż/ukryj formularz zmiany liczby ECTS
+        form(action = "/zmien/przedmiot", method = "POST" id="ze" hidden)
+            div
+                p Nowa liczba ECTS:
+                input(name = "ects" type="number" min="1" max="100"  value = przedmiot[3] required)
+                input(name = "p" value = przedmiot[0] hidden)
+            br
+            button(type = "submit") Zmień liczbę ECTS
         p Ćwiczenia: #{zajecia[0]}
         p Laboratiria: #{zajecia[1]}
         p Wykład: #{zajecia[2]}
         h4 Informacje o semestrze przedmiotu
         p='Wydział: '
-            a(href='/wydzial?wydzial='+przedmiot[13]) #{przedmiot[14]}
+            a(href='/wydzial?wydzial='+przedmiot[14]) #{przedmiot[15]}
         p Kierunek:
             a(href='/kierunek?kierunek='+przedmiot[10]) #{przedmiot[12]}
         p Tryb: #{przedmiot[8]}
@@ -20,4 +43,4 @@ html
         p Pora roku: #{przedmiot[9]}
         p Numer semestru: #{przedmiot[5]}
         p
-            a(href='/wyswietl/plan?semestr='+przedmiot[0]) Plan zajęć na semestrze
+            a(href='/wyswietl/plan?semestr='+przedmiot[2]) Plan zajęć na semestrze

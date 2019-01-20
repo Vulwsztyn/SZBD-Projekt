@@ -22,34 +22,48 @@ module.exports = function(app){
         const opt = {
             autoCommit: true,
         };
-        await insertFunctions.insertOne(sql, binds, opt);
-        let bindsZaj=[];
-        if(req.body.w) bindsZaj.push([
-            "w",
-             req.body.przedmiot,
-             parseInt(req.body.semestr)
-        ]);
-        if(req.body.c) bindsZaj.push([
-           "c",
-             req.body.przedmiot,
-            parseInt(req.body.semestr)
-        ]);
-        if(req.body.l) bindsZaj.push([
-            "l",
-           req.body.przedmiot,
-             parseInt(req.body.semestr)
-        ]);
-        sql = "INSERT INTO zajecia(typ, przedmiot_id) VALUES (:1,(select id from przedmioty where nazwa=:2 and semestr_id=:3))";
-        const options = {
-            autoCommit: true,   // autocommit if there are no batch errors
-            batchErrors: true,
-            bindDefs: [         // describes the data in 'binds'
-                {type: oracledb.STRING, maxSize: 3},
-                {type: oracledb.STRING, maxSize: 38},
-                {type: oracledb.NUMBER}
-            ]
-        };
-        await insertFunctions.insertMany(sql,bindsZaj,options);
-        res.redirect('/dodaj/przedmioty');
+
+        async function test() {
+            await insertFunctions.insertOne(sql, binds, opt);
+        }
+        let blad="";
+        await test().catch((err) => {
+            console.log(err.message);
+            if (err.message.includes('NAZWA_W_SEM_UN')){
+                blad='&blad=np';
+                blad+="&np="+req.body.przedmiot;
+            }
+
+        });
+        if(blad===""){
+            let bindsZaj=[];
+            if(req.body.w) bindsZaj.push([
+                "w",
+                req.body.przedmiot,
+                parseInt(req.body.semestr)
+            ]);
+            if(req.body.c) bindsZaj.push([
+                "c",
+                req.body.przedmiot,
+                parseInt(req.body.semestr)
+            ]);
+            if(req.body.l) bindsZaj.push([
+                "l",
+                req.body.przedmiot,
+                parseInt(req.body.semestr)
+            ]);
+            sql = "INSERT INTO zajecia(typ, przedmiot_id) VALUES (:1,(select id from przedmioty where nazwa=:2 and semestr_id=:3))";
+            const options = {
+                autoCommit: true,   // autocommit if there are no batch errors
+                batchErrors: true,
+                bindDefs: [         // describes the data in 'binds'
+                    {type: oracledb.STRING, maxSize: 3},
+                    {type: oracledb.STRING, maxSize: 38},
+                    {type: oracledb.NUMBER}
+                ]
+            };
+            await insertFunctions.insertMany(sql,bindsZaj,options);
+        }
+        res.redirect('/semestr?semestr='+req.body.semestr+blad);
     });
 };

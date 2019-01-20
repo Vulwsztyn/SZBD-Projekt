@@ -10,7 +10,7 @@ function addToList(lista,start,liczba,tryb,stopien,nazwa,wydzial){
         if((start+i)%2===0)  pora_roku='letni';
         else  pora_roku='zimowy';
         let rok = Math.floor((start+i+1)/2);
-        lista.push([start+i,rok,stopien,tryb,pora_roku,nazwa,wydzial]);
+        lista.push([start+i,rok,stopien,tryb,pora_roku,nazwa,parseInt(wydzial)]);
         // console.log(start+i);
     }
     return lista;
@@ -29,20 +29,24 @@ module.exports = function(app){
             //wypełnianie tabelki binds wraz ze sprawdzaniem całego inputu
             if(req.body.stacjonarne){
                 let tryb='stacjonarne';
-                if(req.body.s1 && req.body.s1l && req.body.s1r){
-                    binds=addToList(binds,req.body.s1r,req.body.s1l,tryb,1,req.body.nazwa,req.body.wydzial);
+                if(req.body.s1 && req.body.s1l){
+                    binds=addToList(binds,1,req.body.s1l,tryb,1,req.body.nazwa,req.body.wydzial);
                 }
-                if(req.body.s2 && req.body.s2l && req.body.s2r){
-                    binds=addToList(binds,req.body.s2r,req.body.s2l,tryb,2,req.body.nazwa,req.body.wydzial);
+                if(req.body.s2 && req.body.s2l){
+                    let r=1;
+                    if(req.body.s1l) r=parseInt(req.body.s1l)+1;
+                    binds=addToList(binds,r,req.body.s2l,tryb,2,req.body.nazwa,req.body.wydzial);
                 }
             }
             if(req.body.niestacjonarne){
                 tryb='niestacjonarne';
-                if(req.body.n1 && req.body.n1l && req.body.n1r){
-                    binds=addToList(binds,req.body.n1r,req.body.n1l,tryb,1,req.body.nazwa,req.body.wydzial);
+                if(req.body.n1 && req.body.n1l){
+                    binds=addToList(binds,1,req.body.n1l,tryb,1,req.body.nazwa,req.body.wydzial);
                 }
-                if(req.body.n2 && req.body.n2l && req.body.n2r){
-                    binds=addToList(binds,req.body.n2r,req.body.n2l,tryb,2,req.body.nazwa,req.body.wydzial);
+                if(req.body.n2 && req.body.n2l){
+                    let r=1;
+                    if(req.body.n1l) r=parseInt(req.body.n1l)+1;
+                    binds=addToList(binds,r,req.body.n2l,tryb,2,req.body.nazwa,req.body.wydzial);
                 }
             }
             //Koniec tego raka
@@ -58,7 +62,7 @@ module.exports = function(app){
                     {type: oracledb.STRING, maxSize: 38}, // size of the largest string, or as close as possible (???? - Artur)
                     {type: oracledb.STRING, maxSize: 38},
                     {type: oracledb.STRING, maxSize: 38},
-                    {type: oracledb.STRING, maxSize: 7}
+                    {type: oracledb.NUMBER}
                 ]
             };
             const sqlKierunek='insert into kierunki(nazwa,wydzial_id) values(:a,:b)';
@@ -67,10 +71,23 @@ module.exports = function(app){
                 b: req.body.wydzial
             };
             optionsKierunek={autoCommit: true,};
-            await insertFunctions.insertOne(sqlKierunek, bindsKierunek,optionsKierunek);
-            await insertFunctions.insertMany(sql,binds,options);
+            console.log(binds);
 
-        res.redirect('/wydzial?wydzial='+req.body.wydzial);
+            async function test() {
+                await insertFunctions.insertOne(sqlKierunek, bindsKierunek,optionsKierunek);
+            }
+            let blad="";
+            await test().catch((err) => {
+                console.log(err.message);
+                if (err.message.includes('KIERUNEK_NA_WYDZIAL_UN')){
+                    blad='&blad=nk';
+                }
+                blad+="&nk="+req.body.nazwa;
+            });
+            if(blad===""){
+                await insertFunctions.insertMany(sql,binds,options);
+            }
+        res.redirect('/wydzial?wydzial='+req.body.wydzial+blad);
     }});
 
 };

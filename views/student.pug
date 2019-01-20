@@ -3,15 +3,47 @@ html
         title Informacje o studencie
     body
         a(href='/semestr?semestr='+student[11]) Pokaż informacje o semestrze
-        h3 Informacje o semestrze #{student[1]}
+        h3 Informacje o studencie #{student[0]}
         p Numer albumu: #{student[0]}
         p Imię: #{student[4]}
+        button(onclick="document.getElementById('zi').hidden=!document.getElementById('zi').hidden") Pokaż/ukryj formularz zmiany imienia
+        form(action = "/zmien/student", method = "POST" id="zi" hidden)
+            div
+                p Nowe imie:
+                input(name = "imie" value = "" required)
+                input(name = "s" value = student[0] hidden)
+            br
+            button(type = "submit") Zmień imię
         p Nazwisko: #{student[5]}
+        button(onclick="document.getElementById('zn').hidden=!document.getElementById('zn').hidden") Pokaż/ukryj formularz zmiany nazwiska
+        form(action = "/zmien/student", method = "POST" id="zn" hidden)
+            div
+                p Nowe nazwisko:
+                input(name = "nazwisko" value = "" required)
+                input(name = "s" value = student[0] hidden)
+            br
+            button(type = "submit") Zmień nazwisko
+        p PESEL: #{student[6]}
+        button(onclick="document.getElementById('zp').hidden=!document.getElementById('zp').hidden") Pokaż/ukryj formularz zmiany numeru PESEL
+        - let h=true
+        if (blad && blad==="pesel")
+            - h=false
+        form(action = "/zmien/student", method = "POST" id="zp" hidden=h)
+            div
+                p Nowy numer PESEL:
+                input(type="text" name = "pesel"  pattern="[0-9]{11}" oninvalid="this.setCustomValidity('PESEL powinien składać się z 11 cyrf')" value=pesel required)
+                if (blad && blad === "pesel")
+                    p(color="red") Istnieje już osoba o tym numerze PESEL w systemie
+                input(name = "s" value = student[0] hidden)
+            br
+            button(type = "submit") Zmień PESEL
         h4 Informacje o grupie dziekanskiej:
-        p Symbol #{student[10]}
+        p='Symbol: '
+            a(href='/grupa?grupa='+student[2]) #{student[10]}
+
         p='Wydział: '
-        a(href='/wydzial?wydzial='+student[21]) #{student[22]}
-        p Kierunek:
+        a(href='/wydzial?wydzial='+student[21]) #{student[23]}
+        p='Kierunek: '
             a(href='/kierunek?kierunek='+student[18]) #{student[20]}
         p Tryb: #{student[16]}
         p Stopień: #{student[15]}

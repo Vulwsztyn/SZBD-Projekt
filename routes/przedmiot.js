@@ -1,7 +1,13 @@
 var selectFun = require ('../connections/select');
 module.exports = function(app){
     app.get('/przedmiot', async function (req, res) {
-        const sql = 'select * from przedmioty p left join semestry s on p.semestr_id=s.id left join kierunki k on s.kierunek_id=k.id left join wydzialy w on w.skrot=k.wydzial_id where p.id=:s';
+
+        let blad=(req.query.blad) ? req.query.blad : '';
+        let np=(req.query.np) ? req.query.np : "";
+
+
+
+        const sql = 'select * from przedmioty p left join semestry s on p.semestr_id=s.id left join kierunki k on s.kierunek_id=k.id left join wydzialy w on w.id=k.wydzial_id where p.id=:s';
         const binds = {
             s:req.query.przedmiot,
         };
@@ -25,7 +31,9 @@ module.exports = function(app){
 
         res.render('przedmiot',{
             przedmiot:przedmiot.rows[0],
-            zajecia:zajecia
+            zajecia:zajecia,
+            blad:blad,
+            np:np
         });
     });
 };
