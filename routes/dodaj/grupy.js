@@ -12,8 +12,8 @@ module.exports = function(app){
         res.render('dodaj/grupy', {result:result});
     });
     app.post('/dodaj/grupy', async function (req, res) {
-        sem = req.body.semestr;
-        gr = req.body.grupa;
+        let sem = req.body.sem;
+        let gr = req.body.sym;
         const sql = 'insert into grupy(symbol,semestr_id) values(:gr,:sem)';
         const binds = {
             sem: sem,
@@ -22,7 +22,18 @@ module.exports = function(app){
         const opt = {
             autoCommit: true,
         };
-        await insertFunctions.insertOne(sql, binds, opt);
-        res.redirect('/dodaj/grupy');
+        async function test() {
+            await insertFunctions.insertOne(sql, binds, opt);
+        }
+        let blad="";
+        await test().catch((err) => {
+            console.log(err.message);
+            if (err.message.includes('GRUPA_NA_SEMESTR__UN')){
+                blad='&blad=ng';
+                blad+="&ng="+gr;
+            }
+
+        });
+        res.redirect('/semestr?semestr='+sem+blad);
     });
 };

@@ -8,7 +8,9 @@ module.exports = {
     insertOne: function (sql,binds,options){
         return new Promise(async function(resolve, reject) {
             let conn;
+            let blad=null;
             try {
+
                 conn = await oracledb.getConnection({
                     user          : dbConfig.user,
                     password      : dbConfig.password,
@@ -21,16 +23,22 @@ module.exports = {
                 //To, że jest let result = await ...,  a w następnej lini resolve jest istotne
                 resolve(result);
             } catch (err) { // catches errors in getConnection and the query
-                console.log(err);
+                blad=err;
+                reject(blad);
             } finally {
                 if (conn) {   // the conn assignment worked, must release
                     try {
                         await conn.release();
+                        if(blad){
+
+                        }
                     } catch (e) {
+
                         console.error(e);
                     }
                 }
             }
+
         });
     },
 
@@ -48,7 +56,7 @@ module.exports = {
                 resolve(result);
             }
             catch (err) { // catches errors in getConnection and the query
-                console.log(err);
+                throw err;
             } finally {
                 if (conn) {   // the conn assignment worked, must release
                     try {

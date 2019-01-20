@@ -27,7 +27,7 @@ ALTER TABLE grupy_dziekanskie ADD CONSTRAINT grupa_na_semestr__un UNIQUE ( symbo
 CREATE TABLE kierunki (
     id           INTEGER NOT NULL,
     nazwa        VARCHAR2(15 CHAR),
-    wydzial_id   VARCHAR2(7 CHAR) NOT NULL
+    wydzial_id   INTEGER NOT NULL
 );
 
 ALTER TABLE kierunki ADD CONSTRAINT kierunki_pk PRIMARY KEY ( id );
@@ -106,13 +106,15 @@ CREATE TABLE studenci (
 ALTER TABLE studenci ADD CONSTRAINT student_pk PRIMARY KEY ( id );
 
 CREATE TABLE wydzialy (
+    id           INTEGER NOT NULL,
     nazwa   VARCHAR2(20 CHAR) NOT NULL,
     skrot   VARCHAR2(7 CHAR) NOT NULL
 );
 
-ALTER TABLE wydzialy ADD CONSTRAINT wydzialy_pk PRIMARY KEY ( skrot );
+ALTER TABLE wydzialy ADD CONSTRAINT wydzialy_pk PRIMARY KEY ( id );
 
 ALTER TABLE wydzialy ADD CONSTRAINT wydzialy_nazwa_un UNIQUE ( nazwa );
+ALTER TABLE wydzialy ADD CONSTRAINT wydzialy_skrot_un UNIQUE ( skrot );
 
 CREATE TABLE zajecia (
     id             INTEGER NOT NULL,
@@ -149,7 +151,7 @@ ALTER TABLE zajecia_w_planie
 CREATE TABLE zespoly (
     id           INTEGER NOT NULL,
     nazwa        VARCHAR2(20 CHAR),
-    wydzial_id   VARCHAR2(7 CHAR) NOT NULL
+    wydzial_id   INTEGER
 );
 
 ALTER TABLE zespoly ADD CONSTRAINT zespoly_pk PRIMARY KEY ( id );
@@ -163,7 +165,7 @@ ALTER TABLE grupy_dziekanskie
 
 ALTER TABLE kierunki
     ADD CONSTRAINT kierunki_wydzialy_fk FOREIGN KEY ( wydzial_id )
-        REFERENCES wydzialy ( skrot );
+        REFERENCES wydzialy ( id );
 
 ALTER TABLE oceny
     ADD CONSTRAINT oceny_pracownik_fk FOREIGN KEY ( pracownik_id )
@@ -227,7 +229,7 @@ ALTER TABLE zajecia_w_planie
 
 ALTER TABLE zespoly
     ADD CONSTRAINT zespoly_wydzialy_fk FOREIGN KEY ( wydzial_id )
-        REFERENCES wydzialy ( skrot );
+        REFERENCES wydzialy ( id );
 
 ALTER TABLE grupy_dziekanskie
     ADD CONSTRAINT grupa_dziekanska_semestr_fk FOREIGN KEY ( semestr_id )
@@ -235,7 +237,7 @@ ALTER TABLE grupy_dziekanskie
 
 ALTER TABLE kierunki
     ADD CONSTRAINT kierunki_wydzialy_fk FOREIGN KEY ( wydzial_id )
-        REFERENCES wydzialy ( skrot );
+        REFERENCES wydzialy ( id );
 
 ALTER TABLE oceny
     ADD CONSTRAINT oceny_pracownik_fk FOREIGN KEY ( pracownik_id )
@@ -423,6 +425,15 @@ END;
 /
 -- ARTUR
 -- wydzialy
+CREATE SEQUENCE seq_wydz START WITH 1 NOCACHE ORDER;
+CREATE OR REPLACE TRIGGER wydz_id_trg BEFORE
+    INSERT ON wydzialy
+    FOR EACH ROW
+    WHEN ( new.id IS NULL )
+BEGIN
+    :new.id := seq_wydz.nextval;
+END;
+/
 insert into wydzialy(nazwa,skrot) values('Informatyki','WI');
 
 /
@@ -516,11 +527,11 @@ ALTER TABLE godziny_zajec
   numer=8;
 /
 -- zespoly
-insert into zespoly (NAZWA,wydzial_ID) values ('ADMINISTRACJA','WI');
-insert into zespoly (NAZWA,wydzial_ID) values ('SYSTEMY ROZPROSZONE','WI');
-insert into zespoly (NAZWA,wydzial_ID) values ('SYSTEMY EKSPERCKIE','WI');
-insert into zespoly (NAZWA,wydzial_ID) values ('ALGORYTMY','WI');
-insert into zespoly (NAZWA,wydzial_ID) values ('BADANIA OPERACYJNE','WI');
+insert into zespoly (NAZWA,wydzial_ID) values ('ADMINISTRACJA',(select id from wydzialy where skrot='WI'));
+insert into zespoly (NAZWA,wydzial_ID) values ('SYSTEMY ROZPROSZONE',(select id from wydzialy where skrot='WI'));
+insert into zespoly (NAZWA,wydzial_ID) values ('SYSTEMY EKSPERCKIE',(select id from wydzialy where skrot='WI'));
+insert into zespoly (NAZWA,wydzial_ID) values ('ALGORYTMY',(select id from wydzialy where skrot='WI'));
+insert into zespoly (NAZWA,wydzial_ID) values ('BADANIA OPERACYJNE',(select id from wydzialy where skrot='WI'));
 /
 
 -- kierunki
@@ -533,7 +544,7 @@ BEGIN
     :new.id := seq_kierunki.nextval;
 END;
 /
-insert into kierunki(nazwa,wydzial_id) values('Informatyka','WI');
+insert into kierunki(nazwa,wydzial_id) values('Informatyka',(select id from wydzialy where skrot='WI'));
     
 
 -- semestry
@@ -541,31 +552,31 @@ rename semestr to semestry;
 insert into semestry 
 (numer,rok,stopien,tryb,pora_roku,kierunek_ID)
 values
-(1,1,1,'stacjonarne','zimowy',(select id from kierunki where nazwa = 'Informatyka' and wydzial_id='WI'));
+(1,1,1,'stacjonarne','zimowy',(select id from kierunki where nazwa = 'Informatyka' and wydzial_id=(select id from wydzialy where skrot='WI')));
 insert into semestry 
 (numer,rok, stopien,tryb,pora_roku,kierunek_ID)
 values
-(2,1,1,'stacjonarne','zimowy',(select id from kierunki where nazwa = 'Informatyka' and wydzial_id='WI'));
+(2,1,1,'stacjonarne','zimowy',(select id from kierunki where nazwa = 'Informatyka' and wydzial_id=(select id from wydzialy where skrot='WI')));
 insert into semestry 
 (numer,rok, stopien,tryb,pora_roku,kierunek_ID)
 values
-(3,2,1,'stacjonarne','zimowy',(select id from kierunki where nazwa = 'Informatyka' and wydzial_id='WI'));
+(3,2,1,'stacjonarne','zimowy',(select id from kierunki where nazwa = 'Informatyka' and wydzial_id=(select id from wydzialy where skrot='WI')));
 insert into semestry 
 (numer,rok, stopien,tryb,pora_roku,kierunek_ID)
 values
-(4,2,1,'stacjonarne','zimowy',(select id from kierunki where nazwa = 'Informatyka' and wydzial_id='WI'));
+(4,2,1,'stacjonarne','zimowy',(select id from kierunki where nazwa = 'Informatyka' and wydzial_id=(select id from wydzialy where skrot='WI')));
 insert into semestry 
 (numer,rok, stopien,tryb,pora_roku,kierunek_ID)
 values
-(5,3,1,'stacjonarne','zimowy',(select id from kierunki where nazwa = 'Informatyka' and wydzial_id='WI'));
+(5,3,1,'stacjonarne','zimowy',(select id from kierunki where nazwa = 'Informatyka' and wydzial_id=(select id from wydzialy where skrot='WI')));
 insert into semestry 
 (numer,rok, stopien,tryb,pora_roku,kierunek_ID)
 values
-(6,3,1,'stacjonarne','zimowy',(select id from kierunki where nazwa = 'Informatyka' and wydzial_id='WI'));
+(6,3,1,'stacjonarne','zimowy',(select id from kierunki where nazwa = 'Informatyka' and wydzial_id=(select id from wydzialy where skrot='WI')));
 insert into semestry 
 (numer,rok, stopien,tryb,pora_roku,kierunek_ID)
 values
-(7,4,1,'stacjonarne','zimowy',(select id from kierunki where nazwa = 'Informatyka' and wydzial_id='WI'));
+(7,4,1,'stacjonarne','zimowy',(select id from kierunki where nazwa = 'Informatyka' and wydzial_id=(select id from wydzialy where skrot='WI')));
 update semestry set pora_roku='letni' where numer in (2,4,6);
 
 -- grupy
@@ -847,10 +858,90 @@ BEGIN
         suma := suma + row.wartosc*row.ECTS;
         sumaECTS := sumaECTS+ row.ECTS;
    END LOOP;
+   IF sumaECTS>0 THEN
    RETURN suma/sumaECTS;
-
+    ELSE
+       RETURN 0;
+    END IF;
 END;
 /
+CREATE or replace PROCEDURE usunOcene (sid studenci.id%type, zaj zajecia.id%type) as
+   BEGIN
+      DELETE FROM oceny
+      WHERE
+      student_id=sid
+      and zajecia_id=zaj;
+   END;
+/
+CREATE or replace PROCEDURE usunosobe (sid studenci.id%type) as
+   BEGIN
+        FOR c IN (SELECT student_id, zajecia_id FROM oceny where student_id=sid) LOOP
+           usunocene(c.student_id, c.zajecia_id);
+        END LOOP;
+      DELETE FROM studenci
+      WHERE
+      id=sid;
+      delete from osoby
+      where id=sid;
+   END;
+/
+CREATE or replace PROCEDURE usungrupe (gid grupy.id%type) as
+   BEGIN
+        FOR c IN (SELECT id FROM studenci where grupa_id=gid) LOOP
+           usunosobe(c.id);
+        END LOOP;
+      DELETE FROM grupy
+      WHERE
+      id=gid;
+   END;
+/
+CREATE or replace PROCEDURE usunprzedmiot (pid przedmioty.id%type) as
+   BEGIN
+       delete from oceny where zajecia_id in (select id from zajecia where przedmiot_id=pid);
+       delete from zajecia_w_planie where zajecia_id in (select id from zajecia where przedmiot_id=pid);
+       delete from zajecia where przedmiot_id=pid;
+       delete from przedmioty where id=pid;
+   END;
+/
+CREATE or replace PROCEDURE usunkierunek (kid kierunki.id%type) as
+   BEGIN
+        FOR c IN (SELECT id FROM przedmioty where semestr_id in (select id from semestry where kierunek_id=kid)) LOOP
+           usunprzedmiot(c.id);
+        END LOOP;
+        FOR c IN (SELECT id FROM grupy where semestr_id in (select id from semestry where kierunek_id=kid)) LOOP
+           usungrupe(c.id);
+        END LOOP;
+      DELETE FROM semestry
+      WHERE
+      kierunek_id=kid;
+      delete from kierunki where id=kid;
+   END;
+/
+CREATE or replace PROCEDURE usunwydzial (wid wydzialy.id%type) as
+   BEGIN
+        FOR c IN (SELECT id FROM kierunki where wydzial_id=wid) LOOP
+           usunkierunek(c.id);
+        END LOOP;
+      delete from wydzialy where id=wid;
+   END;
+/
+CREATE or replace PROCEDURE usunpracownika (pid pracownicy.id%type) as
+   BEGIN
+        delete from zajecia_w_planie where pracownik_id=pid;
+        delete from oceny where pracownik_id=pid;
+      delete from pracownicy where id=pid;
+      delete from osoby where id=pid;
+   END;
+/
+CREATE or replace PROCEDURE usunzespol (zid zespoly.id%type) as
+   BEGIN
+        FOR c IN (SELECT id FROM pracownicy where zespol_id=zid) LOOP
+           usunpracownika(c.id);
+        END LOOP;
+      delete from zespoly where id=zid;
+   END;
+/
+
 -- Oracle SQL Developer Data Modeler Summary Report: 
 -- 
 -- CREATE TABLE                            14

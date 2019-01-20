@@ -10,6 +10,11 @@ require('./routes/przedmiot')(router);
 require('./routes/grupa')(router);
 require('./routes/pracownicy')(router);
 require('./routes/student')(router);
+require('./routes/zmien')(router);
+require('./routes/usun')(router);
+require('./routes/zespol')(router);
+require('./routes/godziny')(router);
+
 require('./routes/wyszukiwarka')(router);
 require('./routes/selectAll')(router);
 require('./routes/dodaj')(router);

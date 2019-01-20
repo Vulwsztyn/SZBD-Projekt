@@ -1,0 +1,74 @@
+html
+    head
+        title Informacje o studencie
+    body
+        a(href='/') Ekran startowy
+        br
+        a(href='/zespol?zespol='+pracownik[2]) Pokaż informacje o zespole
+        h3 Informacje o pracowniku
+        p Imię: #{pracownik[4]}
+        button(onclick="document.getElementById('zi').hidden=!document.getElementById('zi').hidden") Pokaż/ukryj formularz zmiany imienia
+        form(action = "/zmien/pracownik", method = "POST" id="zi" hidden)
+            div
+                p Nowe imie:
+                input(name = "imie" value = pracownik[4] required)
+                input(name = "s" value = pracownik[0] hidden)
+            br
+            button(type = "submit") Zmień imię
+        p Nazwisko: #{pracownik[5]}
+        button(onclick="document.getElementById('zn').hidden=!document.getElementById('zn').hidden") Pokaż/ukryj formularz zmiany nazwiska
+        form(action = "/zmien/pracownik", method = "POST" id="zn" hidden)
+            div
+                p Nowe nazwisko:
+                input(name = "nazwisko" value = pracownik[5] required)
+                input(name = "s" value = pracownik[0] hidden)
+            br
+            button(type = "submit") Zmień nazwisko
+        p Stopień naukowy: #{pracownik[1]}
+        button(onclick="document.getElementById('zt').hidden=!document.getElementById('zt').hidden") Pokaż/ukryj formularz zmiany stopnia naukowego
+        form(action = "/zmien/pracownik", method = "POST" id="zt" hidden)
+            div
+                p Nowy stopień naukowy:
+                input(name = "tytul" value = pracownik[1] required)
+                input(name = "s" value = pracownik[0] hidden)
+            br
+            button(type = "submit") Zmień stpoień naukwy
+        p PESEL: #{pracownik[6]}
+        button(onclick="document.getElementById('zp').hidden=!document.getElementById('zp').hidden") Pokaż/ukryj formularz zmiany numeru PESEL
+        - let h=true
+        - let pp=pracownik[6]
+        if (blad && blad==="pesel")
+            - h=false
+            - pp=pesel
+        form(action = "/zmien/pracownik", method = "POST" id="zp" hidden=h)
+            div
+                p Nowy numer PESEL:
+                input(type="text" name = "pesel"  pattern="[0-9]{11}" oninvalid="this.setCustomValidity('PESEL powinien składać się z 11 cyrf')" value=pp required)
+                if (blad && blad === "pesel")
+                    p(color="red") Istnieje już osoba o tym numerze PESEL w systemie
+                input(name = "s" value = pracownik[0] hidden)
+            br
+            button(type = "submit") Zmień PESEL
+        p='Zespół: '
+            a(href='/zespol?zespol='+pracownik[2]) #{pracownik[10]}
+        button(onclick="document.getElementById('zg').hidden=!document.getElementById('zg').hidden") Pokaż/ukryj formularz zmiany zespołu
+        form(action = "/zmien/pracownik", method = "POST" id="zg" hidden)
+            div
+                p Nowy zespół:
+                select(name = "zespol")
+                    each row in zespoly
+                        option(value=row[0]) #{row[1]}
+                input(name = "s" value = pracownik[0] hidden)
+            br
+            button(type = "submit") Zmień zespół
+
+        p='Wydział: '
+            a(href='/wydzial?wydzial='+pracownik[12]) #{pracownik[13]}
+
+        br
+        p
+        br
+        form(action = "/usun/pracownik", method = "POST" onsubmit="return confirm('Na pewno chcesz usunąć tego pracownika?');")
+            input(name = "pracownik" value = pracownik[0] hidden)
+            input(name = "zespol" value = pracownik[2] hidden)
+            button(type = "submit" color="red") Usuń pracownika

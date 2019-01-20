@@ -2,29 +2,80 @@ html
     head
         title Informacje o grupie
     body
-        style
-            include ./style.css
-        div#root
-            a(href='/semestr?semestr='+grupa[2]) Pokaż informacje o semestrze
-            h3 Informacje o grupie #{grupa[1]}
-            p Symbol: #{grupa[1]}
-            h4 Informacje o semestrze grupy
-            p='Wydział: '
-                a(href='/wydzial?wydzial='+grupa[14]) #{grupa[13]}
-            p Kierunek:
-                a(href='/kierunek?kierunek='+grupa[9]) #{grupa[11]}
-            p Tryb: #{grupa[7]}
-            p Stopień: #{grupa[6]}
-            p Rok: #{grupa[5]}
-            p Pora roku: #{grupa[8]}
-            p Numer semestru: #{grupa[4]}
-            p
-                a(href='/wyswietl/plan?semestr='+grupa[0]) Plan zajęć na semestrze
-            h4 Studenci w grupie:
-            table(border='2' id='semestry')
+        a(href='/') Ekran startowy
+        br
+        a(href='/semestr?semestr='+grupa[2]) Pokaż informacje o semestrze
+        h3 Informacje o grupie #{grupa[1]}
+        p Symbol: #{grupa[1]}
+        button(onclick="document.getElementById('zs').hidden=!document.getElementById('zs').hidden") Pokaż/ukryj formularz zmiany symbolu
+        - let h2=true
+        if (blad && blad === "s")
+            - h2=!true
+        form(action = "/zmien/grupa", method = "POST" id="zs" hidden=h2)
+            div
+                p Nowy symbol:
+                input(name = "symbol" value = nowySymbol required)
+                if (blad && blad === "s")
+                    p(color="red") Istnieje już grupa o takim symbolu na tym semestrze
+                input(name = "g" value = grupa[0] hidden)
+            br
+            button(type = "submit") Zmień symbol
+        h4 Informacje o semestrze grupy
+        p='Wydział: '
+            a(href='/wydzial?wydzial='+grupa[13]) #{grupa[14]}
+        p Kierunek:
+            a(href='/kierunek?kierunek='+grupa[9]) #{grupa[11]}
+        p Tryb: #{grupa[7]}
+        p Stopień: #{grupa[6]}
+        p Rok: #{grupa[5]}
+        p Pora roku: #{grupa[8]}
+        p Numer semestru: #{grupa[4]}
+        p
+            a(href='/wyswietl/plan?semestr='+grupa[2]) Plan zajęć na semestrze
+        h4 Studenci w grupie:
+        table(border='2' id='semestry')
+            tr
+                th Numer Albumu
+            each row in studenci.rows
                 tr
                     th Numer Albumu
                 each row in studenci.rows
                     tr
                         td
                             a(href='/student?student='+row[0]) #{row[0]}
+
+        h4 Dodaj studenta:
+        button(onclick="document.getElementById('dodajStudenta').hidden=!document.getElementById('dodajStudenta').hidden") Pokaż/ukryj formularz dodawania studentów
+        - let h=true
+        if (blad && blad === "pesel")
+            - h=!true
+        form(action = "/dodaj/student", method = "POST" id="dodajStudenta" hidden=h)
+            div
+                label Imię:
+                input(name = "imie" value = imie required)
+                br
+                label Nazwisko:
+                input(name = "nazwisko" value = nazwisko required)
+                br
+                label PESEL (11 cyfr):
+                input(type="text" name = "pesel"  pattern="[0-9]{11}" oninvalid="this.setCustomValidity('PESEL powinien składać się z 11 cyrf')" value=pesel required)
+                if (blad && blad === "pesel")
+                    p(color="red") Istnieje już osoba o takim PESELU
+                br
+                label Strona:
+                select(name="strona")
+                    - let n="lewa"
+                    option(value=n) #{n}
+                    - n="prawa"
+                    option(value=n) #{n}
+                input(name = "grupa" value = grupa[0] hidden)
+
+
+            button(type = "submit") Dodaj studenta
+        br
+        p
+        br
+        form(action = "/usun/grupa", method = "POST" onsubmit="return confirm('Na pewno chcesz usunąć tę grupę?');")
+            input(name = "grupa" value = grupa[0] hidden)
+            input(name = "semestr" value = grupa[2] hidden)
+            button(type = "submit" color="red") Usuń grupę

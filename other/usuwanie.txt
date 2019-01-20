@@ -29,3 +29,4 @@ drop sequence seq_logi;
 drop sequence seq_grupy;
 drop sequence seq_sale;
 drop sequence seq_kierunki;
+drop sequence seq_wydz;

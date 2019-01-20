@@ -2,33 +2,85 @@ html
     head
         title Informacje o studencie
     body
-        style
-            include ./style.css
-        div#root
-            a(href='/semestr?semestr='+student[11]) Pokaż informacje o semestrze
-            h3 Informacje o semestrze #{student[1]}
-            p Numer albumu: #{student[0]}
-            p Imię: #{student[4]}
-            p Nazwisko: #{student[5]}
-            h4 Informacje o grupie dziekanskiej:
-            p Symbol #{student[10]}
-            p='Wydział: '
-            a(href='/wydzial?wydzial='+student[21]) #{student[22]}
-            p Kierunek:
-                a(href='/kierunek?kierunek='+student[18]) #{student[20]}
-            p Tryb: #{student[16]}
-            p Stopień: #{student[15]}
-            p Rok: #{student[14]}
-            p Pora roku: #{student[17]}
-            p Numer: #{student[13]}
+        a(href='/') Ekran startowy
+        br
+        a(href='/semestr?semestr='+student[11]) Pokaż informacje o semestrze
+        h3 Informacje o studencie #{student[0]}
+        p Numer albumu: #{student[0]}
+        p Imię: #{student[4]}
+        button(onclick="document.getElementById('zi').hidden=!document.getElementById('zi').hidden") Pokaż/ukryj formularz zmiany imienia
+        form(action = "/zmien/student", method = "POST" id="zi" hidden)
+            div
+                p Nowe imie:
+                input(name = "imie" value = "" required)
+                input(name = "s" value = student[0] hidden)
+            br
+            button(type = "submit") Zmień imię
+        p Nazwisko: #{student[5]}
+        button(onclick="document.getElementById('zn').hidden=!document.getElementById('zn').hidden") Pokaż/ukryj formularz zmiany nazwiska
+        form(action = "/zmien/student", method = "POST" id="zn" hidden)
+            div
+                p Nowe nazwisko:
+                input(name = "nazwisko" value = "" required)
+                input(name = "s" value = student[0] hidden)
+            br
+            button(type = "submit") Zmień nazwisko
+        p PESEL: #{student[6]}
+        button(onclick="document.getElementById('zp').hidden=!document.getElementById('zp').hidden") Pokaż/ukryj formularz zmiany numeru PESEL
+        - let h=true
+        if (blad && blad==="pesel")
+            - h=false
+        form(action = "/zmien/student", method = "POST" id="zp" hidden=h)
+            div
+                p Nowy numer PESEL:
+                input(type="text" name = "pesel"  pattern="[0-9]{11}" oninvalid="this.setCustomValidity('PESEL powinien składać się z 11 cyrf')" value=pesel required)
+                if (blad && blad === "pesel")
+                    p(color="red") Istnieje już osoba o tym numerze PESEL w systemie
+                input(name = "s" value = student[0] hidden)
+            br
+            button(type = "submit") Zmień PESEL
+        h4 Informacje o grupie dziekanskiej:
+        p='Symbol: '
+            a(href='/grupa?grupa='+student[2]) #{student[10]}
+        button(onclick="document.getElementById('zg').hidden=!document.getElementById('zg').hidden") Pokaż/ukryj formularz zmiany grupy
+        form(action = "/zmien/student", method = "POST" id="zg" hidden)
+            div
+                p Nowa grupa:
+                select(name = "grupa")
+                    each row in grupy
+                        option(value=row[0]) #{row[1]}
+                input(name = "s" value = student[0] hidden)
+            br
+            button(type = "submit") Zmień grupę
+        p Strona: #{student[1]}
+            - let nowaStrona='lewa';
+            if student[1]==="lewa"
+                - nowaStrona='prawa';
+            form(action = "/zmien/student", method = "POST" )
+                input(name = "strona" value = nowaStrona hidden)
+                input(name = "s" value = student[0] hidden)
+                button(type = "submit") Zmień Stronę
+        p='Wydział: '
+        a(href='/wydzial?wydzial='+student[21]) #{student[23]}
+        p='Kierunek: '
+            a(href='/kierunek?kierunek='+student[18]) #{student[20]}
+        p Tryb: #{student[16]}
+        p Stopień: #{student[15]}
+        p Rok: #{student[14]}
+        p Pora roku: #{student[17]}
+        p Numer: #{student[13]}
 
             p
                 a(href='/wyswietl/plan?semestr='+student[11]) Plan zajęć na semestrze
             h4 Oceny:
             table(border='2' id='semestry')
                 tr
-                each row in semestry.rows
-                    tr
-                        td
-                            a(href='/wyswietl/oceny?semestr='+row[0]+"&student="+student[0]) Pokaż oceny z semestru #{row[1]}
-
+                    td
+                        a(href='/wyswietl/oceny?semestr='+row[0]+"&student="+student[0]) Pokaż oceny z semestru #{row[1]}
+        br
+        p
+        br
+        form(action = "/usun/student", method = "POST" onsubmit="return confirm('Na pewno chcesz usunąć tego studenta?');")
+            input(name = "s" value = student[0] hidden)
+            input(name = "g" value = student[2] hidden)
+            button(type = "submit" color="red") Usuń studenta

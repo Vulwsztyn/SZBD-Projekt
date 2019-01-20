@@ -3,7 +3,7 @@ var selectFun = require ('../../connections/select');
 module.exports = function(app){
     app.get('/wyswietl/oceny', async function (req, res) {
         const sql =
-                    `with rzecz as
+            `with rzecz as
         (SELECT 
         z.id,
         p.nazwa,
@@ -24,7 +24,7 @@ module.exports = function(app){
         (select count(*) from zajecia where przedmiot_id=p.id) as liczba,z.id
         from rzecz r
         right join zajecia z on r.id=z.id
-        right join przedmioty p on p.id=z.przedmiot_id where z.id in (select id from zajecia where przedmiot_id in (select id from przedmioty where semestr_id=:sem))`;
+        right join przedmioty p on p.id=z.przedmiot_id where z.id in (select id from zajecia where przedmiot_id in (select id from przedmioty where semestr_id=:sem)) order by p.nazwa,z.typ`;
         const binds = {
             sid:req.query.student,
             sem:req.query.semestr
@@ -37,6 +37,11 @@ module.exports = function(app){
         const sql7 = 'select p.id,p.stopien,o.imie,o.nazwisko,o.pesel from pracownicy p inner join osoby o on o.id=p.id order by o.nazwisko, o.imie,p.stopien';
         const prowadzacy = await selectFun.select(sql7,{},{});
 
-        res.render('wyswietl/oceny', {result:result,srednia:srednia.rows,prowadzacy:prowadzacy,sid:req.query.student, sem:req.query.semestr});
+        res.render('wyswietl/oceny', {
+            result:result,
+            srednia:srednia.rows,
+            prowadzacy:prowadzacy,
+            sid:req.query.student,
+            sem:req.query.semestr});
     });
 };
