@@ -55,7 +55,8 @@ html
             - h2=!true
         form(action = "/dodaj/przedmioty", method = "POST" id="dodajPrzedmiot" hidden=h2)
             div
-                label Symbol:
+                label Nazwa:
+                br
                 input(name = "przedmiot" value = np required)
                 if (blad && blad === "np")
                     p(color="red") Istnieje już przemiot o takiej nazwie na tym semestrze

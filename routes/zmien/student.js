@@ -35,12 +35,21 @@ module.exports = function(app){
                 s: s
             };
         }
-        if(req.body.strona){
-            sql = 'update wydzialy ' +
-                'set nazwa=:n ' +
+        if(req.body.grupa){
+            sql = 'update studenci ' +
+                'set grupa_id=:n ' +
                 'where id=:s';
             binds = {
-                n: req.body.nazwa,
+                n: req.body.grupa,
+                s: s
+            };
+        }
+        if(req.body.strona){
+            sql = 'update studenci ' +
+                'set strona_grupy=:n ' +
+                'where id=:s';
+            binds = {
+                n: req.body.strona,
                 s: s
             };
         }

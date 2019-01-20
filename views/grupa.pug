@@ -67,3 +67,10 @@ html
 
 
             button(type = "submit") Dodaj studenta
+        br
+        p
+        br
+        form(action = "/usun/grupa", method = "POST" onsubmit="return confirm('Na pewno chcesz usunąć tę grupę?');")
+            input(name = "grupa" value = grupa[0] hidden)
+            input(name = "semestr" value = grupa[2] hidden)
+            button(type = "submit" color="red") Usuń grupę

@@ -100,6 +100,12 @@ html
                             //    input#n2r(name = "n2r" value = "8" type="number" min="1" max="10")
 
             button(type = "submit") Dodaj Kierunek
+        br
+        p
+        br
+        form(action = "/usun/wydzial", method = "POST" onsubmit="return confirm('Na pewno chcesz usunąć ten wydział?');")
+            input(name = "wydzial" value = wydzial[0] hidden)
+            button(type = "submit" color="red") Usuń wydział
         script.
             function showOptions(a, b) {
                 var box = document.getElementById(a);

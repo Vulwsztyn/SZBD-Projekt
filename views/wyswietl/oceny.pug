@@ -5,8 +5,8 @@ html
             function funkcja(a) {
                 var x = document.getElementById(a);
                 var y = document.getElementById(a + 1);
-                x.hidden = true;
-                y.hidden = false;
+                // x.hidden = !x.hidden;
+                y.hidden = !y.hidden;
             }
     body
         h3 Informacje o ocenach studenta o numerze albumu #{sid} w semestrze #{sem}
@@ -50,10 +50,13 @@ html
                         td
                             button(id=liczbaPomocnicza onclick="funkcja(" + liczbaPomocnicza + ")") Dodaj/Edytuj
                                 - liczbaPomocnicza++
-                            form(id=liczbaPomocnicza action = "/dodaj/plan", method = "POST" hidden)
+                            form(id=liczbaPomocnicza action = "/dodaj/ocena", method = "POST" hidden)
                                 //zajecia
                                 select(name="sid" hidden)
                                     - var n=sid
+                                    option(value=n) #{n}
+                                select(name="sem" hidden)
+                                    - var n=sem
                                     option(value=n) #{n}
                                 select(name="zaj" hidden)
                                     - var n=row[8]
@@ -69,17 +72,16 @@ html
                                         - n = row[3]+" "+row[2]+" "+row[1]+" ("+row[4]+")";
                                         option(value=row[0]) #{n}
                                 p Ocena:
-                                select(name="typ")
-                                    option(value="2.0") 2.0
-                                    option(value="3.0") 3.0
-                                    option(value="3.5") 3.5
-                                    option(value="4.0") 4.0
-                                    option(value="4.5") 4.5
-                                    option(value="5.0") 5.0
+                                select(name="ocena")
+                                    option(value=2.0) 2.0
+                                    option(value=3.0) 3.0
+                                    option(value=3.5) 3.5
+                                    option(value=4.0) 4.0
+                                    option(value=4.5) 4.5
+                                    option(value=5.0) 5.0
 
                                 br
                                 button(type = "submit") Dodaj/Edytuj
-                    //            TODO działanie tego forma
                     - i++
         else
             p Nie ma tabeli

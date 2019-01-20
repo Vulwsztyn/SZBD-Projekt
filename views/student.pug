@@ -40,7 +40,24 @@ html
         h4 Informacje o grupie dziekanskiej:
         p='Symbol: '
             a(href='/grupa?grupa='+student[2]) #{student[10]}
-
+        button(onclick="document.getElementById('zg').hidden=!document.getElementById('zg').hidden") Pokaż/ukryj formularz zmiany grupy
+        form(action = "/zmien/student", method = "POST" id="zg" hidden)
+            div
+                p Nowa grupa:
+                select(name = "grupa")
+                    each row in grupy
+                        option(value=row[0]) #{row[1]}
+                input(name = "s" value = student[0] hidden)
+            br
+            button(type = "submit") Zmień grupę
+        p Strona: #{student[1]}
+            - let nowaStrona='lewa';
+            if student[1]==="lewa"
+                - nowaStrona='prawa';
+            form(action = "/zmien/student", method = "POST" )
+                input(name = "strona" value = nowaStrona hidden)
+                input(name = "s" value = student[0] hidden)
+                button(type = "submit") Zmień Stronę
         p='Wydział: '
         a(href='/wydzial?wydzial='+student[21]) #{student[23]}
         p='Kierunek: '
@@ -60,4 +77,10 @@ html
                 tr
                     td
                         a(href='/wyswietl/oceny?semestr='+row[0]+"&student="+student[0]) Pokaż oceny z semestru #{row[1]}
-
+        br
+        p
+        br
+        form(action = "/usun/student", method = "POST" onsubmit="return confirm('Na pewno chcesz usunąć tego studenta?');")
+            input(name = "s" value = student[0] hidden)
+            input(name = "g" value = student[2] hidden)
+            button(type = "submit" color="red") Usuń studenta

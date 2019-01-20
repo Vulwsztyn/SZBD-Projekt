@@ -44,3 +44,10 @@ html
         p Numer semestru: #{przedmiot[5]}
         p
             a(href='/wyswietl/plan?semestr='+przedmiot[2]) Plan zajęć na semestrze
+        br
+        p
+        br
+        form(action = "/usun/przedmiot", method = "POST" onsubmit="return confirm('Na pewno chcesz usunąć ten przedmiot?');")
+            input(name = "przedmiot" value = przedmiot[0] hidden)
+            input(name = "semestr" value = przedmiot[2] hidden)
+            button(type = "submit" color="red") Usuń przedmiot

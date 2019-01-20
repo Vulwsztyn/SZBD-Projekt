@@ -55,6 +55,13 @@ html
                     td=row[1]
                     td
                         a(href='/semestr?semestr='+row[0]) Informacje o semestrze #{row[1]}
+        br
+        p
+        br
+        form(action = "/usun/kierunek", method = "POST" onsubmit="return confirm('Na pewno chcesz usunąć ten kierunek?');")
+            input(name = "kierunek" value = kierunek[0] hidden)
+            input(name = "wydzial" value = kierunek[3] hidden)
+            button(type = "submit" color="red") Usuń Kierunek
 script.
     var table=document.getElementById("semestry")
     for (var i = 0, row; row = table.rows[i]; i++) {

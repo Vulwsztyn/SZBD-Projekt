@@ -858,10 +858,90 @@ BEGIN
         suma := suma + row.wartosc*row.ECTS;
         sumaECTS := sumaECTS+ row.ECTS;
    END LOOP;
+   IF sumaECTS>0 THEN
    RETURN suma/sumaECTS;
-
+    ELSE
+       RETURN 0;
+    END IF;
 END;
 /
+CREATE or replace PROCEDURE usunOcene (sid studenci.id%type, zaj zajecia.id%type) as
+   BEGIN
+      DELETE FROM oceny
+      WHERE
+      student_id=sid
+      and zajecia_id=zaj;
+   END;
+/
+CREATE or replace PROCEDURE usunosobe (sid studenci.id%type) as
+   BEGIN
+        FOR c IN (SELECT student_id, zajecia_id FROM oceny where student_id=sid) LOOP
+           usunocene(c.student_id, c.zajecia_id);
+        END LOOP;
+      DELETE FROM studenci
+      WHERE
+      id=sid;
+      delete from osoby
+      where id=sid;
+   END;
+/
+CREATE or replace PROCEDURE usungrupe (gid grupy.id%type) as
+   BEGIN
+        FOR c IN (SELECT id FROM studenci where grupa_id=gid) LOOP
+           usunosobe(c.id);
+        END LOOP;
+      DELETE FROM grupy
+      WHERE
+      id=gid;
+   END;
+/
+CREATE or replace PROCEDURE usunprzedmiot (pid przedmioty.id%type) as
+   BEGIN
+       delete from oceny where zajecia_id in (select id from zajecia where przedmiot_id=pid);
+       delete from zajecia_w_planie where zajecia_id in (select id from zajecia where przedmiot_id=pid);
+       delete from zajecia where przedmiot_id=pid;
+       delete from przedmioty where id=pid;
+   END;
+/
+CREATE or replace PROCEDURE usunkierunek (kid kierunki.id%type) as
+   BEGIN
+        FOR c IN (SELECT id FROM przedmioty where semestr_id in (select id from semestry where kierunek_id=kid)) LOOP
+           usunprzedmiot(c.id);
+        END LOOP;
+        FOR c IN (SELECT id FROM grupy where semestr_id in (select id from semestry where kierunek_id=kid)) LOOP
+           usungrupe(c.id);
+        END LOOP;
+      DELETE FROM semestry
+      WHERE
+      kierunek_id=kid;
+      delete from kierunki where id=kid;
+   END;
+/
+CREATE or replace PROCEDURE usunwydzial (wid wydzialy.id%type) as
+   BEGIN
+        FOR c IN (SELECT id FROM kierunki where wydzial_id=wid) LOOP
+           usunkierunek(c.id);
+        END LOOP;
+      delete from wydzialy where id=wid;
+   END;
+/
+CREATE or replace PROCEDURE usunpracownika (pid pracownicy.id%type) as
+   BEGIN
+        delete from zajecia_w_planie where pracownik_id=pid;
+        delete from oceny where pracownik_id=pid;
+      delete from pracownicy where id=pid;
+      delete from osoby where id=pid;
+   END;
+/
+CREATE or replace PROCEDURE usunzespol (zid zespoly.id%type) as
+   BEGIN
+        FOR c IN (SELECT id FROM pracownicy where zespol_id=zid) LOOP
+           usunpracownika(c.id);
+        END LOOP;
+      delete from zespoly where id=zid;
+   END;
+/
+
 -- Oracle SQL Developer Data Modeler Summary Report: 
 -- 
 -- CREATE TABLE                            14
