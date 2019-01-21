@@ -15,21 +15,16 @@ html
                         option(value="wydzialy") wydzialy
                         option(value="kierunki") kierunki
                         option(value="przedmioty") przedmioty
-                    select(name="param")#osoby
-                        option(value="id") numer albumu
-                        option(value="imie") imie
-                        option(value="nazwisko") nazwisko
-                        option(value="pesel") PESEL
-                    select(name="nope" hidden)#wydzialy
-                        option(value="nazwa") nazwa
-                        option(value="skrot") skrót
-                    select(name="nope" hidden)#kierunki
-                        option(value="nazwa") nazwa
-                    select(name="nope" hidden)#przedmioty
-                        option(value="nazwa") nazwa
-                        option(value="ects") ects
+                    div#osoby
+                        input(name = "Oimie" value = "")
+                        input(name = "Onazwisko" value = "")
+                    div#wydzialy
+                        input(name = "Wnazwa" value = "")
+                    div#kierunki
+                        input(name = "Knazwa" value = "")
+                    div#przedmioty
+                        input(name = "Pnazwa" value = "")
                     input(name = "wyszukaj" value = "1" hidden)
-                    input(name = "input" value = "")
                 br
                 button(type = "submit") Szukaj
             if(osoby && osoby.metaData && osoby.rows)
