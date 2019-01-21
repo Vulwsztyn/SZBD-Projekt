@@ -10,19 +10,51 @@ html
             a(href='/') Ekran startowy
             form(action = "/wyszukiwarka", method = "GET")
                 div
-                    select(name="which", onchange="switchOptions(this)")
-                        option(value="osoby") osoby
-                        option(value="wydzialy") wydzialy
-                        option(value="kierunki") kierunki
-                        option(value="przedmioty") przedmioty
-                    div#osoby
+                    select(name="which", onchange="switchOptions(this)" id="which")
+                        option(value="osoby") Osoby
+                        option(value="wydzialy") Wydzialy
+                        option(value="kierunki") Kierunki
+                        option(value="przedmioty") Przedmioty
+                    - let h0=!true
+                    - let h1=true
+                    - let h2=true
+                    - let h3=true
+                    if (which === "osoby")
+
+                        script.
+                            document.getElementById("which").selectedIndex = "0"
+                    if (which === "wydzialy")
+                        - let h0=true
+                        -  h1=!true
+                        script.
+                            document.getElementById("which").selectedIndex="1"
+                    if (which === "kierunki")
+                        - let h0=true
+                        -  h2=!true
+                        script.
+                            document.getElementById("which").selectedIndex = "2";
+                    if (which === "przedmioty")
+                        - let h0=true
+                        -  h3=!true
+                        script.
+                            document.getElementById("which").selectedIndex = "3";
+                    div#osoby(hidden=h0)
+                        label Imie:
                         input(name = "Oimie" value = "")
+                        br
+                        label Nazwisko:
                         input(name = "Onazwisko" value = "")
-                    div#wydzialy
+                        br
+                        label PESEL:
+                        input(name = "Opesel" value = "")
+                    div#wydzialy(hidden=h1)
+                        label Nazwa:
                         input(name = "Wnazwa" value = "")
-                    div#kierunki
+                    div#kierunki(hidden=h2)
+                        label Nazwa:
                         input(name = "Knazwa" value = "")
-                    div#przedmioty
+                    div#przedmioty(hidden=h3)
+                        label Nazwa:
                         input(name = "Pnazwa" value = "")
                     input(name = "wyszukaj" value = "1" hidden)
                 br
@@ -48,6 +80,11 @@ html
                                     p #{row[3]}
                                 td
                                     p #{row[5]}
+                                td
+                                    if(row[5]==="Teacher")
+                                        a(href='/pracownik?pracownik=' + row[0]) Przejdź
+                                    else
+                                        a(href='/student?student=' + row[0]) Przejdź
             if(wydzialy && wydzialy.metaData && wydzialy.rows)
                 h4 Wydzialy:
                     table(border='2')
@@ -60,6 +97,8 @@ html
                                     p #{row[1]}
                                 td
                                     p #{row[2]}
+                                td
+                                    a(href='/wydzial?wydzial=' + row[0]) Przejdź
             if(kierunki && kierunki.metaData && kierunki.rows)
                 h4 Kierunki:
                     table(border='2')
@@ -69,6 +108,8 @@ html
                             tr
                                 td
                                     p #{row[1]}
+                                td
+                                    a(href='/kierunek?kierunek=' + row[0]) Przejdź
             if(przedmioty && przedmioty.metaData && przedmioty.rows)
                 h4 Przedmioty:
                     table(border='2')
@@ -81,3 +122,5 @@ html
                                     p #{row[1]}
                                 td
                                     p #{row[3]}
+                                td
+                                    a(href='/przedmdiot?przedmdiot=' + row[0]) Przejdź

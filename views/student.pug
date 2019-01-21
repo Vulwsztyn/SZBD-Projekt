@@ -77,9 +77,10 @@ html
                     a(href='/wyswietl/plan?semestr='+student[11]) Plan zajęć na semestrze
                 h4 Oceny:
                 table(border='2' id='semestry')
-                    tr
-                        td
-                            a(href='/wyswietl/oceny?semestr='+row[0]+"&student="+student[0]) Pokaż oceny z semestru #{row[1]}
+                        each row in semestry.rows
+                            tr
+                                td
+                                    a(href='/wyswietl/oceny?semestr='+row[0]+"&student="+student[0]) Pokaż oceny z semestru #{row[1]} #{row[4]}
             br
             p
             br

@@ -12,6 +12,7 @@ module.exports = function(app){
         const semestry = await selectFun.select(sql2,binds,{});
         const sql3 = 'select * from grupy where semestr_id in (select semestr_id from grupy where id=(select grupa_id from studenci where id=:s))';
         const grupy = await selectFun.select(sql3,binds,{});
+        console.log(student.rows[0]);
         res.render('student',{
             student:student.rows[0],
             semestry:semestry,

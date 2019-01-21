@@ -9,7 +9,6 @@ module.exports = function(app){
         let godz = req.body.godzina;
         const sql = 'delete from zajecia_w_planie where grupa_id=:g and strona_grupy=:st and dzien_tygodnia=:d and godzina_id=:godz';
         const binds = {
-
             g:grupa,
             st:str,
             d:dzien,
